@@ -85,31 +85,31 @@ export class Mat33 {
    */
   solve33(v: Vec3Value): Vec3Value {
     // let det = matrix.dotVec3(this.ex, matrix.newCrossVec3(this.ey, this.ez));
-    let cross_x = this.ey.y * this.ez.z - this.ey.z * this.ez.y;
-    let cross_y = this.ey.z * this.ez.x - this.ey.x * this.ez.z;
-    let cross_z = this.ey.x * this.ez.y - this.ey.y * this.ez.x;
-    let det = this.ex.x * cross_x + this.ex.y * cross_y + this.ex.z * cross_z;
+    let cross_x = this.ey[1] * this.ez[2] - this.ey[2] * this.ez[1];
+    let cross_y = this.ey[2] * this.ez[0] - this.ey[0] * this.ez[2];
+    let cross_z = this.ey[0] * this.ez[1] - this.ey[1] * this.ez[0];
+    let det = this.ex[0] * cross_x + this.ex[1] * cross_y + this.ex[2] * cross_z;
     if (det !== 0.0) {
       det = 1.0 / det;
     }
     const r = Vec3.create();
     // r.x = det * matrix.dotVec3(v, matrix.newCrossVec3(this.ey, this.ez));
-    cross_x = this.ey.y * this.ez.z - this.ey.z * this.ez.y;
-    cross_y = this.ey.z * this.ez.x - this.ey.x * this.ez.z;
-    cross_z = this.ey.x * this.ez.y - this.ey.y * this.ez.x;
-    r.x = det * (v.x * cross_x + v.y * cross_y + v.z * cross_z);
+    cross_x = this.ey[1] * this.ez[2] - this.ey[2] * this.ez[1];
+    cross_y = this.ey[2] * this.ez[0] - this.ey[0] * this.ez[2];
+    cross_z = this.ey[0] * this.ez[1] - this.ey[1] * this.ez[0];
+    r[0] = det * (v[0] * cross_x + v[1] * cross_y + v[2] * cross_z);
 
     // r.y = det * matrix.dotVec3(this.ex, matrix.newCrossVec3(v, this.ez));
-    cross_x = v.y * this.ez.z - v.z * this.ez.y;
-    cross_y = v.z * this.ez.x - v.x * this.ez.z;
-    cross_z = v.x * this.ez.y - v.y * this.ez.x;
-    r.y = det * (this.ex.x * cross_x + this.ex.y * cross_y + this.ex.z * cross_z);
+    cross_x = v[1] * this.ez[2] - v[2] * this.ez[1];
+    cross_y = v[2] * this.ez[0] - v[0] * this.ez[2];
+    cross_z = v[0] * this.ez[1] - v[1] * this.ez[0];
+    r[1] = det * (this.ex[0] * cross_x + this.ex[1] * cross_y + this.ex[2] * cross_z);
 
     // r.z = det * matrix.dotVec3(this.ex, matrix.newCrossVec3(this.ey, v));
-    cross_x = this.ey.y * v.z - this.ey.z * v.y;
-    cross_y = this.ey.z * v.x - this.ey.x * v.z;
-    cross_z = this.ey.x * v.y - this.ey.y * v.x;
-    r.z = det * (this.ex.x * cross_x + this.ex.y * cross_y + this.ex.z * cross_z);
+    cross_x = this.ey[1] * v[2] - this.ey[2] * v[1];
+    cross_y = this.ey[2] * v[0] - this.ey[0] * v[2];
+    cross_z = this.ey[0] * v[1] - this.ey[1] * v[0];
+    r[2] = det * (this.ex[0] * cross_x + this.ex[1] * cross_y + this.ex[2] * cross_z);
     return r;
   }
 
@@ -119,10 +119,10 @@ export class Mat33 {
    * equation.
    */
   solve22(v: Vec2Value): Vec2Value {
-    const a11 = this.ex.x;
-    const a12 = this.ey.x;
-    const a21 = this.ex.y;
-    const a22 = this.ey.y;
+    const a11 = this.ex[0];
+    const a12 = this.ey[0];
+    const a21 = this.ex[1];
+    const a22 = this.ey[1];
     let det = a11 * a22 - a12 * a21;
     if (det !== 0.0) {
       det = 1.0 / det;
@@ -138,23 +138,23 @@ export class Mat33 {
    * singular.
    */
   getInverse22(M: Mat33): void {
-    const a = this.ex.x;
-    const b = this.ey.x;
-    const c = this.ex.y;
-    const d = this.ey.y;
+    const a = this.ex[0];
+    const b = this.ey[0];
+    const c = this.ex[1];
+    const d = this.ey[1];
     let det = a * d - b * c;
     if (det !== 0.0) {
       det = 1.0 / det;
     }
-    M.ex.x = det * d;
-    M.ey.x = -det * b;
-    M.ex.z = 0.0;
-    M.ex.y = -det * c;
-    M.ey.y = det * a;
-    M.ey.z = 0.0;
-    M.ez.x = 0.0;
-    M.ez.y = 0.0;
-    M.ez.z = 0.0;
+    M.ex[0] = det * d;
+    M.ey[0] = -det * b;
+    M.ex[2] = 0.0;
+    M.ex[1] = -det * c;
+    M.ey[1] = det * a;
+    M.ey[2] = 0.0;
+    M.ez[0] = 0.0;
+    M.ez[1] = 0.0;
+    M.ez[2] = 0.0;
   }
 
   /**
@@ -166,24 +166,24 @@ export class Mat33 {
     if (det !== 0.0) {
       det = 1.0 / det;
     }
-    const a11 = this.ex.x;
-    const a12 = this.ey.x;
-    const a13 = this.ez.x;
-    const a22 = this.ey.y;
-    const a23 = this.ez.y;
-    const a33 = this.ez.z;
+    const a11 = this.ex[0];
+    const a12 = this.ey[0];
+    const a13 = this.ez[0];
+    const a22 = this.ey[1];
+    const a23 = this.ez[1];
+    const a33 = this.ez[2];
 
-    M.ex.x = det * (a22 * a33 - a23 * a23);
-    M.ex.y = det * (a13 * a23 - a12 * a33);
-    M.ex.z = det * (a12 * a23 - a13 * a22);
+    M.ex[0] = det * (a22 * a33 - a23 * a23);
+    M.ex[1] = det * (a13 * a23 - a12 * a33);
+    M.ex[2] = det * (a12 * a23 - a13 * a22);
 
-    M.ey.x = M.ex.y;
-    M.ey.y = det * (a11 * a33 - a13 * a13);
-    M.ey.z = det * (a13 * a12 - a11 * a23);
+    M.ey[0] = M.ex[1];
+    M.ey[1] = det * (a11 * a33 - a13 * a13);
+    M.ey[2] = det * (a13 * a12 - a11 * a23);
 
-    M.ez.x = M.ex.z;
-    M.ez.y = M.ey.z;
-    M.ez.z = det * (a11 * a22 - a12 * a12);
+    M.ez[0] = M.ex[2];
+    M.ez[1] = M.ey[2];
+    M.ez[2] = det * (a11 * a22 - a12 * a12);
   }
 
   /**
@@ -213,17 +213,17 @@ export class Mat33 {
   static mulVec3(a: Mat33, b: Vec3Value): Vec3Value {
     _ASSERT && Mat33.assert(a);
     _ASSERT && Vec3.assert(b);
-    const x = a.ex.x * b.x + a.ey.x * b.y + a.ez.x * b.z;
-    const y = a.ex.y * b.x + a.ey.y * b.y + a.ez.y * b.z;
-    const z = a.ex.z * b.x + a.ey.z * b.y + a.ez.z * b.z;
+    const x = a.ex[0] * b[0] + a.ey[0] * b[1] + a.ez[0] * b[2];
+    const y = a.ex[1] * b[0] + a.ey[1] * b[1] + a.ez[1] * b[2];
+    const z = a.ex[2] * b[0] + a.ey[2] * b[1] + a.ez[2] * b[2];
     return Vec3.create(x, y, z);
   }
 
   static mulVec2(a: Mat33, b: Vec2Value): Vec2Value {
     _ASSERT && Mat33.assert(a);
     _ASSERT && Vec2.assert(b);
-    const x = a.ex.x * b[0] + a.ey.x * b[1];
-    const y = a.ex.y * b[0] + a.ey.y * b[1];
+    const x = a.ex[0] * b[0] + a.ey[0] * b[1];
+    const y = a.ex[1] * b[0] + a.ey[1] * b[1];
     return Vec2.create(x, y);
   }
 

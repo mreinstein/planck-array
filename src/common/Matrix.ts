@@ -37,7 +37,7 @@ export function vec2 (x: number, y: number): Vec2Value {
 }
 
 export function vec3 (x: number, y: number, z: number): Vec3Value {
-  return { x, y, z };
+  return [ x, y, z ];
 }
 
 export function rotation(angle: number): RotValue {
@@ -196,7 +196,7 @@ export function distSqrVec2(a: Vec2Value, b: Vec2Value): number {
 }
 
 export function dotVec3(v: Vec3Value, w: Vec3Value): number {
-  return v.x * w.x + v.y * w.y + v.z * w.z;
+  return v[0] * w[0] + v[1] * w[1] + v[2] * w[2];
 }
 
 export function setRotAngle(out: RotValue, a: number): RotValue {

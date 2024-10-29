@@ -429,7 +429,7 @@ export class PrismaticJoint extends Joint {
       this.m_bodyA.setAwake(true);
       this.m_bodyB.setAwake(true);
       this.m_enableLimit = flag;
-      this.m_impulse.z = 0.0;
+      this.m_impulse[2] = 0.0;
     }
   }
 
@@ -457,7 +457,7 @@ export class PrismaticJoint extends Joint {
       this.m_bodyB.setAwake(true);
       this.m_lowerTranslation = lower;
       this.m_upperTranslation = upper;
-      this.m_impulse.z = 0.0;
+      this.m_impulse[2] = 0.0;
     }
   }
 
@@ -534,7 +534,7 @@ export class PrismaticJoint extends Joint {
    * Get the reaction force on bodyB at the joint anchor in Newtons.
    */
   getReactionForce(inv_dt: number): Vec2Value {
-    const f = Vec2.combine(this.m_impulse.x, this.m_perp, this.m_motorImpulse + this.m_impulse.z, this.m_axis);
+    const f = Vec2.combine(this.m_impulse[0], this.m_perp, this.m_motorImpulse + this.m_impulse[2], this.m_axis);
     return Vec2.scale(f, inv_dt, f);
   }
 
@@ -542,7 +542,7 @@ export class PrismaticJoint extends Joint {
    * Get the reaction torque on bodyB in N*m.
    */
   getReactionTorque(inv_dt: number): number {
-    return inv_dt * this.m_impulse.y;
+    return inv_dt * this.m_impulse[1];
   }
 
   initVelocityConstraints(step: TimeStep): void {
@@ -627,23 +627,23 @@ export class PrismaticJoint extends Joint {
       } else if (jointTranslation <= this.m_lowerTranslation) {
         if (this.m_limitState != LimitState.atLowerLimit) {
           this.m_limitState = LimitState.atLowerLimit;
-          this.m_impulse.z = 0.0;
+          this.m_impulse[2] = 0.0;
         }
 
       } else if (jointTranslation >= this.m_upperTranslation) {
         if (this.m_limitState != LimitState.atUpperLimit) {
           this.m_limitState = LimitState.atUpperLimit;
-          this.m_impulse.z = 0.0;
+          this.m_impulse[2] = 0.0;
         }
 
       } else {
         this.m_limitState = LimitState.inactiveLimit;
-        this.m_impulse.z = 0.0;
+        this.m_impulse[2] = 0.0;
       }
 
     } else {
       this.m_limitState = LimitState.inactiveLimit;
-      this.m_impulse.z = 0.0;
+      this.m_impulse[2] = 0.0;
     }
 
     if (this.m_enableMotor == false) {
@@ -652,16 +652,16 @@ export class PrismaticJoint extends Joint {
 
     if (step.warmStarting) {
       // Account for variable time step.
-      Vec3.set(this.m_impulse.x * step.dtRatio, this.m_impulse.y * step.dtRatio, this.m_impulse.z, this.m_impulse);
+      Vec3.set(this.m_impulse[0] * step.dtRatio, this.m_impulse[1] * step.dtRatio, this.m_impulse[2], this.m_impulse);
 
       this.m_motorImpulse *= step.dtRatio;
 
-      const P = Vec2.combine(this.m_impulse.x, this.m_perp, this.m_motorImpulse
-          + this.m_impulse.z, this.m_axis);
-      const LA = this.m_impulse.x * this.m_s1 + this.m_impulse.y
-          + (this.m_motorImpulse + this.m_impulse.z) * this.m_a1;
-      const LB = this.m_impulse.x * this.m_s2 + this.m_impulse.y
-          + (this.m_motorImpulse + this.m_impulse.z) * this.m_a2;
+      const P = Vec2.combine(this.m_impulse[0], this.m_perp, this.m_motorImpulse
+          + this.m_impulse[2], this.m_axis);
+      const LA = this.m_impulse[0] * this.m_s1 + this.m_impulse[1]
+          + (this.m_motorImpulse + this.m_impulse[2]) * this.m_a1;
+      const LB = this.m_impulse[0] * this.m_s2 + this.m_impulse[1]
+          + (this.m_motorImpulse + this.m_impulse[2]) * this.m_a2;
 
       Vec2.subMul(vA, mA, P, vA);
       wA -= iA * LA;
@@ -730,23 +730,23 @@ export class PrismaticJoint extends Joint {
       Vec3.add(this.m_impulse, df, this.m_impulse);
 
       if (this.m_limitState == LimitState.atLowerLimit) {
-        this.m_impulse.z = math_max(this.m_impulse.z, 0.0);
+        this.m_impulse[2] = math_max(this.m_impulse[2], 0.0);
       } else if (this.m_limitState == LimitState.atUpperLimit) {
-        this.m_impulse.z = math_min(this.m_impulse.z, 0.0);
+        this.m_impulse[2] = math_min(this.m_impulse[2], 0.0);
       }
 
       // f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) +
       // f1(1:2)
-      const b = Vec2.combine(-1, Cdot1, -(this.m_impulse.z - f1.z), Vec2.create(this.m_K.ez.x, this.m_K.ez.y));
-      const f2r = Vec2.add(this.m_K.solve22(b), Vec2.create(f1.x, f1.y));
-      this.m_impulse.x = f2r[0];
-      this.m_impulse.y = f2r[1];
+      const b = Vec2.combine(-1, Cdot1, -(this.m_impulse[2] - f1[2]), Vec2.create(this.m_K.ez[0], this.m_K.ez[1]));
+      const f2r = Vec2.add(this.m_K.solve22(b), Vec2.create(f1[0], f1[1]));
+      this.m_impulse[0] = f2r[0];
+      this.m_impulse[1] = f2r[1];
 
       df = Vec3.sub(this.m_impulse, f1);
 
-      const P = Vec2.combine(df.x, this.m_perp, df.z, this.m_axis);
-      const LA = df.x * this.m_s1 + df.y + df.z * this.m_a1;
-      const LB = df.x * this.m_s2 + df.y + df.z * this.m_a2;
+      const P = Vec2.combine(df[0], this.m_perp, df[2], this.m_axis);
+      const LA = df[0] * this.m_s1 + df[1] + df[2] * this.m_a1;
+      const LB = df[0] * this.m_s2 + df[1] + df[2] * this.m_a2;
 
       Vec2.subMul(vA, mA, P, vA);
       wA -= iA * LA;
@@ -756,8 +756,8 @@ export class PrismaticJoint extends Joint {
     } else {
       // Limit is inactive, just solve the prismatic constraint in block form.
       const df = this.m_K.solve22(Vec2.neg(Cdot1));
-      this.m_impulse.x += df[0];
-      this.m_impulse.y += df[1];
+      this.m_impulse[0] += df[0];
+      this.m_impulse[1] += df[1];
 
       const P = Vec2.mulNumVec2(df[0], this.m_perp);
       const LA = df[0] * this.m_s1 + df[1];
@@ -864,9 +864,9 @@ export class PrismaticJoint extends Joint {
       Vec3.set(k13, k23, k33, K.ez);
 
       const C = Vec3.create();
-      C.x = C1[0];
-      C.y = C1[1];
-      C.z = C2;
+      C[0] = C1[0];
+      C[1] = C1[1];
+      C[2] = C2;
 
       impulse = K.solve33(Vec3.neg(C));
     } else {
@@ -882,14 +882,14 @@ export class PrismaticJoint extends Joint {
       Vec2.set(k12, k22, K.ey);
 
       const impulse1 = K.solve(Vec2.neg(C1));
-      impulse.x = impulse1[0];
-      impulse.y = impulse1[1];
-      impulse.z = 0.0;
+      impulse[0] = impulse1[0];
+      impulse[1] = impulse1[1];
+      impulse[2] = 0.0;
     }
 
-    const P = Vec2.combine(impulse.x, perp, impulse.z, axis);
-    const LA = impulse.x * s1 + impulse.y + impulse.z * a1;
-    const LB = impulse.x * s2 + impulse.y + impulse.z * a2;
+    const P = Vec2.combine(impulse[0], perp, impulse[2], axis);
+    const LA = impulse[0] * s1 + impulse[1] + impulse[2] * a1;
+    const LB = impulse[0] * s2 + impulse[1] + impulse[2] * a2;
 
     Vec2.subMul(cA, mA, P, cA);
     aA -= iA * LA;

@@ -405,7 +405,7 @@ export class RevoluteJoint extends Joint {
       this.m_bodyA.setAwake(true);
       this.m_bodyB.setAwake(true);
       this.m_enableLimit = flag;
-      this.m_impulse.z = 0.0;
+      this.m_impulse[2] = 0.0;
     }
   }
 
@@ -432,7 +432,7 @@ export class RevoluteJoint extends Joint {
     if (lower != this.m_lowerAngle || upper != this.m_upperAngle) {
       this.m_bodyA.setAwake(true);
       this.m_bodyB.setAwake(true);
-      this.m_impulse.z = 0.0;
+      this.m_impulse[2] = 0.0;
       this.m_lowerAngle = lower;
       this.m_upperAngle = upper;
     }
@@ -456,7 +456,7 @@ export class RevoluteJoint extends Joint {
    * Get the reaction force given the inverse time step. Unit is N.
    */
   getReactionForce(inv_dt: number): Vec2Value {
-    return Vec2.create(this.m_impulse.x * inv_dt, this.m_impulse.y * inv_dt);
+    return Vec2.create(this.m_impulse[0] * inv_dt, this.m_impulse[1] * inv_dt);
   }
 
   /**
@@ -464,7 +464,7 @@ export class RevoluteJoint extends Joint {
    * Unit is N*m.
    */
   getReactionTorque(inv_dt: number): number {
-    return inv_dt * this.m_impulse.z;
+    return inv_dt * this.m_impulse[2];
   }
 
   initVelocityConstraints(step: TimeStep): void {
@@ -505,15 +505,15 @@ export class RevoluteJoint extends Joint {
 
     const fixedRotation = (iA + iB === 0.0);
 
-    this.m_mass.ex.x = mA + mB + this.m_rA[1] * this.m_rA[1] * iA + this.m_rB[1] * this.m_rB[1] * iB;
-    this.m_mass.ey.x = -this.m_rA[1] * this.m_rA[0] * iA - this.m_rB[1]  * this.m_rB[0] * iB;
-    this.m_mass.ez.x = -this.m_rA[1] * iA - this.m_rB[1] * iB;
-    this.m_mass.ex.y = this.m_mass.ey.x;
-    this.m_mass.ey.y = mA + mB + this.m_rA[0] * this.m_rA[0] * iA + this.m_rB[0] * this.m_rB[0] * iB;
-    this.m_mass.ez.y = this.m_rA[0] * iA + this.m_rB[0] * iB;
-    this.m_mass.ex.z = this.m_mass.ez.x;
-    this.m_mass.ey.z = this.m_mass.ez.y;
-    this.m_mass.ez.z = iA + iB;
+    this.m_mass.ex[0] = mA + mB + this.m_rA[1] * this.m_rA[1] * iA + this.m_rB[1] * this.m_rB[1] * iB;
+    this.m_mass.ey[0] = -this.m_rA[1] * this.m_rA[0] * iA - this.m_rB[1]  * this.m_rB[0] * iB;
+    this.m_mass.ez[0] = -this.m_rA[1] * iA - this.m_rB[1] * iB;
+    this.m_mass.ex[1] = this.m_mass.ey[0];
+    this.m_mass.ey[1] = mA + mB + this.m_rA[0] * this.m_rA[0] * iA + this.m_rB[0] * this.m_rB[0] * iB;
+    this.m_mass.ez[1] = this.m_rA[0] * iA + this.m_rB[0] * iB;
+    this.m_mass.ex[2] = this.m_mass.ez[0];
+    this.m_mass.ey[2] = this.m_mass.ez[1];
+    this.m_mass.ez[2] = iA + iB;
 
     this.m_motorMass = iA + iB;
     if (this.m_motorMass > 0.0) {
@@ -532,19 +532,19 @@ export class RevoluteJoint extends Joint {
 
       } else if (jointAngle <= this.m_lowerAngle) {
         if (this.m_limitState != LimitState.atLowerLimit) {
-          this.m_impulse.z = 0.0;
+          this.m_impulse[2] = 0.0;
         }
         this.m_limitState = LimitState.atLowerLimit;
 
       } else if (jointAngle >= this.m_upperAngle) {
         if (this.m_limitState != LimitState.atUpperLimit) {
-          this.m_impulse.z = 0.0;
+          this.m_impulse[2] = 0.0;
         }
         this.m_limitState = LimitState.atUpperLimit;
 
       } else {
         this.m_limitState = LimitState.inactiveLimit;
-        this.m_impulse.z = 0.0;
+        this.m_impulse[2] = 0.0;
       }
 
     } else {
@@ -553,17 +553,17 @@ export class RevoluteJoint extends Joint {
 
     if (step.warmStarting) {
       // Scale impulses to support a variable time step.
-      Vec3.set(this.m_impulse.x * step.dtRatio, this.m_impulse.y * step.dtRatio, this.m_impulse.z, this.m_impulse);
+      Vec3.set(this.m_impulse[0] * step.dtRatio, this.m_impulse[1] * step.dtRatio, this.m_impulse[2], this.m_impulse);
 
       this.m_motorImpulse *= step.dtRatio;
 
-      const P = Vec2.create(this.m_impulse.x, this.m_impulse.y);
+      const P = Vec2.create(this.m_impulse[0], this.m_impulse[1]);
 
       Vec2.subMul(vA, mA, P, vA);
-      wA -= iA * (Vec2.crossVec2Vec2(this.m_rA, P) + this.m_motorImpulse + this.m_impulse.z);
+      wA -= iA * (Vec2.crossVec2Vec2(this.m_rA, P) + this.m_motorImpulse + this.m_impulse[2]);
 
       Vec2.addMul(vB, mB, P, vB);
-      wB += iB * (Vec2.crossVec2Vec2(this.m_rB, P) + this.m_motorImpulse + this.m_impulse.z);
+      wB += iB * (Vec2.crossVec2Vec2(this.m_rB, P) + this.m_motorImpulse + this.m_impulse[2]);
 
     } else {
       Vec3.setZero(this.m_impulse);
@@ -617,47 +617,47 @@ export class RevoluteJoint extends Joint {
         Vec3.add(this.m_impulse, impulse, this.m_impulse);
 
       } else if (this.m_limitState == LimitState.atLowerLimit) {
-        const newImpulse = this.m_impulse.z + impulse.z;
+        const newImpulse = this.m_impulse[2] + impulse[2];
 
         if (newImpulse < 0.0) {
-          const rhs = Vec2.combine(-1, Cdot1, this.m_impulse.z, Vec2.create(this.m_mass.ez.x, this.m_mass.ez.y));
+          const rhs = Vec2.combine(-1, Cdot1, this.m_impulse[2], Vec2.create(this.m_mass.ez[0], this.m_mass.ez[1]));
           const reduced = this.m_mass.solve22(rhs);
-          impulse.x = reduced[0];
-          impulse.y = reduced[1];
-          impulse.z = -this.m_impulse.z;
-          this.m_impulse.x += reduced[0];
-          this.m_impulse.y += reduced[1];
-          this.m_impulse.z = 0.0;
+          impulse[0] = reduced[0];
+          impulse[1] = reduced[1];
+          impulse[2] = -this.m_impulse[2];
+          this.m_impulse[0] += reduced[0];
+          this.m_impulse[1] += reduced[1];
+          this.m_impulse[2] = 0.0;
 
         } else {
           Vec3.add(this.m_impulse, impulse, this.m_impulse);
         }
 
       } else if (this.m_limitState == LimitState.atUpperLimit) {
-        const newImpulse = this.m_impulse.z + impulse.z;
+        const newImpulse = this.m_impulse[2] + impulse[2];
 
         if (newImpulse > 0.0) {
-          const rhs = Vec2.combine(-1, Cdot1, this.m_impulse.z, Vec2.create(this.m_mass.ez.x, this.m_mass.ez.y));
+          const rhs = Vec2.combine(-1, Cdot1, this.m_impulse[2], Vec2.create(this.m_mass.ez[0], this.m_mass.ez[1]));
           const reduced = this.m_mass.solve22(rhs);
-          impulse.x = reduced[0];
-          impulse.y = reduced[1];
-          impulse.z = -this.m_impulse.z;
-          this.m_impulse.x += reduced[0];
-          this.m_impulse.y += reduced[1];
-          this.m_impulse.z = 0.0;
+          impulse[0] = reduced[0];
+          impulse[1] = reduced[1];
+          impulse[2] = -this.m_impulse[2];
+          this.m_impulse[0] += reduced[0];
+          this.m_impulse[1] += reduced[1];
+          this.m_impulse[2] = 0.0;
 
         } else {
           Vec3.add(this.m_impulse, impulse, this.m_impulse);
         }
       }
 
-      const P = Vec2.create(impulse.x, impulse.y);
+      const P = Vec2.create(impulse[0], impulse[1]);
 
       Vec2.subMul(vA, mA, P, vA);
-      wA -= iA * (Vec2.crossVec2Vec2(this.m_rA, P) + impulse.z);
+      wA -= iA * (Vec2.crossVec2Vec2(this.m_rA, P) + impulse[2]);
 
       Vec2.addMul(vB, mB, P, vB);
-      wB += iB * (Vec2.crossVec2Vec2(this.m_rB, P) + impulse.z);
+      wB += iB * (Vec2.crossVec2Vec2(this.m_rB, P) + impulse[2]);
 
     } else {
       // Solve point-to-point constraint
@@ -667,8 +667,8 @@ export class RevoluteJoint extends Joint {
 
       const impulse = this.m_mass.solve22(Vec2.neg(Cdot));
 
-      this.m_impulse.x += impulse[0];
-      this.m_impulse.y += impulse[1];
+      this.m_impulse[0] += impulse[0];
+      this.m_impulse[1] += impulse[1];
 
       Vec2.subMul(vA, mA, impulse, vA);
       wA -= iA * Vec2.crossVec2Vec2(this.m_rA, impulse);

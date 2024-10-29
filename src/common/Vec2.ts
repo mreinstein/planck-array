@@ -33,12 +33,6 @@ import { EPSILON } from "./Math";
 /** @internal */ const math_min = Math.min;
 
 
-/*
-export interface Vec2Value {
-  x: number;
-  y: number;
-}
-*/
 
 export type Vec2Value = [ number, number ];
 

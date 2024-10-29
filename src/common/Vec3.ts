@@ -27,17 +27,13 @@
 /** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 
 
-export interface Vec3Value {
-  x: number;
-  y: number;
-  z: number;
-}
+export type Vec3Value = [ number, number, number ];
 
 /**
  * create a new Vec3
  */
 export function create (x: number=0, y: number=0, z: number=0): Vec3Value {
-  return { x, y, z };
+  return [ x, y, z ];
 }
 
 
@@ -48,7 +44,7 @@ export function zero(): Vec3Value {
 
 export function clone (v: Vec3Value): Vec3Value {
   _ASSERT && assert(v);
-  return create(v.x, v.y, v.z);
+  return create(v[0], v[1], v[2]);
 }
 
 
@@ -67,9 +63,9 @@ export function assert (o: any): void {
 
 
 export function setZero(obj: Vec3Value): Vec3Value {
-  obj.x = 0.0;
-  obj.y = 0.0;
-  obj.z = 0.0;
+  obj[0] = 0.0;
+  obj[1] = 0.0;
+  obj[2] = 0.0;
   return obj;
 }
 
@@ -90,9 +86,9 @@ export function scale (v: Vec3Value, a: number, out: Vec3Value=create()): Vec3Va
 
 
 export function set (x: number, y: number, z: number, obj: Vec3Value): Vec3Value {
-  obj.x = x;
-  obj.y = y;
-  obj.z = z;
+  obj[0] = x;
+  obj[1] = y;
+  obj[2] = z;
   return obj;
 }
 
@@ -103,36 +99,36 @@ export function areEqual (v: Vec3Value, w: Vec3Value): boolean {
   return v === w ||
     typeof v === 'object' && v !== null &&
     typeof w === 'object' && w !== null &&
-    v.x === w.x && v.y === w.y && v.z === w.z;
+    v[0] === w[0] && v[1] === w[1] && v[2] === w[2];
 }
 
 
 /** Dot product on two vectors */
 export function dot (v: Vec3Value, w: Vec3Value): number {
-  return v.x * w.x + v.y * w.y + v.z * w.z;
+  return v[0] * w[0] + v[1] * w[1] + v[2] * w[2];
 }
 
 
 /** Cross product on two vectors */
 export function cross (v: Vec3Value, w: Vec3Value, out: Vec3Value=create()): Vec3Value {
-  return set(v.y * w.z - v.z * w.y, v.z * w.x - v.x * w.z, v.x * w.y - v.y * w.x, out);
+  return set(v[1] * w[2] - v[2] * w[1], v[2] * w[0] - v[0] * w[2], v[0] * w[1] - v[1] * w[0], out);
 }
 
 
 export function add (v: Vec3Value, w: Vec3Value, out: Vec3Value=create()): Vec3Value {
-  return set(v.x + w.x, v.y + w.y, v.z + w.z, out);
+  return set(v[0] + w[0], v[1] + w[1], v[2] + w[2], out);
 }
 
 
 export function sub (v: Vec3Value, w: Vec3Value, out: Vec3Value=create()): Vec3Value {
-  return set(v.x - w.x, v.y - w.y, v.z - w.z, out);
+  return set(v[0] - w[0], v[1] - w[1], v[2] - w[2], out);
 }
 
 
 export function mul (v: Vec3Value, m: number, out: Vec3Value=create()): Vec3Value {
-  return set(m * v.x, m * v.y, m * v.z, out);
+  return set(m * v[0], m * v[1], m * v[2], out);
 }
 
 export function neg (v: Vec3Value, out: Vec3Value=create()): Vec3Value {
-  return set(-v.x, -v.y, -v.z, out);
+  return set(-v[0], -v[1], -v[2], out);
 }

@@ -282,14 +282,14 @@ export class WeldJoint extends Joint {
    * Get the reaction force on bodyB at the joint anchor in Newtons.
    */
   getReactionForce(inv_dt: number): Vec2Value {
-    return Vec2.create(this.m_impulse.x * inv_dt, this.m_impulse.y * inv_dt);
+    return Vec2.create(this.m_impulse[0] * inv_dt, this.m_impulse[1] * inv_dt);
   }
 
   /**
    * Get the reaction torque on bodyB in N*m.
    */
   getReactionTorque(inv_dt: number): number {
-    return inv_dt * this.m_impulse.z;
+    return inv_dt * this.m_impulse[2];
   }
 
   initVelocityConstraints(step: TimeStep): void {
@@ -329,17 +329,17 @@ export class WeldJoint extends Joint {
     const iB = this.m_invIB;
 
     const K = new Mat33();
-    K.ex.x = mA + mB + this.m_rA[1] * this.m_rA[1] * iA + this.m_rB[1] * this.m_rB[1]
+    K.ex[0] = mA + mB + this.m_rA[1] * this.m_rA[1] * iA + this.m_rB[1] * this.m_rB[1]
         * iB;
-    K.ey.x = -this.m_rA[1] * this.m_rA[0] * iA - this.m_rB[1] * this.m_rB[0] * iB;
-    K.ez.x = -this.m_rA[1] * iA - this.m_rB[1] * iB;
-    K.ex.y = K.ey.x;
-    K.ey.y = mA + mB + this.m_rA[0] * this.m_rA[0] * iA + this.m_rB[0] * this.m_rB[0]
+    K.ey[0] = -this.m_rA[1] * this.m_rA[0] * iA - this.m_rB[1] * this.m_rB[0] * iB;
+    K.ez[0] = -this.m_rA[1] * iA - this.m_rB[1] * iB;
+    K.ex[1] = K.ey[0];
+    K.ey[1] = mA + mB + this.m_rA[0] * this.m_rA[0] * iA + this.m_rB[0] * this.m_rB[0]
         * iB;
-    K.ez.y = this.m_rA[0] * iA + this.m_rB[0] * iB;
-    K.ex.z = K.ez.x;
-    K.ey.z = K.ez.y;
-    K.ez.z = iA + iB;
+    K.ez[1] = this.m_rA[0] * iA + this.m_rB[0] * iB;
+    K.ex[2] = K.ez[0];
+    K.ey[2] = K.ez[1];
+    K.ez[2] = iA + iB;
 
     if (this.m_frequencyHz > 0.0) {
       K.getInverse22(this.m_mass);
@@ -365,8 +365,8 @@ export class WeldJoint extends Joint {
       this.m_bias = C * h * k * this.m_gamma;
 
       invM += this.m_gamma;
-      this.m_mass.ez.z = invM != 0.0 ? 1.0 / invM : 0.0;
-    } else if (K.ez.z == 0.0) {
+      this.m_mass.ez[2] = invM != 0.0 ? 1.0 / invM : 0.0;
+    } else if (K.ez[2] == 0.0) {
       K.getInverse22(this.m_mass);
       this.m_gamma = 0.0;
       this.m_bias = 0.0;
@@ -378,15 +378,15 @@ export class WeldJoint extends Joint {
 
     if (step.warmStarting) {
       // Scale impulses to support a variable time step.
-      Vec3.set(this.m_impulse.x * step.dtRatio, this.m_impulse.y * step.dtRatio, this.m_impulse.z, this.m_impulse);
+      Vec3.set(this.m_impulse[0] * step.dtRatio, this.m_impulse[1] * step.dtRatio, this.m_impulse[2], this.m_impulse);
 
-      const P = Vec2.create(this.m_impulse.x, this.m_impulse.y);
+      const P = Vec2.create(this.m_impulse[0], this.m_impulse[1]);
 
       Vec2.subMul(vA, mA, P, vA);
-      wA -= iA * (Vec2.crossVec2Vec2(this.m_rA, P) + this.m_impulse.z);
+      wA -= iA * (Vec2.crossVec2Vec2(this.m_rA, P) + this.m_impulse[2]);
 
       Vec2.addMul(vB, mB, P, vB);
-      wB += iB * (Vec2.crossVec2Vec2(this.m_rB, P) + this.m_impulse.z);
+      wB += iB * (Vec2.crossVec2Vec2(this.m_rB, P) + this.m_impulse[2]);
 
     } else {
       Vec3.setZero(this.m_impulse);
@@ -412,8 +412,8 @@ export class WeldJoint extends Joint {
     if (this.m_frequencyHz > 0.0) {
       const Cdot2 = wB - wA;
 
-      const impulse2 = -this.m_mass.ez.z * (Cdot2 + this.m_bias + this.m_gamma * this.m_impulse.z);
-      this.m_impulse.z += impulse2;
+      const impulse2 = -this.m_mass.ez[2] * (Cdot2 + this.m_bias + this.m_gamma * this.m_impulse[2]);
+      this.m_impulse[2] += impulse2;
 
       wA -= iA * impulse2;
       wB += iB * impulse2;
@@ -423,8 +423,8 @@ export class WeldJoint extends Joint {
       Vec2.subCombine(Cdot1, 1, vA, 1, Vec2.crossNumVec2(wA, this.m_rA), Cdot1);
 
       const impulse1 = Vec2.neg(Mat33.mulVec2(this.m_mass, Cdot1));
-      this.m_impulse.x += impulse1[0];
-      this.m_impulse.y += impulse1[1];
+      this.m_impulse[0] += impulse1[0];
+      this.m_impulse[1] += impulse1[1];
 
       const P = Vec2.clone(impulse1);
 
@@ -444,13 +444,13 @@ export class WeldJoint extends Joint {
       const impulse = Vec3.neg(Mat33.mulVec3(this.m_mass, Cdot));
       Vec3.add(this.m_impulse, impulse, this.m_impulse);
 
-      const P = Vec2.create(impulse.x, impulse.y);
+      const P = Vec2.create(impulse[0], impulse[1]);
 
       Vec2.subMul(vA, mA, P, vA);
-      wA -= iA * (Vec2.crossVec2Vec2(this.m_rA, P) + impulse.z);
+      wA -= iA * (Vec2.crossVec2Vec2(this.m_rA, P) + impulse[2]);
 
       Vec2.addMul(vB, mB, P, vB);
-      wB += iB * (Vec2.crossVec2Vec2(this.m_rB, P) + impulse.z);
+      wB += iB * (Vec2.crossVec2Vec2(this.m_rB, P) + impulse[2]);
     }
 
     this.m_bodyA.c_velocity.v = vA;
@@ -483,15 +483,15 @@ export class WeldJoint extends Joint {
     let angularError: number;
 
     const K = new Mat33();
-    K.ex.x = mA + mB + rA[1] * rA[1] * iA + rB[1] * rB[1] * iB;
-    K.ey.x = -rA[1] * rA[0] * iA - rB[1] * rB[0] * iB;
-    K.ez.x = -rA[1] * iA - rB[1] * iB;
-    K.ex.y = K.ey.x;
-    K.ey.y = mA + mB + rA[0] * rA[0] * iA + rB[0] * rB[0] * iB;
-    K.ez.y = rA[0] * iA + rB[0] * iB;
-    K.ex.z = K.ez.x;
-    K.ey.z = K.ez.y;
-    K.ez.z = iA + iB;
+    K.ex[0] = mA + mB + rA[1] * rA[1] * iA + rB[1] * rB[1] * iB;
+    K.ey[0] = -rA[1] * rA[0] * iA - rB[1] * rB[0] * iB;
+    K.ez[0] = -rA[1] * iA - rB[1] * iB;
+    K.ex[1] = K.ey[0];
+    K.ey[1] = mA + mB + rA[0] * rA[0] * iA + rB[0] * rB[0] * iB;
+    K.ez[1] = rA[0] * iA + rB[0] * iB;
+    K.ex[2] = K.ez[0];
+    K.ey[2] = K.ez[1];
+    K.ez[2] = iA + iB;
 
     if (this.m_frequencyHz > 0.0) {
       const C1 = Vec2.zero();
@@ -521,20 +521,20 @@ export class WeldJoint extends Joint {
       const C = Vec3.create(C1[0], C1[1], C2);
 
       let impulse = Vec3.create();
-      if (K.ez.z > 0.0) {
+      if (K.ez[2] > 0.0) {
         impulse = Vec3.neg(K.solve33(C));
       } else {
         const impulse2 = Vec2.neg(K.solve22(C1));
         Vec3.set(impulse2[0], impulse2[1], 0.0, impulse);
       }
 
-      const P = Vec2.create(impulse.x, impulse.y);
+      const P = Vec2.create(impulse[0], impulse[1]);
 
       Vec2.subMul(cA, mA, P, cA);
-      aA -= iA * (Vec2.crossVec2Vec2(rA, P) + impulse.z);
+      aA -= iA * (Vec2.crossVec2Vec2(rA, P) + impulse[2]);
 
       Vec2.addMul(cB, mB, P, cB);
-      aB += iB * (Vec2.crossVec2Vec2(rB, P) + impulse.z);
+      aB += iB * (Vec2.crossVec2Vec2(rB, P) + impulse[2]);
     }
 
     this.m_bodyA.c_position.c = cA;
