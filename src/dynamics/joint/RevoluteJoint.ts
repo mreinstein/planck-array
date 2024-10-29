@@ -37,7 +37,6 @@ import { TimeStep } from "../Solver";
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 /** @internal */ const math_abs = Math.abs;
 
 
@@ -170,10 +169,6 @@ export class RevoluteJoint extends Joint {
   constructor(def: RevoluteJointDef);
   constructor(def: RevoluteJointOpt, bodyA: Body, bodyB: Body, anchor: Vec2Value);
   constructor(def: RevoluteJointDef, bodyA?: Body, bodyB?: Body, anchor?: Vec2Value) {
-    // @ts-ignore
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof RevoluteJoint)) {
-      return new RevoluteJoint(def, bodyA, bodyB, anchor);
-    }
 
     def = def ?? {} as RevoluteJointDef;
     super(def, bodyA, bodyB);

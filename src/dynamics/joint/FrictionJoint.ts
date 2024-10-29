@@ -34,7 +34,6 @@ import { TimeStep } from "../Solver";
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 
 
 /**
@@ -109,11 +108,6 @@ export class FrictionJoint extends Joint {
    */
   constructor(def: FrictionJointOpt, bodyA: Body, bodyB: Body, anchor: Vec2Value);
   constructor(def: FrictionJointDef, bodyA?: Body, bodyB?: Body, anchor?: Vec2Value) {
-    // @ts-ignore
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof FrictionJoint)) {
-      return new FrictionJoint(def, bodyA, bodyB, anchor);
-    }
-
     def = options(def, DEFAULTS);
     super(def, bodyA, bodyB);
     bodyA = this.m_bodyA;

@@ -36,7 +36,6 @@ import { Shape } from '../Shape';
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 /** @internal */ const math_max = Math.max;
 /** @internal */ const math_min = Math.min;
 
@@ -64,10 +63,6 @@ export class PolygonShape extends Shape {
   /** @hidden */ m_radius: number;
 
   constructor(vertices?: Vec2Value[]) {
-    // @ts-ignore
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof PolygonShape)) {
-      return new PolygonShape(vertices);
-    }
 
     super();
 

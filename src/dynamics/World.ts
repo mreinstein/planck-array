@@ -36,7 +36,6 @@ import { Manifold } from "../collision/Manifold";
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 
 
 export interface WorldDef {
@@ -134,10 +133,6 @@ export class World {
    * @param def World definition or gravity vector.
    */
   constructor(def?: WorldDef | Vec2Value | null) {
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof World)) {
-      return new World(def);
-    }
-
     this.s_step = new TimeStep();
 
 

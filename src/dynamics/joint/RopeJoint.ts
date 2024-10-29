@@ -33,7 +33,6 @@ import { Body } from '../Body';
 import { TimeStep } from "../Solver";
 
 
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 /** @internal */ const math_min = Math.min;
 
 /** @internal */ enum LimitState {
@@ -115,10 +114,6 @@ export class RopeJoint extends Joint {
   constructor(def: RopeJointDef);
   constructor(def: RopeJointOpt, bodyA: Body, bodyB: Body, anchor: Vec2Value);
   constructor(def: RopeJointDef, bodyA?: Body, bodyB?: Body, anchor?: Vec2Value) {
-    // @ts-ignore
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof RopeJoint)) {
-      return new RopeJoint(def, bodyA, bodyB, anchor);
-    }
 
     def = options(def, DEFAULTS);
     super(def, bodyA, bodyB);

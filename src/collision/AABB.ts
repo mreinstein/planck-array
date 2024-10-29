@@ -28,7 +28,6 @@ import * as Vec2 from '../common/Vec2';
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 /** @internal */ const math_max = Math.max;
 /** @internal */ const math_min = Math.min;
 
@@ -62,10 +61,6 @@ export class AABB {
   upperBound: Vec2Value;
 
   constructor(lower?: Vec2Value, upper?: Vec2Value) {
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof AABB)) {
-      return new AABB(lower, upper);
-    }
-
     this.lowerBound = Vec2.zero();
     this.upperBound = Vec2.zero();
 

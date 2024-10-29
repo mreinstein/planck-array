@@ -35,7 +35,6 @@ import { EdgeShape } from './EdgeShape';
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 
 /** @internal */ const v1 = matrix.vec2(0, 0);
 /** @internal */ const v2 = matrix.vec2(0, 0);
@@ -65,10 +64,6 @@ export class ChainShape extends Shape {
   /** @hidden */ m_isLoop: boolean;
 
   constructor(vertices?: Vec2Value[], loop?: boolean) {
-    // @ts-ignore
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof ChainShape)) {
-      return new ChainShape(vertices, loop);
-    }
 
     super();
 

@@ -35,7 +35,6 @@ import { TimeStep } from "../Solver";
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 /** @internal */ const math_PI = Math.PI;
 
 
@@ -114,11 +113,6 @@ export class MouseJoint extends Joint {
   constructor(def: MouseJointDef);
   constructor(def: MouseJointOpt, bodyA: Body, bodyB: Body, target: Vec2Value);
   constructor(def: MouseJointDef, bodyA?: Body, bodyB?: Body, target?: Vec2Value) {
-    // @ts-ignore
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof MouseJoint)) {
-      return new MouseJoint(def, bodyA, bodyB, target);
-    }
-
     def = options(def, DEFAULTS);
     super(def, bodyA, bodyB);
     bodyA = this.m_bodyA;

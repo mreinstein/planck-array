@@ -35,7 +35,6 @@ import { Body } from '../Body';
 import { TimeStep } from "../Solver";
 
 
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 /** @internal */ const math_abs = Math.abs;
 /** @internal */ const math_PI = Math.PI;
 
@@ -119,10 +118,6 @@ export class WeldJoint extends Joint {
   constructor(def: WeldJointDef);
   constructor(def: WeldJointOpt, bodyA: Body, bodyB: Body, anchor: Vec2Value);
   constructor(def: WeldJointDef, bodyA?: Body, bodyB?: Body, anchor?: Vec2Value) {
-    // @ts-ignore
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof WeldJoint)) {
-      return new WeldJoint(def, bodyA, bodyB, anchor);
-    }
 
     def = options(def, DEFAULTS);
     super(def, bodyA, bodyB);

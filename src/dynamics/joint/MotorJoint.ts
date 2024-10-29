@@ -34,7 +34,6 @@ import { TimeStep } from "../Solver";
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 
 
 /**
@@ -109,11 +108,6 @@ export class MotorJoint extends Joint {
   constructor(def: MotorJointDef);
   constructor(def: MotorJointOpt, bodyA: Body, bodyB: Body);
   constructor(def: MotorJointDef | MotorJointOpt, bodyA?: Body, bodyB?: Body) {
-    // @ts-ignore
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof MotorJoint)) {
-      return new MotorJoint(def, bodyA, bodyB);
-    }
-
     def = options(def, DEFAULTS);
     super(def, bodyA, bodyB);
     bodyA = this.m_bodyA;

@@ -34,7 +34,6 @@ import { MassData } from '../../dynamics/Body';
 import { DistanceProxy } from '../Distance';
 
 
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 /** @internal */ const math_sqrt = Math.sqrt;
 /** @internal */ const math_PI = Math.PI;
 
@@ -50,10 +49,6 @@ export class CircleShape extends Shape {
   constructor(position: Vec2Value, radius?: number);
   constructor(radius?: number);
   constructor(a: any, b?: any) {
-    // @ts-ignore
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof CircleShape)) {
-      return new CircleShape(a, b);
-    }
 
     super();
 

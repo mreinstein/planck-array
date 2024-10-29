@@ -26,7 +26,6 @@ import { Vec2Value } from './Vec2';
 import * as Vec2 from './Vec2';
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 /** @internal */ const math_sin = Math.sin;
 /** @internal */ const math_cos = Math.cos;
 /** @internal */ const math_atan2 = Math.atan2;
@@ -46,9 +45,6 @@ export class Rot {
 
   /** Initialize from an angle in radians. */
   constructor(angle?: number | RotValue) {
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof Rot)) {
-      return new Rot(angle);
-    }
     if (typeof angle === 'number') {
       this.setAngle(angle);
     } else if (typeof angle === 'object') {

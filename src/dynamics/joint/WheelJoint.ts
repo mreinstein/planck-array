@@ -33,7 +33,6 @@ import { Body } from '../Body';
 import { TimeStep } from "../Solver";
 
 
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 /** @internal */ const math_abs = Math.abs;
 /** @internal */ const math_PI = Math.PI;
 
@@ -156,11 +155,6 @@ export class WheelJoint extends Joint {
   constructor(def: WheelJointDef);
   constructor(def: WheelJointOpt, bodyA: Body, bodyB: Body, anchor: Vec2Value, axis: Vec2Value);
   constructor(def: WheelJointDef, bodyA?: Body, bodyB?: Body, anchor?: Vec2Value, axis?: Vec2Value) {
-    // @ts-ignore
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof WheelJoint)) {
-      return new WheelJoint(def, bodyA, bodyB, anchor, axis);
-    }
-
     def = options(def, DEFAULTS);
     super(def, bodyA, bodyB);
     bodyA = this.m_bodyA;

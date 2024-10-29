@@ -74,9 +74,6 @@ module.exports = [
         values: {
           'ASSERT': JSON.stringify(false),
           '_ASSERT': JSON.stringify(false),
-          // we are still compiling to ES5, so we keep constructor factories until v2
-          'CONSTRUCTOR_FACTORY': JSON.stringify(true),
-          '_CONSTRUCTOR_FACTORY': JSON.stringify(true),
           'PLANCK_VERSION': JSON.stringify(process.env.npm_package_version),
         },
       }),

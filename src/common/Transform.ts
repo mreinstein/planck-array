@@ -28,7 +28,6 @@ import { Rot, RotValue } from './Rot';
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 
 
 export type TransformValue = {
@@ -49,9 +48,6 @@ export class Transform {
   q: Rot;
 
   constructor(position?: Vec2Value, rotation?: number) {
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof Transform)) {
-      return new Transform(position, rotation);
-    }
     this.p = Vec2.zero();
     this.q = Rot.identity();
     if (typeof position !== 'undefined') {
