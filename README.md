@@ -15,7 +15,7 @@ Planck way:
 import { Vec2 } from 'planck'
 
 const p = new Vec2(50, 50)   // generates an Object Oriented monstrosity
-console.log(x)    // { x: 50, y: 50 }
+console.log(p)    // { x: 50, y: 50, ...pile o' functions }
 ```
 
 I use array notation in my projects, so I want to declare vectors like this:
@@ -23,11 +23,11 @@ I use array notation in my projects, so I want to declare vectors like this:
 import { Vec2 } from '@footgun/planck'
 
 const p = Vec2.create(50, 50)  // generates pure data
-console.log(p)   // 50, 50
+console.log(p)   // [ 50, 50 ]    A nice simple array.  You know, like, data.  :)
 ```
 
-These 2 changes make it possible t to re-use other popular libraries for vector/matrix math.
-Vectors produced by `gl-matrix` and `wgpu-matrix` are fully interoperable with this physics engine. 
+These 2 changes make it possible to re-use other popular libraries for vector/matrix math.
+Vectors produced by `gl-matrix` and `wgpu-matrix` are fully interoperable with this physics engine.
 
 
 ## References
