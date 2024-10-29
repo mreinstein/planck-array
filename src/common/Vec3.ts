@@ -33,154 +33,91 @@ export interface Vec3Value {
   z: number;
 }
 
-export class Vec3 {
-  x: number;
-  y: number;
-  z: number;
+/**
+ * create a new Vec3
+ */
+export function create (x: number=0, y: number=0, z: number=0): Vec3Value {
+  return { x, y, z };
+}
 
-  constructor(x: number=0, y: number=0, z: number=0) {
-    if (_CONSTRUCTOR_FACTORY && !(this instanceof Vec3)) {
-      return Vec3.create(x, y, z);
-    }
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    _ASSERT && Vec3.assert(this);
-  }
 
-  /**
-   * create a new Vec3
-   */
-  static create(x: number=0, y: number=0, z: number=0): Vec3 {
-    const obj = Object.create(Vec3.prototype);
-    obj.x = x;
-    obj.y = y;
-    obj.z = z;
-    return obj;
-  }
+export function zero(): Vec3Value {
+  return create();
+}
 
-  /** @internal */
-  _serialize(): object {
-    return {
-      x: this.x,
-      y: this.y,
-      z: this.z
-    };
-  }
 
-  /** @internal */
-  static _deserialize(data: any): Vec3 {
-    const obj = Object.create(Vec3.prototype);
-    obj.x = data.x;
-    obj.y = data.y;
-    obj.z = data.z;
-    return obj;
-  }
+export function clone (v: Vec3Value): Vec3Value {
+  _ASSERT && assert(v);
+  return create(v.x, v.y, v.z);
+}
 
-  static zero(): Vec3 {
-    const obj = Object.create(Vec3.prototype);
-    obj.x = 0;
-    obj.y = 0;
-    obj.z = 0;
-    return obj;
-  }
 
-  static clone(v: Vec3Value): Vec3 {
-    _ASSERT && Vec3.assert(v);
-    return Vec3.create(v.x, v.y, v.z);
+/** Does this vector contain finite coordinates? */
+export function isValid(obj: any): boolean {
+  if (obj === null || typeof obj === 'undefined') {
+    return false;
   }
+  return Number.isFinite(obj.x) && Number.isFinite(obj.y) && Number.isFinite(obj.z);
+}
 
-  /** @hidden */
-  toString(): string {
-    return JSON.stringify(this);
-  }
 
-  /** Does this vector contain finite coordinates? */
-  static isValid(obj: any): boolean {
-    if (obj === null || typeof obj === 'undefined') {
-      return false;
-    }
-    return Number.isFinite(obj.x) && Number.isFinite(obj.y) && Number.isFinite(obj.z);
-  }
+export function assert (o: any): void {
+  _ASSERT && console.assert(!isValid(o), 'Invalid Vec3!', o);
+}
 
-  static assert(o: any): void {
-    _ASSERT && console.assert(!Vec3.isValid(o), 'Invalid Vec3!', o);
-  }
 
-  setZero(): Vec3 {
-    this.x = 0.0;
-    this.y = 0.0;
-    this.z = 0.0;
-    return this;
-  }
+export function setZero(obj: Vec3Value): Vec3Value {
+  obj.x = 0.0;
+  obj.y = 0.0;
+  obj.z = 0.0;
+  return obj;
+}
 
-  set(x: number, y: number, z: number): Vec3 {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    return this;
-  }
 
-  add(w: Vec3Value): Vec3 {
-    this.x += w.x;
-    this.y += w.y;
-    this.z += w.z;
-    return this;
-  }
+export function set (x: number, y: number, z: number, obj: Vec3Value): Vec3Value {
+  obj.x = x;
+  obj.y = y;
+  obj.z = z;
+  return obj;
+}
 
-  sub(w: Vec3Value): Vec3 {
-    this.x -= w.x;
-    this.y -= w.y;
-    this.z -= w.z;
-    return this;
-  }
 
-  mul(m: number): Vec3 {
-    this.x *= m;
-    this.y *= m;
-    this.z *= m;
-    return this;
-  }
+export function areEqual (v: Vec3Value, w: Vec3Value): boolean {
+  _ASSERT && assert(v);
+  _ASSERT && assert(w);
+  return v === w ||
+    typeof v === 'object' && v !== null &&
+    typeof w === 'object' && w !== null &&
+    v.x === w.x && v.y === w.y && v.z === w.z;
+}
 
-  static areEqual(v: Vec3Value, w: Vec3Value): boolean {
-    _ASSERT && Vec3.assert(v);
-    _ASSERT && Vec3.assert(w);
-    return v === w ||
-      typeof v === 'object' && v !== null &&
-      typeof w === 'object' && w !== null &&
-      v.x === w.x && v.y === w.y && v.z === w.z;
-  }
 
-  /** Dot product on two vectors */
-  static dot(v: Vec3Value, w: Vec3Value): number {
-    return v.x * w.x + v.y * w.y + v.z * w.z;
-  }
+/** Dot product on two vectors */
+export function dot (v: Vec3Value, w: Vec3Value): number {
+  return v.x * w.x + v.y * w.y + v.z * w.z;
+}
 
-  /** Cross product on two vectors */
-  static cross(v: Vec3Value, w: Vec3Value): Vec3 {
-    return Vec3.create(v.y * w.z - v.z * w.y, v.z * w.x - v.x * w.z, v.x * w.y - v.y * w.x);
-  }
 
-  static add(v: Vec3Value, w: Vec3Value): Vec3 {
-    return Vec3.create(v.x + w.x, v.y + w.y, v.z + w.z);
-  }
+/** Cross product on two vectors */
+export function cross (v: Vec3Value, w: Vec3Value, out: Vec3Value=create()): Vec3Value {
+  return set(v.y * w.z - v.z * w.y, v.z * w.x - v.x * w.z, v.x * w.y - v.y * w.x, out);
+}
 
-  static sub(v: Vec3Value, w: Vec3Value): Vec3 {
-    return Vec3.create(v.x - w.x, v.y - w.y, v.z - w.z);
-  }
 
-  static mul(v: Vec3Value, m: number): Vec3 {
-    return Vec3.create(m * v.x, m * v.y, m * v.z);
-  }
+export function add (v: Vec3Value, w: Vec3Value, out: Vec3Value=create()): Vec3Value {
+  return set(v.x + w.x, v.y + w.y, v.z + w.z, out);
+}
 
-  neg(): Vec3 {
-    this.x = -this.x;
-    this.y = -this.y;
-    this.z = -this.z;
-    return this;
-  }
 
-  static neg(v: Vec3Value): Vec3 {
-    return Vec3.create(-v.x, -v.y, -v.z);
-  }
+export function sub (v: Vec3Value, w: Vec3Value, out: Vec3Value=create()): Vec3Value {
+  return set(v.x - w.x, v.y - w.y, v.z - w.z, out);
+}
+
+
+export function mul (v: Vec3Value, m: number, out: Vec3Value=create()): Vec3Value {
+  return set(m * v.x, m * v.y, m * v.z, out);
+}
+
+export function neg (v: Vec3Value, out: Vec3Value=create()): Vec3Value {
+  return set(-v.x, -v.y, -v.z, out);
 }

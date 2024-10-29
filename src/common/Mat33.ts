@@ -24,7 +24,8 @@
 
 import { Vec2Value } from './Vec2';
 import * as Vec2 from '../common/Vec2';
-import { Vec3, Vec3Value } from './Vec3';
+import * as Vec3 from '../common/Vec3';
+import { Vec3Value } from './Vec3';
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
@@ -34,9 +35,9 @@ import { Vec3, Vec3Value } from './Vec3';
  * A 3-by-3 matrix. Stored in column-major order.
  */
 export class Mat33 {
-  ex: Vec3;
-  ey: Vec3;
-  ez: Vec3;
+  ex: Vec3Value;
+  ey: Vec3Value;
+  ez: Vec3Value;
 
   constructor(a: Vec3Value, b: Vec3Value, c: Vec3Value);
   constructor();
@@ -72,9 +73,9 @@ export class Mat33 {
    * Set this matrix to all zeros.
    */
   setZero(): Mat33 {
-    this.ex.setZero();
-    this.ey.setZero();
-    this.ez.setZero();
+    Vec3.setZero(this.ex);
+    Vec3.setZero(this.ey);
+    Vec3.setZero(this.ez);
     return this;
   }
 
@@ -82,7 +83,7 @@ export class Mat33 {
    * Solve A * x = b, where b is a column vector. This is more efficient than
    * computing the inverse in one-shot cases.
    */
-  solve33(v: Vec3Value): Vec3 {
+  solve33(v: Vec3Value): Vec3Value {
     // let det = matrix.dotVec3(this.ex, matrix.newCrossVec3(this.ey, this.ez));
     let cross_x = this.ey.y * this.ez.z - this.ey.z * this.ez.y;
     let cross_y = this.ey.z * this.ez.x - this.ey.x * this.ez.z;
@@ -189,7 +190,7 @@ export class Mat33 {
    * Multiply a matrix times a vector.
    */
   static mul(a: Mat33, b: Vec2Value): Vec2Value;
-  static mul(a: Mat33, b: Vec3Value): Vec3;
+  static mul(a: Mat33, b: Vec3Value): Vec3Value;
   static mul(a, b) {
     _ASSERT && Mat33.assert(a);
     if (b && 'z' in b && 'y' in b && 'x' in b) {
@@ -209,7 +210,7 @@ export class Mat33 {
     _ASSERT && console.assert(false);
   }
 
-  static mulVec3(a: Mat33, b: Vec3Value): Vec3 {
+  static mulVec3(a: Mat33, b: Vec3Value): Vec3Value {
     _ASSERT && Mat33.assert(a);
     _ASSERT && Vec3.assert(b);
     const x = a.ex.x * b.x + a.ey.x * b.y + a.ez.x * b.z;

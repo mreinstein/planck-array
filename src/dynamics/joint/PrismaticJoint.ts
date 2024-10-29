@@ -27,7 +27,8 @@ import { SettingsInternal as Settings } from '../../Settings';
 import { clamp } from '../../common/Math';
 import { Vec2Value } from '../../common/Vec2';
 import * as Vec2 from '../../common/Vec2';
-import { Vec3 } from '../../common/Vec3';
+import { Vec3Value } from '../../common/Vec3';
+import * as Vec3 from '../../common/Vec3';
 import { Mat22 } from '../../common/Mat22';
 import { Mat33 } from '../../common/Mat33';
 import { Rot } from '../../common/Rot';
@@ -140,7 +141,7 @@ export class PrismaticJoint extends Joint {
   /** @internal */ m_localXAxisA: Vec2Value;
   /** @internal */ m_localYAxisA: Vec2Value;
   /** @internal */ m_referenceAngle: number;
-  /** @internal */ m_impulse: Vec3;
+  /** @internal */ m_impulse: Vec3Value;
   /** @internal */ m_motorMass: number;
   /** @internal */ m_motorImpulse: number;
   /** @internal */ m_lowerTranslation: number;
@@ -611,9 +612,9 @@ export class PrismaticJoint extends Joint {
       const k23 = iA * this.m_a1 + iB * this.m_a2;
       const k33 = mA + mB + iA * this.m_a1 * this.m_a1 + iB * this.m_a2 * this.m_a2;
 
-      this.m_K.ex.set(k11, k12, k13);
-      this.m_K.ey.set(k12, k22, k23);
-      this.m_K.ez.set(k13, k23, k33);
+      Vec3.set(k11, k12, k13, this.m_K.ex);
+      Vec3.set(k12, k22, k23, this.m_K.ey);
+      Vec3.set(k13, k23, k33, this.m_K.ez);
     }
 
     // Compute motor and limit terms.
@@ -667,7 +668,7 @@ export class PrismaticJoint extends Joint {
       Vec2.addMul(vB, mB, P, vB);
       wB += iB * LB;
     } else {
-      this.m_impulse.setZero();
+      Vec3.setZero(this.m_impulse);
       this.m_motorImpulse = 0.0;
     }
 
@@ -725,7 +726,7 @@ export class PrismaticJoint extends Joint {
 
       const f1 = Vec3.clone(this.m_impulse);
       let df = this.m_K.solve33(Vec3.neg(Cdot));
-      this.m_impulse.add(df);
+      Vec3.add(this.m_impulse, df, this.m_impulse);
 
       if (this.m_limitState == LimitState.atLowerLimit) {
         this.m_impulse.z = math_max(this.m_impulse.z, 0.0);
@@ -857,9 +858,9 @@ export class PrismaticJoint extends Joint {
       const k33 = mA + mB + iA * a1 * a1 + iB * a2 * a2;
 
       const K = new Mat33();
-      K.ex.set(k11, k12, k13);
-      K.ey.set(k12, k22, k23);
-      K.ez.set(k13, k23, k33);
+      Vec3.set(k11, k12, k13, K.ex);
+      Vec3.set(k12, k22, k23, K.ey);
+      Vec3.set(k13, k23, k33, K.ez);
 
       const C = Vec3.create();
       C.x = C1.x;

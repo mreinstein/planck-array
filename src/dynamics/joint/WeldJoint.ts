@@ -26,7 +26,8 @@ import { options } from '../../util/options';
 import { SettingsInternal as Settings } from '../../Settings';
 import { Vec2Value } from '../../common/Vec2';
 import * as Vec2 from '../../common/Vec2';
-import { Vec3 } from '../../common/Vec3';
+import * as Vec3 from '../../common/Vec3';
+import { Vec3Value } from '../../common/Vec3';
 import { Mat33 } from '../../common/Mat33';
 import { Rot } from '../../common/Rot';
 import { Joint, JointOpt, JointDef } from '../Joint';
@@ -99,7 +100,7 @@ export class WeldJoint extends Joint {
   /** @internal */ m_frequencyHz: number;
   /** @internal */ m_dampingRatio: number;
 
-  /** @internal */ m_impulse: Vec3;
+  /** @internal */ m_impulse: Vec3Value;
 
   /** @internal */ m_bias: number;
   /** @internal */ m_gamma: number;
@@ -388,7 +389,7 @@ export class WeldJoint extends Joint {
       wB += iB * (Vec2.crossVec2Vec2(this.m_rB, P) + this.m_impulse.z);
 
     } else {
-      this.m_impulse.setZero();
+      Vec3.setZero(this.m_impulse);
     }
 
     this.m_bodyA.c_velocity.v = vA;
@@ -441,7 +442,7 @@ export class WeldJoint extends Joint {
       const Cdot = Vec3.create(Cdot1.x, Cdot1.y, Cdot2);
 
       const impulse = Vec3.neg(Mat33.mulVec3(this.m_mass, Cdot));
-      this.m_impulse.add(impulse);
+      Vec3.add(this.m_impulse, impulse, this.m_impulse);
 
       const P = Vec2.create(impulse.x, impulse.y);
 
@@ -524,7 +525,7 @@ export class WeldJoint extends Joint {
         impulse = Vec3.neg(K.solve33(C));
       } else {
         const impulse2 = Vec2.neg(K.solve22(C1));
-        impulse.set(impulse2.x, impulse2.y, 0.0);
+        Vec3.set(impulse2.x, impulse2.y, 0.0, impulse);
       }
 
       const P = Vec2.create(impulse.x, impulse.y);

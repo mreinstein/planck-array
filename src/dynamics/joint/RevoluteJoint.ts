@@ -26,7 +26,8 @@ import { SettingsInternal as Settings } from '../../Settings';
 import { clamp } from '../../common/Math';
 import { Vec2Value } from '../../common/Vec2';
 import * as Vec2 from '../../common/Vec2';
-import { Vec3 } from '../../common/Vec3';
+import { Vec3Value } from '../../common/Vec3';
+import * as Vec3 from '../../common/Vec3';
 import { Mat22 } from '../../common/Mat22';
 import { Mat33 } from '../../common/Mat33';
 import { Rot } from '../../common/Rot';
@@ -142,7 +143,7 @@ export class RevoluteJoint extends Joint {
   /** @internal */ m_localAnchorA: Vec2Value;
   /** @internal */ m_localAnchorB: Vec2Value;
   /** @internal */ m_referenceAngle: number;
-  /** @internal */ m_impulse: Vec3;
+  /** @internal */ m_impulse: Vec3Value;
   /** @internal */ m_motorImpulse: number;
   /** @internal */ m_lowerAngle: number;
   /** @internal */ m_upperAngle: number;
@@ -564,7 +565,7 @@ export class RevoluteJoint extends Joint {
       wB += iB * (Vec2.crossVec2Vec2(this.m_rB, P) + this.m_motorImpulse + this.m_impulse.z);
 
     } else {
-      this.m_impulse.setZero();
+      Vec3.setZero(this.m_impulse);
       this.m_motorImpulse = 0.0;
     }
 
@@ -612,7 +613,7 @@ export class RevoluteJoint extends Joint {
       const impulse = Vec3.neg(this.m_mass.solve33(Cdot));
 
       if (this.m_limitState == LimitState.equalLimits) {
-        this.m_impulse.add(impulse);
+        Vec3.add(this.m_impulse, impulse, this.m_impulse);
 
       } else if (this.m_limitState == LimitState.atLowerLimit) {
         const newImpulse = this.m_impulse.z + impulse.z;
@@ -628,7 +629,7 @@ export class RevoluteJoint extends Joint {
           this.m_impulse.z = 0.0;
 
         } else {
-          this.m_impulse.add(impulse);
+          Vec3.add(this.m_impulse, impulse, this.m_impulse);
         }
 
       } else if (this.m_limitState == LimitState.atUpperLimit) {
@@ -645,7 +646,7 @@ export class RevoluteJoint extends Joint {
           this.m_impulse.z = 0.0;
 
         } else {
-          this.m_impulse.add(impulse);
+          Vec3.add(this.m_impulse, impulse, this.m_impulse);
         }
       }
 
