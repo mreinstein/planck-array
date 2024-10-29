@@ -57,7 +57,8 @@ for (let i = 0; i < 10; ++i) {
 
 const xf1 = new Transform();
 xf1.q.set(0.3524 * Math.PI);
-xf1.p.set(xf1.q.getXAxis());
+
+Vec2.copy(xf1.q.getXAxis(), xf1.p);
 
 let triangle1 = new Polygon([
   Vec2.create(-1.0, 0.0),
@@ -67,7 +68,7 @@ let triangle1 = new Polygon([
 
 const xf2 = new Transform();
 xf2.q.set(-0.3524 * Math.PI);
-xf2.p.set(Vec2.neg(xf2.q.getXAxis()));
+Vec2.copy(Vec2.neg(xf2.q.getXAxis()), xf2.p);
 
 let triangle2 = new Polygon([
   Vec2.create(-1.0, 0.0),
