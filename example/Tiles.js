@@ -43,29 +43,29 @@ let fixtureCount = 0;
     let N = 200;
     let M = 10;
     let position = Vec2.create();
-    position.y = 0.0;
+    position[1] = 0.0;
     for (let j = 0; j < M; ++j) {
-      position.x = -N * a;
+      position[0] = -N * a;
       for (let i = 0; i < N; ++i) {
         ground.createFixture(new Box(a, a, position, 0.0), 0.0);
         ++fixtureCount;
-        position.x += 2.0 * a;
+        position[0] += 2.0 * a;
       }
-      position.y -= 2.0 * a;
+      position[1] -= 2.0 * a;
     }
 
   } else {
     let N = 200;
     let M = 10;
     let position = Vec2.create();
-    position.x = -N * a;
+    position[0] = -N * a;
     for (let i = 0; i < N; ++i) {
-      position.y = 0.0;
+      position[1] = 0.0;
       for (let j = 0; j < M; ++j) {
         ground.createFixture(new Box(a, a, position, 0.0), 0.0);
-        position.y -= 2.0 * a;
+        position[1] -= 2.0 * a;
       }
-      position.x += 2.0 * a;
+      position[0] += 2.0 * a;
     }
   }
 }

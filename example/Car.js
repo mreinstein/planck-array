@@ -200,10 +200,10 @@ testbed.step = function() {
   }
 
   let cp = car.getPosition();
-  if (cp.x > testbed.x + 10) {
-    testbed.x = cp.x - 10;
+  if (cp[0] > testbed.x + 10) {
+    testbed.x = cp[0] - 10;
 
   } else if (cp.x < testbed.x - 10) {
-    testbed.x = cp.x + 10;
+    testbed.x = cp[0] + 10;
   }
 };

@@ -245,7 +245,7 @@ export class EdgeShape extends Shape {
     const v1 = this.m_vertex1;
     const v2 = this.m_vertex2;
     const e = Vec2.sub(v2, v1);
-    const normal = Vec2.create(e.y, -e.x);
+    const normal = Vec2.create(e[1], -e[0]);
     Vec2.normalize(normal, normal);
 
     // q = p1 + t * d

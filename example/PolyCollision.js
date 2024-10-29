@@ -58,19 +58,19 @@ testbed.step = function() {
 
 testbed.keydown = function() {
   if (testbed.activeKeys['left']) {
-    positionB.x -= 0.2;
+    positionB[0] -= 0.2;
   }
 
   if (testbed.activeKeys['right']) {
-    positionB.x += 0.2;
+    positionB[0] += 0.2;
   }
 
   if (testbed.activeKeys['down']) {
-    positionB.y -= 0.2;
+    positionB[1] -= 0.2;
   }
 
   if (testbed.activeKeys['up']) {
-    positionB.y += 0.2;
+    positionB[1] += 0.2;
   }
 
   if (testbed.activeKeys['Z']) {

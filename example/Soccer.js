@@ -74,7 +74,7 @@ team().forEach(function(p) {
   player.style = {fill : '#0077ff', stroke: 'black'};
 });
 
-team().map(v => Vec2.create(-v.x, v.y)).forEach(function(p) {
+team().map(v => Vec2.create(-v[0], v[1])).forEach(function(p) {
   let player = world.createDynamicBody(playerBodyDef);
   player.setPosition(p);
   player.setAngle(Math.PI);

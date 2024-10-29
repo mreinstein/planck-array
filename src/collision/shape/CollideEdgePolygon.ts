@@ -173,7 +173,7 @@ export const CollideEdgePolygon = function (manifold: Manifold, edgeA: EdgeShape
 
   matrix.subVec2(edge1, v2, v1);
   matrix.normalizeVec2(edge1);
-  Vec2.set(edge1.y, -edge1.x, normal1)
+  Vec2.set(edge1[1], -edge1[0], normal1)
   const offset1 = matrix.dotVec2(normal1, centroidB) - matrix.dotVec2(normal1, v1);
   let offset0 = 0.0;
   let offset2 = 0.0;
@@ -187,7 +187,7 @@ export const CollideEdgePolygon = function (manifold: Manifold, edgeA: EdgeShape
   if (hasVertex0) {
     matrix.subVec2(edge0, v1, v0);
     matrix.normalizeVec2(edge0);
-    Vec2.set(edge0.y, -edge0.x, normal0);
+    Vec2.set(edge0[1], -edge0[0], normal0);
     convex1 = matrix.crossVec2Vec2(edge0, edge1) >= 0.0;
     offset0 = Vec2.dot(normal0, centroidB) - Vec2.dot(normal0, v0);
   }
@@ -196,7 +196,7 @@ export const CollideEdgePolygon = function (manifold: Manifold, edgeA: EdgeShape
   if (hasVertex3) {
     matrix.subVec2(edge2, v3, v2);
     matrix.normalizeVec2(edge2);
-    Vec2.set(edge2.y, -edge2.x, normal2);
+    Vec2.set(edge2[1], -edge2[0], normal2);
     convex2 = Vec2.crossVec2Vec2(edge1, edge2) > 0.0;
     offset2 = Vec2.dot(normal2, centroidB) - Vec2.dot(normal2, v2);
   }
@@ -354,7 +354,7 @@ export const CollideEdgePolygon = function (manifold: Manifold, edgeA: EdgeShape
     polygonAxis.index = -1;
     polygonAxis.separation = -Infinity;
 
-    Vec2.set(-normal.y, normal.x, perp);
+    Vec2.set(-normal[1], normal[0], perp);
 
     for (let i = 0; i < polygonBA.count; ++i) {
       matrix.scaleVec2(n, -1, polygonBA.normals[i]);
@@ -462,8 +462,8 @@ export const CollideEdgePolygon = function (manifold: Manifold, edgeA: EdgeShape
     matrix.copyVec2(rf.normal, polygonBA.normals[rf.i1]);
   }
 
-  Vec2.set(rf.normal.y, -rf.normal.x, rf.sideNormal1);
-  Vec2.set(-rf.sideNormal1.x, -rf.sideNormal1.y, rf.sideNormal2);
+  Vec2.set(rf.normal[1], -rf.normal[0], rf.sideNormal1);
+  Vec2.set(-rf.sideNormal1[0], -rf.sideNormal1[1], rf.sideNormal2);
   rf.sideOffset1 = matrix.dotVec2(rf.sideNormal1, rf.v1);
   rf.sideOffset2 = matrix.dotVec2(rf.sideNormal2, rf.v2);
 

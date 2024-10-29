@@ -456,7 +456,7 @@ export class RevoluteJoint extends Joint {
    * Get the reaction force given the inverse time step. Unit is N.
    */
   getReactionForce(inv_dt: number): Vec2Value {
-    return Vec2.scale(this.m_impulse, inv_dt);
+    return Vec2.create(this.m_impulse.x * inv_dt, this.m_impulse.y * inv_dt);
   }
 
   /**
@@ -505,12 +505,12 @@ export class RevoluteJoint extends Joint {
 
     const fixedRotation = (iA + iB === 0.0);
 
-    this.m_mass.ex.x = mA + mB + this.m_rA.y * this.m_rA.y * iA + this.m_rB.y * this.m_rB.y * iB;
-    this.m_mass.ey.x = -this.m_rA.y * this.m_rA.x * iA - this.m_rB.y  * this.m_rB.x * iB;
-    this.m_mass.ez.x = -this.m_rA.y * iA - this.m_rB.y * iB;
+    this.m_mass.ex.x = mA + mB + this.m_rA[1] * this.m_rA[1] * iA + this.m_rB[1] * this.m_rB[1] * iB;
+    this.m_mass.ey.x = -this.m_rA[1] * this.m_rA[0] * iA - this.m_rB[1]  * this.m_rB[0] * iB;
+    this.m_mass.ez.x = -this.m_rA[1] * iA - this.m_rB[1] * iB;
     this.m_mass.ex.y = this.m_mass.ey.x;
-    this.m_mass.ey.y = mA + mB + this.m_rA.x * this.m_rA.x * iA + this.m_rB.x * this.m_rB.x * iB;
-    this.m_mass.ez.y = this.m_rA.x * iA + this.m_rB.x * iB;
+    this.m_mass.ey.y = mA + mB + this.m_rA[0] * this.m_rA[0] * iA + this.m_rB[0] * this.m_rB[0] * iB;
+    this.m_mass.ez.y = this.m_rA[0] * iA + this.m_rB[0] * iB;
     this.m_mass.ex.z = this.m_mass.ez.x;
     this.m_mass.ey.z = this.m_mass.ez.y;
     this.m_mass.ez.z = iA + iB;
@@ -553,7 +553,8 @@ export class RevoluteJoint extends Joint {
 
     if (step.warmStarting) {
       // Scale impulses to support a variable time step.
-      Vec2.scale(this.m_impulse, step.dtRatio, this.m_impulse);
+      Vec3.set(this.m_impulse.x * step.dtRatio, this.m_impulse.y * step.dtRatio, this.m_impulse.z, this.m_impulse);
+
       this.m_motorImpulse *= step.dtRatio;
 
       const P = Vec2.create(this.m_impulse.x, this.m_impulse.y);
@@ -608,7 +609,7 @@ export class RevoluteJoint extends Joint {
       Vec2.subCombine(Cdot1, 1, vA, 1, Vec2.crossNumVec2(wA, this.m_rA), Cdot1);
 
       const Cdot2 = wB - wA;
-      const Cdot = Vec3.create(Cdot1.x, Cdot1.y, Cdot2);
+      const Cdot = Vec3.create(Cdot1[0], Cdot1[1], Cdot2);
 
       const impulse = Vec3.neg(this.m_mass.solve33(Cdot));
 
@@ -621,11 +622,11 @@ export class RevoluteJoint extends Joint {
         if (newImpulse < 0.0) {
           const rhs = Vec2.combine(-1, Cdot1, this.m_impulse.z, Vec2.create(this.m_mass.ez.x, this.m_mass.ez.y));
           const reduced = this.m_mass.solve22(rhs);
-          impulse.x = reduced.x;
-          impulse.y = reduced.y;
+          impulse.x = reduced[0];
+          impulse.y = reduced[1];
           impulse.z = -this.m_impulse.z;
-          this.m_impulse.x += reduced.x;
-          this.m_impulse.y += reduced.y;
+          this.m_impulse.x += reduced[0];
+          this.m_impulse.y += reduced[1];
           this.m_impulse.z = 0.0;
 
         } else {
@@ -638,11 +639,11 @@ export class RevoluteJoint extends Joint {
         if (newImpulse > 0.0) {
           const rhs = Vec2.combine(-1, Cdot1, this.m_impulse.z, Vec2.create(this.m_mass.ez.x, this.m_mass.ez.y));
           const reduced = this.m_mass.solve22(rhs);
-          impulse.x = reduced.x;
-          impulse.y = reduced.y;
+          impulse.x = reduced[0];
+          impulse.y = reduced[1];
           impulse.z = -this.m_impulse.z;
-          this.m_impulse.x += reduced.x;
-          this.m_impulse.y += reduced.y;
+          this.m_impulse.x += reduced[0];
+          this.m_impulse.y += reduced[1];
           this.m_impulse.z = 0.0;
 
         } else {
@@ -666,8 +667,8 @@ export class RevoluteJoint extends Joint {
 
       const impulse = this.m_mass.solve22(Vec2.neg(Cdot));
 
-      this.m_impulse.x += impulse.x;
-      this.m_impulse.y += impulse.y;
+      this.m_impulse.x += impulse[0];
+      this.m_impulse.y += impulse[1];
 
       Vec2.subMul(vA, mA, impulse, vA);
       wA -= iA * Vec2.crossVec2Vec2(this.m_rA, impulse);
@@ -750,10 +751,10 @@ export class RevoluteJoint extends Joint {
       const iB = this.m_invIB;
 
       const K = new Mat22();
-      K.ex.x = mA + mB + iA * rA.y * rA.y + iB * rB.y * rB.y;
-      K.ex.y = -iA * rA.x * rA.y - iB * rB.x * rB.y;
-      K.ey.x = K.ex.y;
-      K.ey.y = mA + mB + iA * rA.x * rA.x + iB * rB.x * rB.x;
+      K.ex[0] = mA + mB + iA * rA[1] * rA[1] + iB * rB[1] * rB[1];
+      K.ex[1] = -iA * rA[0] * rA[1] - iB * rB[0] * rB[1];
+      K.ey[0] = K.ex[1];
+      K.ey[1] = mA + mB + iA * rA[0] * rA[0] + iB * rB[0] * rB[0];
 
       const impulse = Vec2.neg(K.solve(C));
 

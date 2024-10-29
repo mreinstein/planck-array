@@ -345,11 +345,11 @@ export class MouseJoint extends Joint {
     // -r1.x*r1.y]
     // [ 0 1/m1+1/m2] [-r1.x*r1.y r1.x*r1.x] [-r1.x*r1.y r1.x*r1.x]
     const K = new Mat22();
-    K.ex.x = this.m_invMassB + this.m_invIB * this.m_rB.y * this.m_rB.y
+    K.ex[0] = this.m_invMassB + this.m_invIB * this.m_rB[1] * this.m_rB[1]
         + this.m_gamma;
-    K.ex.y = -this.m_invIB * this.m_rB.x * this.m_rB.y;
-    K.ey.x = K.ex.y;
-    K.ey.y = this.m_invMassB + this.m_invIB * this.m_rB.x * this.m_rB.x
+    K.ex[1] = -this.m_invIB * this.m_rB[0] * this.m_rB[1];
+    K.ey[0] = K.ex[1];
+    K.ey[1] = this.m_invMassB + this.m_invIB * this.m_rB[0] * this.m_rB[0]
         + this.m_gamma;
 
     this.m_mass = K.getInverse();

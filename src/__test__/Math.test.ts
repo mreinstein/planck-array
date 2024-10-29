@@ -6,42 +6,42 @@ import { Vec3 } from '../common/Vec3';
 describe('Math', function(): void {
   it('Vec2', function(): void {
     var r, v = Vec2.create();
-    expect(v.x).equal(0);
-    expect(v.y).equal(0);
+    expect(v[0]).equal(0);
+    expect(v[1]).equal(0);
 
     Vec2.set(3, 4, v);
-    expect(v.x).equal(3);
-    expect(v.y).equal(4);
+    expect(v[0]).equal(3);
+    expect(v[1]).equal(4);
     expect(Vec2.length(v)).equal(5);
     expect(Vec2.lengthSquared(v)).equal(25);
 
     Vec2.normalize(v, v);
-    expect(v.x).closeTo(3 / 5, 1e-12);
-    expect(v.y).closeTo(4 / 5, 1e-12);
+    expect(v[0]).closeTo(3 / 5, 1e-12);
+    expect(v[1]).closeTo(4 / 5, 1e-12);
 
     Vec2.setZero(v);
-    expect(v.x).equal(0);
-    expect(v.y).equal(0);
+    expect(v[0]).equal(0);
+    expect(v[1]).equal(0);
 
     Vec2.add(v, Vec2.create(3, 2), v);
-    expect(v.x).equal(3);
-    expect(v.y).equal(2);
+    expect(v[0]).equal(3);
+    expect(v[1]).equal(2);
 
     Vec2.sub(v, Vec2.create(2, 1), v);
-    expect(v.x).equal(1);
-    expect(v.y).equal(1);
+    expect(v[0]).equal(1);
+    expect(v[1]).equal(1);
 
     Vec2.scale(v, 5, v);
-    expect(v.x).equal(5);
-    expect(v.y).equal(5);
+    expect(v[0]).equal(5);
+    expect(v[1]).equal(5);
 
     Vec2.set(2, 3, v);
-    expect(v.x).equal(2);
-    expect(v.y).equal(3);
+    expect(v[0]).equal(2);
+    expect(v[1]).equal(3);
 
     r = Vec2.skew(v);
-    expect(r.x).equal(-3);
-    expect(r.y).equal(2);
+    expect(r[0]).equal(-3);
+    expect(r[1]).equal(2);
 
     r = Vec2.dot(v, Vec2.create(2, 3));
     expect(r).equal(13);
@@ -50,12 +50,12 @@ describe('Math', function(): void {
     expect(r).equal(0);
 
     r = Vec2.crossVec2Num(v, 5);
-    expect(r.x).equal(15);
-    expect(r.y).equal(-10);
+    expect(r[0]).equal(15);
+    expect(r[1]).equal(-10);
 
     r = Vec2.clamp(Vec2.create(6, 8), 5);
-    expect(r.x).closeTo(3, 1e-12);
-    expect(r.y).closeTo(4, 1e-12);
+    expect(r[0]).closeTo(3, 1e-12);
+    expect(r[1]).closeTo(4, 1e-12);
 
   });
 

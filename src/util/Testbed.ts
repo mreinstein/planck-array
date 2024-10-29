@@ -3,6 +3,7 @@ import type { World } from "../dynamics/World";
 import type { Joint } from "../dynamics/Joint";
 import type { Fixture } from "../dynamics/Fixture";
 import type { Body } from "../dynamics/Body";
+import { Vec2Value } from '../common/Vec2';
 
 export interface Style {
   stroke?: string;
@@ -124,11 +125,11 @@ export abstract class Testbed {
     return 'rgb(' + r + ', ' + g + ', ' + b + ')';
   }
 
-  abstract drawPoint(p: {x: number, y: number}, r: any, color: string): void;
-  abstract drawCircle(p: {x: number, y: number}, r: number, color: string): void;
-  abstract drawEdge(a: {x: number, y: number}, b: {x: number, y: number}, color: string): void;
-  abstract drawSegment(a: {x: number, y: number}, b: {x: number, y: number}, color: string): void;
-  abstract drawPolygon(points: Array<{x: number, y: number}>, color: string): void;
+  abstract drawPoint(p: Vec2Value, r: any, color: string): void;
+  abstract drawCircle(p: Vec2Value, r: number, color: string): void;
+  abstract drawEdge(a: Vec2Value, b: Vec2Value, color: string): void;
+  abstract drawSegment(a: Vec2Value, b: Vec2Value, color: string): void;
+  abstract drawPolygon(points: Array<Vec2Value>, color: string): void;
   abstract drawAABB(aabb: AABBValue, color: string): void;
 
   abstract start(world: World): void;

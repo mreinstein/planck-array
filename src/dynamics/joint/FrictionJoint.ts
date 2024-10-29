@@ -298,12 +298,12 @@ export class FrictionJoint extends Joint {
     const iB = this.m_invIB;
 
     const K = new Mat22();
-    K.ex.x = mA + mB + iA * this.m_rA.y * this.m_rA.y + iB * this.m_rB.y
-        * this.m_rB.y;
-    K.ex.y = -iA * this.m_rA.x * this.m_rA.y - iB * this.m_rB.x * this.m_rB.y;
-    K.ey.x = K.ex.y;
-    K.ey.y = mA + mB + iA * this.m_rA.x * this.m_rA.x + iB * this.m_rB.x
-        * this.m_rB.x;
+    K.ex[0] = mA + mB + iA * this.m_rA[1] * this.m_rA[1] + iB * this.m_rB[1]
+        * this.m_rB[1];
+    K.ex[1] = -iA * this.m_rA[0] * this.m_rA[1] - iB * this.m_rB[0] * this.m_rB[1];
+    K.ey[0] = K.ex[1];
+    K.ey[1] = mA + mB + iA * this.m_rA[0] * this.m_rA[0] + iB * this.m_rB[0]
+        * this.m_rB[0];
 
     this.m_linearMass = K.getInverse();
 
@@ -317,7 +317,7 @@ export class FrictionJoint extends Joint {
       Vec2.scale(this.m_linearImpulse, step.dtRatio, this.m_linearImpulse);
       this.m_angularImpulse *= step.dtRatio;
 
-      const P = Vec2.create(this.m_linearImpulse.x, this.m_linearImpulse.y);
+      const P = Vec2.create(this.m_linearImpulse[0], this.m_linearImpulse[1]);
 
       Vec2.subMul(vA, mA, P, vA);
       wA -= iA * (Vec2.crossVec2Vec2(this.m_rA, P) + this.m_angularImpulse);

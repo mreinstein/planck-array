@@ -1,5 +1,6 @@
 import Stage from 'stage-js';
 
+import * as Vec2          from '../src/common/Vec2';
 import type { Vec2Value } from '../src/common/Vec2';
 import type { World } from "../src/dynamics/World";
 import type { Joint } from "../src/dynamics/Joint";
@@ -225,12 +226,13 @@ class StageTestbed extends Testbed {
     const mouseGround = world.createBody();
     let mouseJoint: MouseJoint | null = null;
     let targetBody: Body | null = null;
-    const mouseMove = {x: 0, y: 0};
+    const mouseMove = Vec2.create(0, 0);
 
     worldNode.attr('spy', true);
 
     worldNode.on(Stage.POINTER_START, (point: Vec2Value) => {
-      point = { x: point.x, y: testbed.scaleY * point.y };
+      point = [ point.x, testbed.scaleY * point.y ];
+
       if (targetBody) {
         return;
       }
@@ -244,40 +246,43 @@ class StageTestbed extends Testbed {
         targetBody = body;
 
       } else {
-        mouseJoint = new MouseJoint({maxForce: 1000}, mouseGround, body, { x: point.x, y: point.y });
+        mouseJoint = new MouseJoint({maxForce: 1000}, mouseGround, body, [ point[0], point[1] ]);
         world.createJoint(mouseJoint);
       }
     });
 
     worldNode.on(Stage.POINTER_MOVE, (point: Vec2Value) => {
-      point = { x: point.x, y: testbed.scaleY * point.y };
+      point = [ point.x, testbed.scaleY * point.y ];
+
       if (mouseJoint) {
         mouseJoint.setTarget(point);
       }
 
-      mouseMove.x = point.x;
-      mouseMove.y = point.y;
+      mouseMove[0] = point[0];
+      mouseMove[1] = point[1];
     });
 
     worldNode.on(Stage.POINTER_END, (point: Vec2Value) => {
-      point = { x: point.x, y: testbed.scaleY * point.y };
+      point = [ point.x, testbed.scaleY * point.y ];
+
       if (mouseJoint) {
         world.destroyJoint(mouseJoint);
         mouseJoint = null;
       }
       if (targetBody && this.mouseForce) {
         const target = targetBody.getPosition();
-        const force = {
-          x: (point.x - target.x) * this.mouseForce,
-          y: (point.y - target.y) * this.mouseForce,
-        };
+        const force = Vec2.create(
+          (point[0] - target[0]) * this.mouseForce,
+          (point[1] - target[1]) * this.mouseForce
+        );
         targetBody.applyForceToCenter(force, true);
         targetBody = null;
       }
     });
 
     worldNode.on(Stage.POINTER_CANCEL, (point: Vec2Value) => {
-      point = { x: point.x, y: testbed.scaleY * point.y };
+      point = [ point.x, testbed.scaleY * point.y ];
+
       if (mouseJoint) {
         world.destroyJoint(mouseJoint);
         mouseJoint = null;
@@ -361,48 +366,48 @@ class StageTestbed extends Testbed {
     this.focus();
   }
 
-  drawPoint(p: {x: number, y: number}, r: number, color: string): void {
+  drawPoint(p: Vec2Value, r: number, color: string): void {
     this.buffer.push(function(ctx, ratio) {
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 5  / ratio, 0, 2 * math_PI);
+      ctx.arc(p[0], p[1], 5  / ratio, 0, 2 * math_PI);
       ctx.strokeStyle = color;
       ctx.stroke();
     });
-    this.newDrawHash += "point" + p.x + ',' + p.y + ',' + r + ',' + color;
+    this.newDrawHash += "point" + p[0] + ',' + p[1] + ',' + r + ',' + color;
   }
 
-  drawCircle(p: {x: number, y: number}, r: number, color: string): void {
+  drawCircle(p: Vec2Value, r: number, color: string): void {
     this.buffer.push(function(ctx) {
       ctx.beginPath();
-      ctx.arc(p.x, p.y, r, 0, 2 * math_PI);
+      ctx.arc(p[0], p[1], r, 0, 2 * math_PI);
       ctx.strokeStyle = color;
       ctx.stroke();
     });
-    this.newDrawHash += "circle" + p.x + ',' + p.y + ',' + r + ',' + color;
+    this.newDrawHash += "circle" + p[0] + ',' + p[1] + ',' + r + ',' + color;
   }
 
-  drawEdge(a: {x: number, y: number}, b: {x: number, y: number}, color: string): void {
+  drawEdge(a: Vec2Value, b: Vec2Value, color: string): void {
     this.buffer.push(function(ctx) {
       ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
+      ctx.moveTo(a[0], a[1]);
+      ctx.lineTo(b[0], b[1]);
       ctx.strokeStyle = color;
       ctx.stroke();
     });
-    this.newDrawHash += "segment" + a.x + ',' + a.y + ',' + b.x + ',' + b.y + ',' + color;
+    this.newDrawHash += "segment" + a[0] + ',' + a[1] + ',' + b[0] + ',' + b[1] + ',' + color;
   }
 
   drawSegment = this.drawEdge;
 
-  drawPolygon(points: Array<{x: number, y: number}>, color: string): void {
+  drawPolygon(points: Array<Vec2Value>, color: string): void {
     if (!points || !points.length) {
       return;
     }
     this.buffer.push(function(ctx) {
       ctx.beginPath();
-      ctx.moveTo(points[0].x, points[0].y);
+      ctx.moveTo(points[0][0], points[0][1]);
       for (let i = 1; i < points.length; i++) {
-        ctx.lineTo(points[i].x, points[i].y);
+        ctx.lineTo(points[i][0], points[i][1]);
       }
       ctx.strokeStyle = color;
       ctx.closePath();
@@ -410,7 +415,7 @@ class StageTestbed extends Testbed {
     });
     this.newDrawHash += "segment";
     for (let i = 1; i < points.length; i++) {
-      this.newDrawHash += points[i].x + ',' + points[i].y + ',';
+      this.newDrawHash += points[i][0] + ',' + points[i][1] + ',';
     }
     this.newDrawHash += color;
   }
@@ -418,17 +423,17 @@ class StageTestbed extends Testbed {
   drawAABB(aabb: AABBValue, color: string): void {
     this.buffer.push(function(ctx) {
       ctx.beginPath();
-      ctx.moveTo(aabb.lowerBound.x, aabb.lowerBound.y);
-      ctx.lineTo(aabb.upperBound.x, aabb.lowerBound.y);
-      ctx.lineTo(aabb.upperBound.x, aabb.upperBound.y);
-      ctx.lineTo(aabb.lowerBound.x, aabb.upperBound.y);
+      ctx.moveTo(aabb.lowerBound[0], aabb.lowerBound[1]);
+      ctx.lineTo(aabb.upperBound[0], aabb.lowerBound[1]);
+      ctx.lineTo(aabb.upperBound[0], aabb.upperBound[1]);
+      ctx.lineTo(aabb.lowerBound[0], aabb.upperBound[1]);
       ctx.strokeStyle = color;
       ctx.closePath();
       ctx.stroke();
     });
     this.newDrawHash += "aabb";
-    this.newDrawHash += aabb.lowerBound.x + ',' + aabb.lowerBound.y + ',';
-    this.newDrawHash += aabb.upperBound.x + ',' + aabb.upperBound.y + ',';
+    this.newDrawHash += aabb.lowerBound[0] + ',' + aabb.lowerBound[1] + ',';
+    this.newDrawHash += aabb.upperBound[0] + ',' + aabb.upperBound[1] + ',';
     this.newDrawHash += color;
   }
 
@@ -568,15 +573,15 @@ class  WorldStageNode extends Stage.Node {
           const p = b.getPosition();
           const r = b.getAngle();
           // @ts-ignore
-          const isChanged = node.__lastX !== p.x || node.__lastY !== p.y || node.__lastR !== r;
+          const isChanged = node.__lastX !== p[0] || node.__lastY !== p[1] || node.__lastR !== r;
           if (isChanged) {
             // @ts-ignore
-            node.__lastX = p.x;
+            node.__lastX = p[0];
             // @ts-ignore
-            node.__lastY = p.y;
+            node.__lastY = p[1];
             // @ts-ignore
             node.__lastR = r;
-            node.offset(p.x, options.scaleY * p.y);
+            node.offset(p[0], options.scaleY * p[1]);
             node.rotate(options.scaleY * r);
           }
         }
@@ -613,8 +618,8 @@ class  WorldStageNode extends Stage.Node {
       const w = r * 2 + lw * 2;
       const h = r * 2 + lw * 2;
 
-      offsetX = shape.m_p.x - cx;
-      offsetY = options.scaleY * shape.m_p.y - cy
+      offsetX = shape.m_p[0] - cx;
+      offsetY = options.scaleY * shape.m_p[1] - cy
 
       this.setSize(w, h, ratio);
 
@@ -656,15 +661,15 @@ class  WorldStageNode extends Stage.Node {
       const v1 = edge.m_vertex1;
       const v2 = edge.m_vertex2;
 
-      const dx = v2.x - v1.x;
-      const dy = v2.y - v1.y;
+      const dx = v2[0] - v1[0];
+      const dy = v2[1] - v1[1];
 
       const length = math_sqrt(dx * dx + dy * dy);
 
       this.setSize(length + 2 * lw, 2 * lw, ratio);
 
-      const minX = math_min(v1.x, v2.x);
-      const minY = math_min(options.scaleY * v1.y, options.scaleY * v2.y);
+      const minX = math_min(v1[0], v2[0]);
+      const minY = math_min(options.scaleY * v1[1], options.scaleY * v2[1]);
   
       offsetX = minX - lw;
       offsetY = minY - lw;
@@ -715,10 +720,10 @@ class  WorldStageNode extends Stage.Node {
       let maxY = -Infinity;
       for (let i = 0; i < vertices.length; ++i) {
         const v = vertices[i];
-        minX = math_min(minX, v.x);
-        maxX = math_max(maxX, v.x);
-        minY = math_min(minY, options.scaleY * v.y);
-        maxY = math_max(maxY, options.scaleY * v.y);
+        minX = math_min(minX, v[0]);
+        maxX = math_max(maxX, v[0]);
+        minY = math_min(minY, options.scaleY * v[1]);
+        maxY = math_max(maxY, options.scaleY * v[1]);
       }
   
       const width = maxX - minX;
@@ -733,8 +738,8 @@ class  WorldStageNode extends Stage.Node {
       ctx.beginPath();
       for (let i = 0; i < vertices.length; ++i) {
         const v = vertices[i];
-        const x = v.x - minX + lw;
-        const y = options.scaleY * v.y - minY + lw;
+        const x = v[0] - minX + lw;
+        const y = options.scaleY * v[1] - minY + lw;
         if (i == 0)
           ctx.moveTo(x, y);
 
@@ -792,10 +797,10 @@ class  WorldStageNode extends Stage.Node {
       let maxY = -Infinity;
       for (let i = 0; i < vertices.length; ++i) {
         const v = vertices[i];
-        minX = math_min(minX, v.x);
-        maxX = math_max(maxX, v.x);
-        minY = math_min(minY, options.scaleY * v.y);
-        maxY = math_max(maxY, options.scaleY * v.y);
+        minX = math_min(minX, v[0]);
+        maxX = math_max(maxX, v[0]);
+        minY = math_min(minY, options.scaleY * v[1]);
+        maxY = math_max(maxY, options.scaleY * v[1]);
       }
   
       const width = maxX - minX;
@@ -810,8 +815,8 @@ class  WorldStageNode extends Stage.Node {
       ctx.beginPath();
       for (let i = 0; i < vertices.length; ++i) {
         const v = vertices[i];
-        const x = v.x - minX + lw;
-        const y = options.scaleY * v.y - minY + lw;
+        const x = v[0] - minX + lw;
+        const y = options.scaleY * v[1] - minY + lw;
         if (i == 0)
           ctx.moveTo(x, y);
 

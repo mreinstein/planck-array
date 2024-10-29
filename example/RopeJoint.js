@@ -32,7 +32,7 @@
 
 const { Vec2, World, Edge, Box, RevoluteJoint, RopeJoint, Testbed } = planck;
 
-let world = new World({x: 0, y: -10});
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.info('X: Toggle the rope joint');

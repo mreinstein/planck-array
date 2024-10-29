@@ -39,8 +39,8 @@ describe('Basic', function(): void {
     // console.log(b2.getPosition());
 
     var p = b1.getPosition();
-    expect(p.x).closeTo(0.0, 1e-12);
-    expect(p.y).closeTo(0.0, 1e-12);
+    expect(p[0]).closeTo(0.0, 1e-12);
+    expect(p[1]).closeTo(0.0, 1e-12);
   });
 
 });

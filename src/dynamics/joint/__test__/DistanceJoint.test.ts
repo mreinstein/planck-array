@@ -62,8 +62,8 @@ describe('DistanceJoint', function(): void {
     b2.applyForceToCenter(Vec2.create(500, 0), true);
     world.step(1 / 10);
 
-    expect(b1.getPosition().x).closeTo(2, 1e-1);
-    expect(b2.getPosition().x).closeTo(12, 1e-1);
+    expect(b1.getPosition()[0]).closeTo(2, 1e-1);
+    expect(b2.getPosition()[0]).closeTo(12, 1e-1);
   });
 
 });

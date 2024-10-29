@@ -127,10 +127,11 @@ export class Transform {
   }
 
   static mul(a: TransformValue, b: Vec2Value): Vec2Value;
-  static mul(a: TransformValue, b: TransformValue): Transform;
+  //static mul(a: TransformValue, b: TransformValue): Transform;
   // static mul(a: Transform, b: Vec2Value[]): Vec2Value[];
   // static mul(a: Transform, b: Transform[]): Transform[];
   static mul(a, b) {
+    /*
     if (Array.isArray(b)) {
         // todo: this was used in examples, remove in the future
       _ASSERT && Transform.assert(a);
@@ -140,14 +141,20 @@ export class Transform {
       }
       return arr;
 
-    } else if ('x' in b && 'y' in b) {
+    } 
+    else if ('x' in b && 'y' in b) {
+      */
       return Transform.mulVec2(a, b);
-
-    } else if ('p' in b && 'q' in b) {
+      /*
+    }
+    else if ('p' in b && 'q' in b) {
       return Transform.mulXf(a, b);
     }
+    */
   }
 
+  // MR: seems to be totally unused
+  /*
   static mulAll(a: Transform, b: Vec2Value[]): Vec2Value[];
   static mulAll(a: Transform, b: Transform[]): Transform[];
   static mulAll(a: TransformValue, b) {
@@ -158,6 +165,7 @@ export class Transform {
     }
     return arr;
   }
+  */
 
   /** @hidden @deprecated */
   static mulFn(a: TransformValue) {
@@ -171,8 +179,8 @@ export class Transform {
   static mulVec2(a: TransformValue, b: Vec2Value): Vec2Value {
     _ASSERT && Transform.assert(a);
     _ASSERT && Vec2.assert(b);
-    const x = (a.q.c * b.x - a.q.s * b.y) + a.p.x;
-    const y = (a.q.s * b.x + a.q.c * b.y) + a.p.y;
+    const x = (a.q.c * b[0] - a.q.s * b[1]) + a.p[0];
+    const y = (a.q.s * b[0] + a.q.c * b[1]) + a.p[1];
     return Vec2.create(x, y);
   }
 
@@ -201,8 +209,8 @@ export class Transform {
   static mulTVec2(a: TransformValue, b: Vec2Value): Vec2Value {
     _ASSERT && Transform.assert(a);
     _ASSERT && Vec2.assert(b);
-    const px = b.x - a.p.x;
-    const py = b.y - a.p.y;
+    const px = b[0] - a.p[0];
+    const py = b[1] - a.p[1];
     const x = (a.q.c * px + a.q.s * py);
     const y = (-a.q.s * px + a.q.c * py);
     return Vec2.create(x, y);

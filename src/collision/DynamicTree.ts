@@ -207,16 +207,16 @@ export class DynamicTree<T> {
     // Predict AABB displacement.
     // const d = Vec2.scale(displacement, Settings.aabbMultiplier);
 
-    if (d.x < 0.0) {
-      aabb.lowerBound.x += d.x * Settings.aabbMultiplier;
+    if (d[0] < 0.0) {
+      aabb.lowerBound[0] += d[0] * Settings.aabbMultiplier;
     } else {
-      aabb.upperBound.x += d.x * Settings.aabbMultiplier;
+      aabb.upperBound[0] += d[0] * Settings.aabbMultiplier;
     }
 
-    if (d.y < 0.0) {
-      aabb.lowerBound.y += d.y * Settings.aabbMultiplier;
+    if (d[1] < 0.0) {
+      aabb.lowerBound[1] += d[1] * Settings.aabbMultiplier;
     } else {
-      aabb.upperBound.y += d.y * Settings.aabbMultiplier;
+      aabb.upperBound[1] += d[1] * Settings.aabbMultiplier;
     }
 
     this.insertLeaf(node);
@@ -722,10 +722,10 @@ export class DynamicTree<T> {
     const it = this.iteratorPool.allocate().preorder(this.m_root);
     while (node = it.next()) {
       const aabb = node.aabb;
-      aabb.lowerBound.x -= newOrigin.x;
-      aabb.lowerBound.y -= newOrigin.y;
-      aabb.upperBound.x -= newOrigin.x;
-      aabb.upperBound.y -= newOrigin.y;
+      aabb.lowerBound.x -= newOrigin[0];
+      aabb.lowerBound.y -= newOrigin[1];
+      aabb.upperBound.x -= newOrigin[0];
+      aabb.upperBound.y -= newOrigin[1];
     }
     this.iteratorPool.release(it);
   }

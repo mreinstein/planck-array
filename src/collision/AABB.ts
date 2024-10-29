@@ -101,21 +101,21 @@ export class AABB {
    * Get the center of the AABB.
    */
   getCenter(): Vec2Value {
-    return Vec2.create((this.lowerBound.x + this.upperBound.x) * 0.5, (this.lowerBound.y + this.upperBound.y) * 0.5);
+    return Vec2.create((this.lowerBound[0] + this.upperBound[0]) * 0.5, (this.lowerBound[1] + this.upperBound[1]) * 0.5);
   }
 
   /**
    * Get the extents of the AABB (half-widths).
    */
   getExtents(): Vec2Value {
-    return Vec2.create((this.upperBound.x - this.lowerBound.x) * 0.5, (this.upperBound.y - this.lowerBound.y) * 0.5);
+    return Vec2.create((this.upperBound[0] - this.lowerBound[0]) * 0.5, (this.upperBound[1] - this.lowerBound[1]) * 0.5);
   }
 
   /**
    * Get the perimeter length.
    */
   getPerimeter(): number {
-    return 2.0 * (this.upperBound.x - this.lowerBound.x + this.upperBound.y - this.lowerBound.y);
+    return 2.0 * (this.upperBound[0] - this.lowerBound[0] + this.upperBound[1] - this.lowerBound[1]);
   }
 
   /**
@@ -129,31 +129,31 @@ export class AABB {
     const lowerB = b.lowerBound;
     const upperB = b.upperBound;
 
-    const lowerX = math_min(lowerA.x, lowerB.x);
-    const lowerY = math_min(lowerA.y, lowerB.y);
-    const upperX = math_max(upperB.x, upperA.x);
-    const upperY = math_max(upperB.y, upperA.y);
+    const lowerX = math_min(lowerA[0], lowerB[0]);
+    const lowerY = math_min(lowerA[1], lowerB[1]);
+    const upperX = math_max(upperB[0], upperA[0]);
+    const upperY = math_max(upperB[1], upperA[1]);
 
     Vec2.set(lowerX, lowerY, this.lowerBound);
     Vec2.set(upperX, upperY, this.upperBound);
   }
 
   combinePoints(a: Vec2Value, b: Vec2Value): void {
-    Vec2.set(math_min(a.x, b.x), math_min(a.y, b.y), this.lowerBound);
-    Vec2.set(math_max(a.x, b.x), math_max(a.y, b.y), this.upperBound);
+    Vec2.set(math_min(a[0], b[0]), math_min(a[1], b[1]), this.lowerBound);
+    Vec2.set(math_max(a[0], b[0]), math_max(a[1], b[1]), this.upperBound);
   }
 
   set(aabb: AABBValue): void {
-    Vec2.set(aabb.lowerBound.x, aabb.lowerBound.y, this.lowerBound);
-    Vec2.set(aabb.upperBound.x, aabb.upperBound.y, this.upperBound);
+    Vec2.set(aabb.lowerBound[0], aabb.lowerBound[1], this.lowerBound);
+    Vec2.set(aabb.upperBound[0], aabb.upperBound[1], this.upperBound);
   }
 
   contains(aabb: AABBValue): boolean {
     let result = true;
-    result = result && this.lowerBound.x <= aabb.lowerBound.x;
-    result = result && this.lowerBound.y <= aabb.lowerBound.y;
-    result = result && aabb.upperBound.x <= this.upperBound.x;
-    result = result && aabb.upperBound.y <= this.upperBound.y;
+    result = result && this.lowerBound[0] <= aabb.lowerBound[0];
+    result = result && this.lowerBound[1] <= aabb.lowerBound[1];
+    result = result && aabb.upperBound[0] <= this.upperBound[0];
+    result = result && aabb.upperBound[1] <= this.upperBound[1];
     return result;
   }
 
@@ -163,19 +163,19 @@ export class AABB {
   }
 
   static extend(out: AABBValue, value: number): AABBValue {
-    out.lowerBound.x -= value;
-    out.lowerBound.y -= value;
-    out.upperBound.x += value;
-    out.upperBound.y += value;
+    out.lowerBound[0] -= value;
+    out.lowerBound[1] -= value;
+    out.upperBound[0] += value;
+    out.upperBound[1] += value;
     return out;
   }
 
   static testOverlap(a: AABBValue, b: AABBValue): boolean {
-    const d1x = b.lowerBound.x - a.upperBound.x;
-    const d2x = a.lowerBound.x - b.upperBound.x;
+    const d1x = b.lowerBound[0] - a.upperBound[0];
+    const d2x = a.lowerBound[0] - b.upperBound[0];
 
-    const d1y = b.lowerBound.y - a.upperBound.y;
-    const d2y = a.lowerBound.y - b.upperBound.y;
+    const d1y = b.lowerBound[1] - a.upperBound[1];
+    const d2y = a.lowerBound[1] - b.upperBound[1];
 
     if (d1x > 0 || d1y > 0 || d2x > 0 || d2y > 0) {
       return false;
@@ -188,14 +188,14 @@ export class AABB {
   }
 
   static diff(a: AABBValue, b: AABBValue): number {
-    const wD = math_max(0, math_min(a.upperBound.x, b.upperBound.x) - math_max(b.lowerBound.x, a.lowerBound.x));
-    const hD = math_max(0, math_min(a.upperBound.y, b.upperBound.y) - math_max(b.lowerBound.y, a.lowerBound.y));
+    const wD = math_max(0, math_min(a.upperBound[0], b.upperBound[0]) - math_max(b.lowerBound[0], a.lowerBound[0]));
+    const hD = math_max(0, math_min(a.upperBound[1], b.upperBound[1]) - math_max(b.lowerBound[1], a.lowerBound[1]));
 
-    const wA = a.upperBound.x - a.lowerBound.x;
-    const hA = a.upperBound.y - a.lowerBound.y;
+    const wA = a.upperBound[0] - a.lowerBound[0];
+    const hA = a.upperBound[1] - a.lowerBound[1];
 
-    const wB = b.upperBound.x - b.lowerBound.x;
-    const hB = b.upperBound.y - b.lowerBound.y;
+    const wB = b.upperBound[0] - b.lowerBound[0];
+    const hB = b.upperBound[1] - b.lowerBound[1];
 
     return wA * hA + wB * hB - wD * hD;
   }
@@ -213,7 +213,7 @@ export class AABB {
     const normal = Vec2.zero();
 
     for (let f: 'x' | 'y' = 'x'; f !== null; f = (f === 'x' ? 'y' : null)) {
-      if (absD.x < EPSILON) {
+      if (absD[0] < EPSILON) {
         // Parallel.
         if (p[f] < this.lowerBound[f] || this.upperBound[f] < p[f]) {
           return false;
@@ -267,18 +267,18 @@ export class AABB {
   }
 
   static combinePoints(out: AABBValue, a: Vec2Value, b: Vec2Value): AABBValue {
-    out.lowerBound.x = math_min(a.x, b.x);
-    out.lowerBound.y = math_min(a.y, b.y);
-    out.upperBound.x = math_max(a.x, b.x);
-    out.upperBound.y = math_max(a.y, b.y);
+    out.lowerBound[0] = math_min(a[0], b[0]);
+    out.lowerBound[1] = math_min(a[1], b[1]);
+    out.upperBound[0] = math_max(a[0], b[0]);
+    out.upperBound[1] = math_max(a[1], b[1]);
     return out;
   }
 
   static combinedPerimeter(a: AABBValue, b: AABBValue) {
-    const lx = math_min(a.lowerBound.x, b.lowerBound.x);
-    const ly = math_min(a.lowerBound.y, b.lowerBound.y);
-    const ux = math_max(a.upperBound.x, b.upperBound.x);
-    const uy = math_max(a.upperBound.y, b.upperBound.y);
+    const lx = math_min(a.lowerBound[0], b.lowerBound[0]);
+    const ly = math_min(a.lowerBound[1], b.lowerBound[1]);
+    const ux = math_max(a.upperBound[0], b.upperBound[0]);
+    const uy = math_max(a.upperBound[1], b.upperBound[1]);
     return 2.0 * (ux - lx + uy - ly);  
   }
 }

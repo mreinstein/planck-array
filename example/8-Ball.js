@@ -73,7 +73,7 @@ let ballBodyDef = {
 };
 
 function mirror(vertices, x, y) {
-  return vertices.map(v => Vec2.create(x * v.x, y * v.y));
+  return vertices.map(v => Vec2.create(x * v[0], y * v[1]));
 }
 
 world.createBody().createFixture(new Polygon(railV), railFixDef);
@@ -95,7 +95,7 @@ world.createBody().createFixture(new Circle(Vec2.create(-width * .5 - POCKET_R *
 
 let balls = rack(BALL_R, width / 4, 0);
 
-balls.push({x: -width / 4, y: 0});
+balls.push([ -width / 4, 0 ]);
 
 if (COLORED) {
   shuffleArray(COLORS);
@@ -132,14 +132,14 @@ world.on('post-solve', function(contact) {
 
 function rack(r, cx, cy) {
   let n = 5;
-  let balls = [];
+  let balls = [ ];
   let d = r * 2, l = SPI3 * d;
   for (let i = 0; i < n; i++) {
     for (let j = 0; j <= i; j++) {
-      balls.push({
-        x: cx + i * l /*- (n - 1) * 0.5 * l*/ + Math.random() * r * 0.02,
-        y: cy + (j - i * 0.5 ) * d + Math.random() * r * 0.02,
-      });
+      balls.push([
+        cx + i * l /*- (n - 1) * 0.5 * l*/ + Math.random() * r * 0.02,
+        cy + (j - i * 0.5 ) * d + Math.random() * r * 0.02
+      ]);
     }
   }
   return balls;

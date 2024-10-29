@@ -128,8 +128,8 @@ export class Mat33 {
       det = 1.0 / det;
     }
     const r = Vec2.zero();
-    r.x = det * (a22 * v.x - a12 * v.y);
-    r.y = det * (a11 * v.y - a21 * v.x);
+    r[0] = det * (a22 * v[0] - a12 * v[1]);
+    r[1] = det * (a11 * v[1] - a21 * v[0]);
     return r;
   }
 
@@ -222,8 +222,8 @@ export class Mat33 {
   static mulVec2(a: Mat33, b: Vec2Value): Vec2Value {
     _ASSERT && Mat33.assert(a);
     _ASSERT && Vec2.assert(b);
-    const x = a.ex.x * b.x + a.ey.x * b.y;
-    const y = a.ex.y * b.x + a.ey.y * b.y;
+    const x = a.ex.x * b[0] + a.ey.x * b[1];
+    const y = a.ex.y * b[0] + a.ey.y * b[1];
     return Vec2.create(x, y);
   }
 

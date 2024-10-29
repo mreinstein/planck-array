@@ -652,7 +652,8 @@ export class PrismaticJoint extends Joint {
 
     if (step.warmStarting) {
       // Account for variable time step.
-      Vec2.scale(this.m_impulse, step.dtRatio, this.m_impulse);
+      Vec3.set(this.m_impulse.x * step.dtRatio, this.m_impulse.y * step.dtRatio, this.m_impulse.z, this.m_impulse);
+
       this.m_motorImpulse *= step.dtRatio;
 
       const P = Vec2.combine(this.m_impulse.x, this.m_perp, this.m_motorImpulse
@@ -712,9 +713,9 @@ export class PrismaticJoint extends Joint {
     }
 
     const Cdot1 = Vec2.zero();
-    Cdot1.x += Vec2.dot(this.m_perp, vB) + this.m_s2 * wB;
-    Cdot1.x -= Vec2.dot(this.m_perp, vA) + this.m_s1 * wA;
-    Cdot1.y = wB - wA;
+    Cdot1[0] += Vec2.dot(this.m_perp, vB) + this.m_s2 * wB;
+    Cdot1[0] -= Vec2.dot(this.m_perp, vA) + this.m_s1 * wA;
+    Cdot1[1] = wB - wA;
 
     if (this.m_enableLimit && this.m_limitState != LimitState.inactiveLimit) {
       // Solve prismatic and limit constraint in block form.
@@ -722,7 +723,7 @@ export class PrismaticJoint extends Joint {
       Cdot2 += Vec2.dot(this.m_axis, vB) + this.m_a2 * wB;
       Cdot2 -= Vec2.dot(this.m_axis, vA) + this.m_a1 * wA;
 
-      const Cdot = Vec3.create(Cdot1.x, Cdot1.y, Cdot2);
+      const Cdot = Vec3.create(Cdot1[0], Cdot1[1], Cdot2);
 
       const f1 = Vec3.clone(this.m_impulse);
       let df = this.m_K.solve33(Vec3.neg(Cdot));
@@ -738,8 +739,8 @@ export class PrismaticJoint extends Joint {
       // f1(1:2)
       const b = Vec2.combine(-1, Cdot1, -(this.m_impulse.z - f1.z), Vec2.create(this.m_K.ez.x, this.m_K.ez.y));
       const f2r = Vec2.add(this.m_K.solve22(b), Vec2.create(f1.x, f1.y));
-      this.m_impulse.x = f2r.x;
-      this.m_impulse.y = f2r.y;
+      this.m_impulse.x = f2r[0];
+      this.m_impulse.y = f2r[1];
 
       df = Vec3.sub(this.m_impulse, f1);
 
@@ -755,12 +756,12 @@ export class PrismaticJoint extends Joint {
     } else {
       // Limit is inactive, just solve the prismatic constraint in block form.
       const df = this.m_K.solve22(Vec2.neg(Cdot1));
-      this.m_impulse.x += df.x;
-      this.m_impulse.y += df.y;
+      this.m_impulse.x += df[0];
+      this.m_impulse.y += df[1];
 
-      const P = Vec2.mulNumVec2(df.x, this.m_perp);
-      const LA = df.x * this.m_s1 + df.y;
-      const LB = df.x * this.m_s2 + df.y;
+      const P = Vec2.mulNumVec2(df[0], this.m_perp);
+      const LA = df[0] * this.m_s1 + df[1];
+      const LB = df[0] * this.m_s2 + df[1];
 
       Vec2.subMul(vA, mA, P, vA);
       wA -= iA * LA;
@@ -807,11 +808,11 @@ export class PrismaticJoint extends Joint {
 
     let impulse = Vec3.create();
     const C1 = Vec2.zero();
-    C1.x = Vec2.dot(perp, d);
-    C1.y = aB - aA - this.m_referenceAngle;
+    C1[0] = Vec2.dot(perp, d);
+    C1[1] = aB - aA - this.m_referenceAngle;
 
-    let linearError = math_abs(C1.x);
-    const angularError = math_abs(C1.y);
+    let linearError = math_abs(C1[0]);
+    const angularError = math_abs(C1[1]);
 
     const linearSlop = Settings.linearSlop;
     const maxLinearCorrection = Settings.maxLinearCorrection;
@@ -863,8 +864,8 @@ export class PrismaticJoint extends Joint {
       Vec3.set(k13, k23, k33, K.ez);
 
       const C = Vec3.create();
-      C.x = C1.x;
-      C.y = C1.y;
+      C.x = C1[0];
+      C.y = C1[1];
       C.z = C2;
 
       impulse = K.solve33(Vec3.neg(C));
@@ -881,8 +882,8 @@ export class PrismaticJoint extends Joint {
       Vec2.set(k12, k22, K.ey);
 
       const impulse1 = K.solve(Vec2.neg(C1));
-      impulse.x = impulse1.x;
-      impulse.y = impulse1.y;
+      impulse.x = impulse1[0];
+      impulse.y = impulse1[1];
       impulse.z = 0.0;
     }
 

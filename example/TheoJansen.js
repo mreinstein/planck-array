@@ -151,10 +151,10 @@ testbed.step = function() {
     motorjoint.enableMotor(true);
   }
 
-  if (wheel.getPosition().x > testbed.x + 10) {
-    testbed.x = wheel.getPosition().x - 10;
+  if (wheel.getPosition()[0] > testbed.x + 10) {
+    testbed.x = wheel.getPosition()[0] - 10;
 
-  } else if (wheel.getPosition().x < testbed.x - 10) {
-    testbed.x = wheel.getPosition().x + 10;
+  } else if (wheel.getPosition()[0] < testbed.x - 10) {
+    testbed.x = wheel.getPosition()[0] + 10;
   }
 };

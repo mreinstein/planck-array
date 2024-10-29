@@ -37,7 +37,7 @@ export class Mat22 {
   ey: Vec2Value;
 
   constructor(a: number, b: number, c: number, d: number);
-  constructor(a: { x: number; y: number }, b: { x: number; y: number });
+  constructor(a: Vec2Value, b: Vec2Value);
   constructor();
   constructor(a?, b?, c?, d?) {
     if (typeof a === 'object' && a !== null) {
@@ -92,33 +92,33 @@ export class Mat22 {
   }
 
   setIdentity(): void {
-    this.ex.x = 1.0;
-    this.ey.x = 0.0;
-    this.ex.y = 0.0;
-    this.ey.y = 1.0;
+    this.ex[0] = 1.0;
+    this.ey[0] = 0.0;
+    this.ex[1] = 0.0;
+    this.ey[1] = 1.0;
   }
 
   setZero(): void {
-    this.ex.x = 0.0;
-    this.ey.x = 0.0;
-    this.ex.y = 0.0;
-    this.ey.y = 0.0;
+    this.ex[0] = 0.0;
+    this.ey[0] = 0.0;
+    this.ex[1] = 0.0;
+    this.ey[1] = 0.0;
   }
 
   getInverse(): Mat22 {
-    const a = this.ex.x;
-    const b = this.ey.x;
-    const c = this.ex.y;
-    const d = this.ey.y;
+    const a = this.ex[0];
+    const b = this.ey[0];
+    const c = this.ex[1];
+    const d = this.ey[1];
     let det = a * d - b * c;
     if (det !== 0.0) {
       det = 1.0 / det;
     }
     const imx = new Mat22();
-    imx.ex.x = det * d;
-    imx.ey.x = -det * b;
-    imx.ex.y = -det * c;
-    imx.ey.y = det * a;
+    imx.ex[0] = det * d;
+    imx.ey[0] = -det * b;
+    imx.ex[1] = -det * c;
+    imx.ey[1] = det * a;
     return imx;
   }
 
@@ -128,17 +128,17 @@ export class Mat22 {
    */
   solve(v: Vec2Value): Vec2Value {
     _ASSERT && Vec2.assert(v);
-    const a = this.ex.x;
-    const b = this.ey.x;
-    const c = this.ex.y;
-    const d = this.ey.y;
+    const a = this.ex[0];
+    const b = this.ey[0];
+    const c = this.ex[1];
+    const d = this.ey[1];
     let det = a * d - b * c;
     if (det !== 0.0) {
       det = 1.0 / det;
     }
     const w = Vec2.zero();
-    w.x = det * (d * v.x - b * v.y);
-    w.y = det * (a * v.y - c * v.x);
+    w[0] = det * (d * v[0] - b * v[1]);
+    w[1] = det * (a * v[1] - c * v[0]);
     return w;
   }
 
@@ -170,18 +170,18 @@ export class Mat22 {
 
   static mulVec2(mx: Mat22, v: Vec2Value): Vec2Value {
     _ASSERT && Vec2.assert(v);
-    const x = mx.ex.x * v.x + mx.ey.x * v.y;
-    const y = mx.ex.y * v.x + mx.ey.y * v.y;
+    const x = mx.ex[0] * v[0] + mx.ey[0] * v[1];
+    const y = mx.ex[1] * v[0] + mx.ey[1] * v[1];
     return Vec2.create(x, y);
   }
 
   static mulMat22(mx: Mat22, v: Mat22): Mat22 {
     _ASSERT && Mat22.assert(v);
     // return new Mat22(Vec2.scale(v.ex, mx), Vec2.scale(v.ey, mx));
-    const a = mx.ex.x * v.ex.x + mx.ey.x * v.ex.y;
-    const b = mx.ex.x * v.ey.x + mx.ey.x * v.ey.y;
-    const c = mx.ex.y * v.ex.x + mx.ey.y * v.ex.y;
-    const d = mx.ex.y * v.ey.x + mx.ey.y * v.ey.y;
+    const a = mx.ex[0] * v.ex[0] + mx.ey[0] * v.ex[1];
+    const b = mx.ex[0] * v.ey[0] + mx.ey[0] * v.ey[1];
+    const c = mx.ex[1] * v.ex[0] + mx.ey[1] * v.ex[1];
+    const d = mx.ex[1] * v.ey[0] + mx.ey[1] * v.ey[1];
     return new Mat22(a, b, c, d);
   }
 

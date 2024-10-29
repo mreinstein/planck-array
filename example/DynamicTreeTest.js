@@ -16,10 +16,10 @@ let proxyExtent = 0.5;
 
 let tree = new DynamicTree();
 let queryAABB = new AABB();
-let rayCastInput = {};
-let rayCastOutput = {};
+let rayCastInput = { };
+let rayCastOutput = { };
 let rayActor;
-let actors = []; // Actor[e_actorCount];
+let actors = [ ]; // Actor[e_actorCount];
 let automated = false;
 
 for (let i = 0; i < ACTOR_COUNT; ++i) {
@@ -138,17 +138,17 @@ function Actor() {
 
 function getRandomAABB(aabb) {
   let w = Vec2.create(2.0 * proxyExtent, 2.0 * proxyExtent);
-  // aabb.lowerBound.x = -proxyExtent;
-  // aabb.lowerBound.y = -proxyExtent + worldExtent;
-  aabb.lowerBound.x = Math.random(-worldExtent, worldExtent);
-  aabb.lowerBound.y = Math.random(0.0, 2.0 * worldExtent);
+  // aabb.lowerBound[0] = -proxyExtent;
+  // aabb.lowerBound[1] = -proxyExtent + worldExtent;
+  aabb.lowerBound[0] = Math.random(-worldExtent, worldExtent);
+  aabb.lowerBound[1] = Math.random(0.0, 2.0 * worldExtent);
   aabb.upperBound = Vec2.add(w, aabb.lowerBound);
 }
 
 function moveAABB(aabb) {
   let d = Vec2.create(Math.random(-0.5, 0.5), Math.random(-0.5, 0.5));
-  // d.x = 2.0;
-  // d.y = 0.0;
+  // d[0] = 2.0;
+  // d[1] = 0.0;
   Vec2.add(aabb.lowerBound, d, aabb.lowerBound);
   Vec2.add(aabb.upperBound, d, aabb.upperBound);
 

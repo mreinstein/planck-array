@@ -17,27 +17,27 @@ describe('Collision', function(): void {
     Vec2.set(6, 4, o.lowerBound);
 
     r = o.getCenter();
-    expect(r.x).equal(8);
-    expect(r.y).equal(5);
+    expect(r[0]).equal(8);
+    expect(r[1]).equal(5);
 
     r = o.getExtents();
-    expect(r.x).equal(2);
-    expect(r.y).equal(1);
+    expect(r[0]).equal(2);
+    expect(r[1]).equal(1);
 
     r = o.getPerimeter();
     expect(r).equal(12);
 
     o.combine(new AABB(Vec2.create(7, 4), Vec2.create(9, 6)));
-    expect(o.upperBound.x).equal(10);
-    expect(o.upperBound.y).equal(6);
-    expect(o.lowerBound.x).equal(6);
-    expect(o.lowerBound.y).equal(4);
+    expect(o.upperBound[0]).equal(10);
+    expect(o.upperBound[1]).equal(6);
+    expect(o.lowerBound[0]).equal(6);
+    expect(o.lowerBound[1]).equal(4);
 
     o.combine(new AABB(Vec2.create(5, 3), Vec2.create(11, 7)));
-    expect(o.upperBound.x).equal(11);
-    expect(o.upperBound.y).equal(7);
-    expect(o.lowerBound.x).equal(5);
-    expect(o.lowerBound.y).equal(3);
+    expect(o.upperBound[0]).equal(11);
+    expect(o.upperBound[1]).equal(7);
+    expect(o.lowerBound[0]).equal(5);
+    expect(o.lowerBound[1]).equal(3);
 
     expect(o.contains(new AABB(Vec2.create(5, 3), Vec2.create(11, 7)))).equal(true);
     expect(o.contains(new AABB(Vec2.create(5, 2), Vec2.create(11, 7)))).equal(false);
@@ -61,10 +61,10 @@ describe('Collision', function(): void {
     expect(tree.getUserData(bar)).equal('bar');
     expect(tree.getUserData(baz)).equal('baz');
 
-    expect(tree.getFatAABB(foo).upperBound.x).be.above(1);
-    expect(tree.getFatAABB(foo).upperBound.y).be.above(1);
-    expect(tree.getFatAABB(foo).lowerBound.x).be.below(0);
-    expect(tree.getFatAABB(foo).lowerBound.y).be.below(0);
+    expect(tree.getFatAABB(foo).upperBound[0]).be.above(1);
+    expect(tree.getFatAABB(foo).upperBound[1]).be.above(1);
+    expect(tree.getFatAABB(foo).lowerBound[0]).be.below(0);
+    expect(tree.getFatAABB(foo).lowerBound[1]).be.below(0);
 
     var QueryCallback = sinon.spy();
     var callback = QueryCallback;

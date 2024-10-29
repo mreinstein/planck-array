@@ -856,18 +856,18 @@ export class Contact {
         Vec2.set(k11, k12, this.v_K.ex);
         Vec2.set(k12, k22, this.v_K.ey);
         // this.v_normalMass.set(this.v_K.getInverse());
-        const a = this.v_K.ex.x;
-        const b = this.v_K.ey.x;
-        const c = this.v_K.ex.y;
-        const d = this.v_K.ey.y;
+        const a = this.v_K.ex[0];
+        const b = this.v_K.ey[0];
+        const c = this.v_K.ex[1];
+        const d = this.v_K.ey[1];
         let det = a * d - b * c;
         if (det !== 0.0) {
           det = 1.0 / det;
         }
-        this.v_normalMass.ex.x = det * d;
-        this.v_normalMass.ey.x = -det * b;
-        this.v_normalMass.ex.y = -det * c;
-        this.v_normalMass.ey.y = det * a;
+        this.v_normalMass.ex[0] = det * d;
+        this.v_normalMass.ey[0] = -det * b;
+        this.v_normalMass.ex[1] = -det * c;
+        this.v_normalMass.ey[1] = det * a;
 
       } else {
         // The constraints are redundant, just use one.
@@ -1075,7 +1075,7 @@ export class Contact {
       const vcp2 = this.v_points[1]; // VelocityConstraintPoint
 
       Vec2.set(vcp1.normalImpulse, vcp2.normalImpulse, a);
-      _ASSERT && console.assert(a.x >= 0.0 && a.y >= 0.0);
+      _ASSERT && console.assert(a[0] >= 0.0 && a[1] >= 0.0);
 
       // Relative velocity at contact
       // let dv1 = Vec2.zero().add(vB).add(Vec2.crossNumVec2(wB, vcp1.rB)).sub(vA).sub(Vec2.crossNumVec2(wA, vcp1.rA));
@@ -1100,8 +1100,8 @@ export class Contact {
 
       // Compute b'
       // b.sub(Mat22.mulVec2(this.v_K, a));
-      b.x -= this.v_K.ex.x * a.x + this.v_K.ey.x * a.y;
-      b.y -= this.v_K.ex.y * a.x + this.v_K.ey.y * a.y;
+      b[0] -= this.v_K.ex[0] * a[0] + this.v_K.ey[0] * a[1];
+      b[1] -= this.v_K.ex[1] * a[0] + this.v_K.ey[1] * a[1];
 
       const k_errorTol = 1e-3;
       // NOT_USED(k_errorTol);
@@ -1118,16 +1118,16 @@ export class Contact {
         //
         // const x = Mat22.mulVec2(this.v_normalMass, b).neg();
         matrix.zeroVec2(x);
-        x.x = -(this.v_normalMass.ex.x * b.x + this.v_normalMass.ey.x * b.y);
-        x.y = -(this.v_normalMass.ex.y * b.x + this.v_normalMass.ey.y * b.y);
+        x[0] = -(this.v_normalMass.ex[0] * b[0] + this.v_normalMass.ey[0] * b[1]);
+        x[1] = -(this.v_normalMass.ex[1] * b[0] + this.v_normalMass.ey[1] * b[1]);
 
-        if (x.x >= 0.0 && x.y >= 0.0) {
+        if (x[0] >= 0.0 && x[1] >= 0.0) {
           // Get the incremental impulse
           matrix.subVec2(d, x, a)
 
           // Apply incremental impulse
-          matrix.scaleVec2(P1, d.x, normal);
-          matrix.scaleVec2(P2, d.y, normal);
+          matrix.scaleVec2(P1, d[0], normal);
+          matrix.scaleVec2(P2, d[1], normal);
 
           // vA.subCombine(mA, P1, mA, P2);
           matrix.combine3Vec2(vA, -mA, P1, -mA, P2, 1, vA);
@@ -1138,8 +1138,8 @@ export class Contact {
           wB += iB * (matrix.crossVec2Vec2(vcp1.rB, P1) + matrix.crossVec2Vec2(vcp2.rB, P2));
 
           // Accumulate
-          vcp1.normalImpulse = x.x;
-          vcp2.normalImpulse = x.y;
+          vcp1.normalImpulse = x[0];
+          vcp2.normalImpulse = x[1];
 
           if (DEBUG_SOLVER) {
             // Postconditions
@@ -1171,18 +1171,18 @@ export class Contact {
         // 0 = a11 * x1 + a12 * 0 + b1'
         // vn2 = a21 * x1 + a22 * 0 + b2'
         //
-        x.x = -vcp1.normalMass * b.x;
-        x.y = 0.0;
+        x[0] = -vcp1.normalMass * b[0];
+        x[1] = 0.0;
         vn1 = 0.0;
-        vn2 = this.v_K.ex.y * x.x + b.y;
+        vn2 = this.v_K.ex[1] * x[0] + b[1];
 
-        if (x.x >= 0.0 && vn2 >= 0.0) {
+        if (x[0] >= 0.0 && vn2 >= 0.0) {
           // Get the incremental impulse
           matrix.subVec2(d, x, a);
 
           // Apply incremental impulse
-          matrix.scaleVec2(P1, d.x, normal);
-          matrix.scaleVec2(P2, d.y, normal);
+          matrix.scaleVec2(P1, d[0], normal);
+          matrix.scaleVec2(P2, d[1], normal);
 
           // vA.subCombine(mA, P1, mA, P2);
           matrix.combine3Vec2(vA, -mA, P1, -mA, P2, 1, vA);
@@ -1193,8 +1193,8 @@ export class Contact {
           wB += iB * (matrix.crossVec2Vec2(vcp1.rB, P1) + matrix.crossVec2Vec2(vcp2.rB, P2));
 
           // Accumulate
-          vcp1.normalImpulse = x.x;
-          vcp2.normalImpulse = x.y;
+          vcp1.normalImpulse = x[0];
+          vcp2.normalImpulse = x[1];
 
           if (DEBUG_SOLVER) {
             // Postconditions
@@ -1218,18 +1218,18 @@ export class Contact {
         // vn1 = a11 * 0 + a12 * x2 + b1'
         // 0 = a21 * 0 + a22 * x2 + b2'
         //
-        x.x = 0.0;
-        x.y = -vcp2.normalMass * b.y;
-        vn1 = this.v_K.ey.x * x.y + b.x;
+        x[0] = 0.0;
+        x[1] = -vcp2.normalMass * b[1];
+        vn1 = this.v_K.ey[0] * x[1] + b[0];
         vn2 = 0.0;
 
-        if (x.y >= 0.0 && vn1 >= 0.0) {
+        if (x[1] >= 0.0 && vn1 >= 0.0) {
           // Resubstitute for the incremental impulse
           matrix.subVec2(d, x, a);
 
           // Apply incremental impulse
-          matrix.scaleVec2(P1, d.x, normal);
-          matrix.scaleVec2(P2, d.y, normal);
+          matrix.scaleVec2(P1, d[0], normal);
+          matrix.scaleVec2(P2, d[1], normal);
 
           // vA.subCombine(mA, P1, mA, P2);
           matrix.combine3Vec2(vA, -mA, P1, -mA, P2, 1, vA);
@@ -1240,8 +1240,8 @@ export class Contact {
           wB += iB * (matrix.crossVec2Vec2(vcp1.rB, P1) + matrix.crossVec2Vec2(vcp2.rB, P2));
 
           // Accumulate
-          vcp1.normalImpulse = x.x;
-          vcp2.normalImpulse = x.y;
+          vcp1.normalImpulse = x[0];
+          vcp2.normalImpulse = x[1];
 
           if (DEBUG_SOLVER) {
             // Postconditions
@@ -1265,18 +1265,18 @@ export class Contact {
         // vn1 = b1
         // vn2 = b2;
         //
-        x.x = 0.0;
-        x.y = 0.0;
-        vn1 = b.x;
-        vn2 = b.y;
+        x[0] = 0.0;
+        x[1] = 0.0;
+        vn1 = b[0];
+        vn2 = b[1];
 
         if (vn1 >= 0.0 && vn2 >= 0.0) {
           // Resubstitute for the incremental impulse
           matrix.subVec2(d, x, a);
 
           // Apply incremental impulse
-          matrix.scaleVec2(P1, d.x, normal);
-          matrix.scaleVec2(P2, d.y, normal);
+          matrix.scaleVec2(P1, d[0], normal);
+          matrix.scaleVec2(P2, d[1], normal);
 
           // vA.subCombine(mA, P1, mA, P2);
           matrix.combine3Vec2(vA, -mA, P1, -mA, P2, 1, vA);
@@ -1287,8 +1287,8 @@ export class Contact {
           wB += iB * (matrix.crossVec2Vec2(vcp1.rB, P1) + matrix.crossVec2Vec2(vcp2.rB, P2));
 
           // Accumulate
-          vcp1.normalImpulse = x.x;
-          vcp2.normalImpulse = x.y;
+          vcp1.normalImpulse = x[0];
+          vcp2.normalImpulse = x[1];
 
           break;
         }

@@ -67,8 +67,8 @@ describe('World', function(): void {
       // console.log("%s %s %s", position.x.toFixed(4), position.y.toFixed(4), angle.toFixed(4));
     }
 
-    expect(position.x).closeTo(0.0, 1e-5);
-    expect(position.y).closeTo(1.015, 5e-5);
+    expect(position[0]).closeTo(0.0, 1e-5);
+    expect(position[1]).closeTo(1.015, 5e-5);
     expect(angle).closeTo(0.0, 1e-5);
   });
 

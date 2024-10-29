@@ -33,16 +33,20 @@ import { EPSILON } from "./Math";
 /** @internal */ const math_min = Math.min;
 
 
+/*
 export interface Vec2Value {
   x: number;
   y: number;
 }
+*/
+
+export type Vec2Value = [ number, number ];
 
 /*
   _serialize(): object {
     return {
-      x: this.x,
-      y: this.y
+      x: this[0],
+      y: this[1]
     };
   }
 
@@ -51,7 +55,7 @@ export interface Vec2Value {
   }
 
   _deserialize(data: any): Vec2Value {
-    return { x: data.x, y: data.y };
+    return { x: data[0], y: data[1] };
   }
 */
 
@@ -60,30 +64,30 @@ export interface Vec2Value {
  * create a new Vec2
  */
 export function create (x: number=0, y: number=0): Vec2Value {
-  return { x, y };
+  return [ x, y ];
 }
 
 export function zero(): Vec2Value {
-  return { x: 0, y: 0 };
+  return [ 0, 0 ];
 }
 
 export function copy (v: Vec2Value, out: Vec2Value): Vec2Value {
   _ASSERT && assert(out) && assert(v);
-  out.x = v.x;
-  out.y = v.y;
+  out[0] = v[0];
+  out[1] = v[1];
   return out;
 }
 
 export function set (x: number, y: number, out: Vec2Value): Vec2Value {
   _ASSERT && assert(out);
-  out.x = x;
-  out.y = y;
+  out[0] = x;
+  out[1] = y;
   return out;
 }
 
 export function clone (v: Vec2Value): Vec2Value {
   _ASSERT && assert(v);
-  return create(v.x, v.y);
+  return create(v[0], v[1]);
 }
 
 /**
@@ -93,7 +97,7 @@ export function isValid (obj: any): boolean {
   if (obj === null || typeof obj === 'undefined') {
     return false;
   }
-  return Number.isFinite(obj.x) && Number.isFinite(obj.y);
+  return Number.isFinite(obj[0]) && Number.isFinite(obj[1]);
 }
 
 export function assert (o: any): void {
@@ -106,8 +110,8 @@ export function assert (o: any): void {
  * @returns Vec2
  */
 export function setZero (out: Vec2Value): Vec2Value {
-  out.x = 0.0;
-  out.y = 0.0;
+  out[0] = 0.0;
+  out[1] = 0.0;
   return out;
 }
 
@@ -118,8 +122,8 @@ export function scale(v: Vec2Value, a: number, out: Vec2Value=create()): Vec2Val
   _ASSERT && console.assert(Number.isFinite(a));
   _ASSERT && assert(v);
 
-  const x = a * v.x;
-  const y = a * v.y;
+  const x = a * v[0];
+  const y = a * v[1];
 
   return set(x, y, out);
 }
@@ -134,10 +138,10 @@ export function addCombine(src: Vec2Value, a: number, v: Vec2Value, b: number, w
   _ASSERT && console.assert(Number.isFinite(b));
   _ASSERT && assert(w);
 
-  const x = a * v.x + b * w.x;
-  const y = a * v.y + b * w.y;
+  const x = a * v[0] + b * w[0];
+  const y = a * v[1] + b * w[1];
 
-  return set(src.x + x, src.y + y, out);
+  return set(src[0] + x, src[1] + y, out);
 }
 
 /**
@@ -146,10 +150,10 @@ export function addCombine(src: Vec2Value, a: number, v: Vec2Value, b: number, w
 export function addMul (src: Vec2Value, a: number, v: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && console.assert(Number.isFinite(a));
   _ASSERT && assert(v);
-  const x = a * v.x;
-  const y = a * v.y;
+  const x = a * v[0];
+  const y = a * v[1];
 
-  return set(src.x + x, src.y + y, out);
+  return set(src[0] + x, src[1] + y, out);
 }
 
 /**
@@ -161,10 +165,10 @@ export function subCombine (src: Vec2Value, a: number, v: Vec2Value, b: number, 
   _ASSERT && console.assert(Number.isFinite(b));
   _ASSERT && assert(w);
 
-  const x = a * v.x + b * w.x;
-  const y = a * v.y + b * w.y;
+  const x = a * v[0] + b * w[0];
+  const y = a * v[1] + b * w[1];
 
-  return set(src.x - x, src.y - y, out);
+  return set(src[0] - x, src[1] - y, out);
 }
 
 /**
@@ -173,10 +177,10 @@ export function subCombine (src: Vec2Value, a: number, v: Vec2Value, b: number, 
 export function subMul (src: Vec2Value, a: number, v: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && console.assert(Number.isFinite(a));
   _ASSERT && assert(v);
-  const x = a * v.x;
-  const y = a * v.y;
+  const x = a * v[0];
+  const y = a * v[1];
 
-  return set(src.x - x, src.y - y, out);
+  return set(src[0] - x, src[1] - y, out);
 }
 
 /**
@@ -191,7 +195,7 @@ export function normalize (v: Vec2Value, out: Vec2Value=create()): number {
   }
   const invLength = 1.0 / len;
 
-  set(v.x * invLength, v.y * invLength, out)
+  set(v[0] * invLength, v[1] * invLength, out)
   return len;
 }
 
@@ -202,7 +206,7 @@ export function normalize (v: Vec2Value, out: Vec2Value=create()): number {
  */
 export function length (v: Vec2Value): number {
   _ASSERT && assert(v);
-  return math_sqrt(v.x * v.x + v.y * v.y);
+  return math_sqrt(v[0] * v[0] + v[1] * v[1]);
 }
 
 /**
@@ -210,29 +214,29 @@ export function length (v: Vec2Value): number {
  */
 export function lengthSquared (v: Vec2Value): number {
   _ASSERT && assert(v);
-  return v.x * v.x + v.y * v.y;
+  return v[0] * v[0] + v[1] * v[1];
 }
 
 export function distance (v: Vec2Value, w: Vec2Value): number {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
-  const dx = v.x - w.x;
-  const dy = v.y - w.y;
+  const dx = v[0] - w[0];
+  const dy = v[1] - w[1];
   return math_sqrt(dx * dx + dy * dy);
 }
 
 export function distanceSquared (v: Vec2Value, w: Vec2Value): number {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
-  const dx = v.x - w.x;
-  const dy = v.y - w.y;
+  const dx = v[0] - w[0];
+  const dy = v[1] - w[1];
   return dx * dx + dy * dy;
 }
 
 export function areEqual (v: Vec2Value, w: Vec2Value): boolean {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
-  return v === w || typeof w === 'object' && w !== null && v.x === w.x && v.y === w.y;
+  return v === w || typeof w === 'object' && w !== null && v[0] === w[0] && v[1] === w[1];
 }
 
 /**
@@ -240,14 +244,14 @@ export function areEqual (v: Vec2Value, w: Vec2Value): boolean {
  */
 export function skew (v: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(v);
-  return set(-v.y, v.x, out);
+  return set(-v[1], v[0], out);
 }
 
 /** Dot product on two vectors */
 export function dot (v: Vec2Value, w: Vec2Value): number {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
-  return v.x * w.x + v.y * w.y;
+  return v[0] * w[0] + v[1] * w[1];
 }
 
 /** Cross product between two vectors */
@@ -255,17 +259,17 @@ export function cross (v: any, w: any): any {
     if (typeof w === 'number') {
       _ASSERT && assert(v);
       _ASSERT && console.assert(Number.isFinite(w));
-      return create(w * v.y, -w * v.x);
+      return create(w * v[1], -w * v[0]);
 
     } else if (typeof v === 'number') {
       _ASSERT && console.assert(Number.isFinite(v));
       _ASSERT && assert(w);
-      return create(-v * w.y, v * w.x);
+      return create(-v * w[1], v * w[0]);
 
     } else {
       _ASSERT && assert(v);
       _ASSERT && assert(w);
-      return v.x * w.y - v.y * w.x;
+      return v[0] * w[1] - v[1] * w[0];
     }
 }
 
@@ -273,21 +277,21 @@ export function cross (v: any, w: any): any {
 export function crossVec2Vec2 (v: Vec2Value, w: Vec2Value): number {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
-  return v.x * w.y - v.y * w.x;
+  return v[0] * w[1] - v[1] * w[0];
 }
 
 /** Cross product on a vector and a scalar */
 export function crossVec2Num (v: Vec2Value, w: number, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(v);
   _ASSERT && console.assert(Number.isFinite(w));
-  return set(w * v.y, -w * v.x, out);
+  return set(w * v[1], -w * v[0], out);
 }
 
 /** Cross product on a vector and a scalar */
 export function crossNumVec2 (v: number, w: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && console.assert(Number.isFinite(v));
   _ASSERT && assert(w);
-  return set(-v * w.y, v * w.x, out);
+  return set(-v * w[1], v * w[0], out);
 }
 
 /**
@@ -296,7 +300,7 @@ export function crossNumVec2 (v: number, w: Vec2Value, out: Vec2Value=create()):
 export function addCrossVec2Num (a: Vec2Value, v: Vec2Value, w: number, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(v);
   _ASSERT && console.assert(Number.isFinite(w));
-  return set(w * v.y + a.x, -w * v.x + a.y, out);
+  return set(w * v[1] + a[0], -w * v[0] + a[1], out);
 }
 
 /**
@@ -305,13 +309,13 @@ export function addCrossVec2Num (a: Vec2Value, v: Vec2Value, w: number, out: Vec
 export function  addCrossNumVec2 (a: Vec2Value, v: number, w: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && console.assert(Number.isFinite(v));
   _ASSERT && assert(w);
-  return set(-v * w.y + a.x, v * w.x + a.y, out);
+  return set(-v * w[1] + a[0], v * w[0] + a[1], out);
 }
 
 export function  add (v: Vec2Value, w: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
-  return set(v.x + w.x, v.y + w.y, out);
+  return set(v[0] + w[0], v[1] + w[1], out);
 }
 
 /**
@@ -322,8 +326,8 @@ export function combine (a: number, v: Vec2Value, b: number, w: Vec2Value, out: 
   _ASSERT && assert(v);
   _ASSERT && console.assert(Number.isFinite(b));
   _ASSERT && assert(w);
-  const x = a * v.x + b * w.x;
-  const y = a * v.y + b * w.y;
+  const x = a * v[0] + b * w[0];
+  const y = a * v[1] + b * w[1];
 
   return set(x, y, out);
 }
@@ -335,54 +339,54 @@ export function combine (a: number, v: Vec2Value, b: number, w: Vec2Value, out: 
 export function sub (v: Vec2Value, w: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
-  return set(v.x - w.x, v.y - w.y, out);
+  return set(v[0] - w[0], v[1] - w[1], out);
 }
 
 export function mulVec2Num (a: Vec2Value, b: number, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(a);
   _ASSERT && console.assert(Number.isFinite(b));
-  return set(a.x * b, a.y * b, out);
+  return set(a[0] * b, a[1] * b, out);
 }
 
 export function mulNumVec2 (a: number, b: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && console.assert(Number.isFinite(a));
   _ASSERT && assert(b);
-  return set(a * b.x, a * b.y, out);
+  return set(a * b[0], a * b[1], out);
 }
 
 export function neg (v: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(v);
-  return set(-v.x, -v.y, out);
+  return set(-v[0], -v[1], out);
 }
 
 export function abs (v: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(v);
-  return set(math_abs(v.x), math_abs(v.y), out);
+  return set(math_abs(v[0]), math_abs(v[1]), out);
 }
 
 export function mid (v: Vec2Value, w: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
-  return set((v.x + w.x) * 0.5, (v.y + w.y) * 0.5, out);
+  return set((v[0] + w[0]) * 0.5, (v[1] + w[1]) * 0.5, out);
 }
 
 export function upper (v: Vec2Value, w: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
-  return set(math_max(v.x, w.x), math_max(v.y, w.y), out);
+  return set(math_max(v[0], w[0]), math_max(v[1], w[1]), out);
 }
 
 export function lower (v: Vec2Value, w: Vec2Value, out: Vec2Value=create()): Vec2Value {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
-  return set(math_min(v.x, w.x), math_min(v.y, w.y), out);
+  return set(math_min(v[0], w[0]), math_min(v[1], w[1]), out);
 }
 
 export function clamp (v: Vec2Value, max: number, out: Vec2Value=create()): Vec2Value {
-  const lengthSqr = v.x * v.x + v.y * v.y;
+  const lengthSqr = v[0] * v[0] + v[1] * v[1];
   if (lengthSqr > max * max) {
     const scale = max / math_sqrt(lengthSqr);
-    return set(v.x * scale, v.y * scale, out);
+    return set(v[0] * scale, v[1] * scale, out);
   }
 
   return copy(v, out);

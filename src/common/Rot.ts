@@ -181,12 +181,12 @@ export class Rot {
   static mulVec2(rot: RotValue, m: Vec2Value): Vec2Value {
     _ASSERT && Rot.assert(rot);
     _ASSERT && Vec2.assert(m);
-    return Vec2.create(rot.c * m.x - rot.s * m.y, rot.s * m.x + rot.c * m.y);
+    return Vec2.create(rot.c * m[0] - rot.s * m[1], rot.s * m[0] + rot.c * m[1]);
   }
 
   static mulSub(rot: RotValue, v: Vec2Value, w: Vec2Value): Vec2Value {
-    const x = rot.c * (v.x - w.x) - rot.s * (v.y - w.y);
-    const y = rot.s * (v.x - w.x) + rot.c * (v.y - w.y);
+    const x = rot.c * (v[0] - w[0]) - rot.s * (v[1] - w[1]);
+    const y = rot.s * (v[0] - w[0]) + rot.c * (v[1] - w[1]);
     return Vec2.create(x, y);
   }
 
@@ -228,6 +228,6 @@ export class Rot {
   /** Inverse rotate a vector */
   static mulTVec2(rot: RotValue, m: Vec2Value): Vec2Value {
     _ASSERT && Vec2.assert(m);
-    return Vec2.create(rot.c * m.x + rot.s * m.y, -rot.s * m.x + rot.c * m.y);
+    return Vec2.create(rot.c * m[0] + rot.s * m[1], -rot.s * m[0] + rot.c * m[1]);
   }
 }

@@ -364,20 +364,20 @@ class Simplex {
   /** @internal */ toString(): string {
     if (this.m_count === 3) {
       return ["+" + this.m_count,
-        this.m_v1.a, this.m_v1.wA.x, this.m_v1.wA.y, this.m_v1.wB.x, this.m_v1.wB.y,
-        this.m_v2.a, this.m_v2.wA.x, this.m_v2.wA.y, this.m_v2.wB.x, this.m_v2.wB.y,
-        this.m_v3.a, this.m_v3.wA.x, this.m_v3.wA.y, this.m_v3.wB.x, this.m_v3.wB.y
+        this.m_v1.a, this.m_v1.wA[0], this.m_v1.wA[1], this.m_v1.wB[0], this.m_v1.wB[1],
+        this.m_v2.a, this.m_v2.wA[0], this.m_v2.wA[1], this.m_v2.wB[0], this.m_v2.wB[1],
+        this.m_v3.a, this.m_v3.wA[0], this.m_v3.wA[1], this.m_v3.wB[0], this.m_v3.wB[1]
       ].toString();
 
     } else if (this.m_count === 2) {
       return ["+" + this.m_count,
-        this.m_v1.a, this.m_v1.wA.x, this.m_v1.wA.y, this.m_v1.wB.x, this.m_v1.wB.y,
-        this.m_v2.a, this.m_v2.wA.x, this.m_v2.wA.y, this.m_v2.wB.x, this.m_v2.wB.y
+        this.m_v1.a, this.m_v1.wA[0], this.m_v1.wA[1], this.m_v1.wB[0], this.m_v1.wB[1],
+        this.m_v2.a, this.m_v2.wA[0], this.m_v2.wA[1], this.m_v2.wB[0], this.m_v2.wB[1]
       ].toString();
 
     } else if (this.m_count === 1) {
       return ["+" + this.m_count,
-        this.m_v1.a, this.m_v1.wA.x, this.m_v1.wA.y, this.m_v1.wB.x, this.m_v1.wB.y
+        this.m_v1.a, this.m_v1.wA[0], this.m_v1.wA[1], this.m_v1.wB[0], this.m_v1.wB[1]
       ].toString();
 
     } else {
@@ -443,17 +443,17 @@ class Simplex {
     const v3 = this.m_v3;
     switch (this.m_count) {
       case 1:
-        return Vec2.set(-v1.w.x, -v1.w.y, searchDirection_reuse);
+        return Vec2.set(-v1.w[0], -v1.w[1], searchDirection_reuse);
 
       case 2: {
         matrix.subVec2(e12, v2.w, v1.w);
         const sgn = -matrix.crossVec2Vec2(e12, v1.w);
         if (sgn > 0.0) {
           // Origin is left of e12.
-          return Vec2.set(-e12.y, e12.x, searchDirection_reuse);
+          return Vec2.set(-e12[1], e12[0], searchDirection_reuse);
         } else {
           // Origin is right of e12.
-          return Vec2.set(e12.y, -e12.x, searchDirection_reuse);
+          return Vec2.set(e12[1], -e12[0], searchDirection_reuse);
         }
       }
 

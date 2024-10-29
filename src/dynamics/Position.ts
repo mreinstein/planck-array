@@ -44,8 +44,8 @@ export class Position {
     // xf.p = this.c - xf.q * p
     xf.q.c = math_cos(this.a);
     xf.q.s = math_sin(this.a);
-    xf.p.x = this.c.x - (xf.q.c * p.x - xf.q.s * p.y);
-    xf.p.y = this.c.y - (xf.q.s * p.x + xf.q.c * p.y);
+    xf.p[0] = this.c[0] - (xf.q.c * p[0] - xf.q.s * p[1]);
+    xf.p[1] = this.c[1] - (xf.q.s * p[0] + xf.q.c * p[1]);
     return xf;
   }
 }
@@ -55,7 +55,7 @@ export function getTransform(xf: TransformValue, p: Vec2Value, c: Vec2Value, a: 
   // xf.p = this.c - xf.q * p
   xf.q.c = math_cos(a);
   xf.q.s = math_sin(a);
-  xf.p.x = c.x - (xf.q.c * p.x - xf.q.s * p.y);
-  xf.p.y = c.y - (xf.q.s * p.x + xf.q.c * p.y);
+  xf.p[0] = c[0] - (xf.q.c * p[0] - xf.q.s * p[1]);
+  xf.p[1] = c[1] - (xf.q.s * p[0] + xf.q.c * p[1]);
   return xf;
 }

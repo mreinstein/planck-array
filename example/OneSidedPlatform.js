@@ -66,14 +66,14 @@ world.on('pre-solve', function(contact, oldManifold) {
     // disable contact
     let p = character.getPosition();
 
-    if (p.y < top + radius - 3.0 * /*linearSlop*/ 0.005) {
+    if (p[1] < top + radius - 3.0 * /*linearSlop*/ 0.005) {
       contact.setEnabled(false);
     }
   } else {
     // if character is moving up
     // disable contact
     let v = character.getLinearVelocity();
-    if (v.y > 0.0) {
+    if (v[1] > 0.0) {
       contact.setEnabled(false);
     }
   }
@@ -81,5 +81,5 @@ world.on('pre-solve', function(contact, oldManifold) {
 
 testbed.step = function() {
   let v = character.getLinearVelocity();
-  testbed.status('Character Linear Velocity', v.y);
+  testbed.status('Character Linear Velocity', v[1]);
 };

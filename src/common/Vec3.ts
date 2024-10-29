@@ -74,6 +74,21 @@ export function setZero(obj: Vec3Value): Vec3Value {
 }
 
 
+/**
+ * scale a vector by a number
+ */
+export function scale (v: Vec3Value, a: number, out: Vec3Value=create()): Vec3Value {
+  _ASSERT && console.assert(Number.isFinite(a));
+  _ASSERT && assert(v);
+
+  const x = a * v[0];
+  const y = a * v[1];
+  const z = a * v[2];
+
+  return set(x, y, z, out);
+}
+
+
 export function set (x: number, y: number, z: number, obj: Vec3Value): Vec3Value {
   obj.x = x;
   obj.y = y;

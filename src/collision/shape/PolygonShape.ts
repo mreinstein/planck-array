@@ -195,10 +195,10 @@ export class PolygonShape extends Shape {
 
     // Find the right most point on the hull (in case of multiple points bottom most is used)
     let i0 = 0;
-    let x0 = ps[0].x;
+    let x0 = ps[0][0];
     for (let i = 1; i < n; ++i) {
-      const x = ps[i].x;
-      if (x > x0 || (x === x0 && ps[i].y < ps[i0].y)) {
+      const x = ps[i][0];
+      if (x > x0 || (x === x0 && ps[i][1] < ps[i0][1])) {
         i0 = i;
         x0 = x;
       }
@@ -404,10 +404,10 @@ export class PolygonShape extends Shape {
     let maxY = -Infinity;
     for (let i = 0; i < this.m_count; ++i) {
       const v = matrix.transformVec2(temp, xf, this.m_vertices[i]);
-      minX = math_min(minX, v.x);
-      maxX = math_max(maxX, v.x);
-      minY = math_min(minY, v.y);
-      maxY = math_max(maxY, v.y);
+      minX = math_min(minX, v[0]);
+      maxX = math_max(maxX, v[0]);
+      minY = math_min(minY, v[1]);
+      maxY = math_max(maxY, v[1]);
     }
 
     Vec2.set(minX - this.m_radius, minY - this.m_radius, aabb.lowerBound);
@@ -482,10 +482,10 @@ export class PolygonShape extends Shape {
       matrix.combine2Vec2(temp, triangleArea * k_inv3, e1, triangleArea * k_inv3, e2);
       matrix.plusVec2(center, temp);
 
-      const ex1 = e1.x;
-      const ey1 = e1.y;
-      const ex2 = e2.x;
-      const ey2 = e2.y;
+      const ex1 = e1[0];
+      const ey1 = e1[1];
+      const ex2 = e2[0];
+      const ey2 = e2[1];
 
       const intx2 = ex1 * ex1 + ex2 * ex1 + ex2 * ex2;
       const inty2 = ey1 * ey1 + ey2 * ey1 + ey2 * ey2;
