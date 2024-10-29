@@ -36,3 +36,5 @@ You can find the original library [here](https://piqnt.com/planck.js/).
 
 All of the same [examples](https://piqnt.com/planck.js/) and [documentation](https://piqnt.com/planck.js/docs/) should be the same for this port,
 except for constructing `Vec2` and `Vec3` instances.
+
+For a fantastic, compatible Vector/Matrix/Math library check out [wgpu-matrix](https://www.npmjs.com/package/wgpu-matrix)
