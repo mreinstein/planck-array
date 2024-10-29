@@ -23,7 +23,7 @@
  */
 
 import { Vec2Value } from './Vec2';
-import * as Vec2 from '../common/Vec2';
+import * as Vec2 from './Vec2';
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;

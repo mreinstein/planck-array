@@ -23,7 +23,7 @@
  */
 
 import { Vec2Value } from './Vec2';
-import * as Vec2 from '../common/Vec2';
+import * as Vec2 from './Vec2';
 import { Rot, RotValue } from './Rot';
 
 

@@ -58,6 +58,7 @@ module.exports = [
     sourcemap: true,
     declaration: false,
   }
+
 ].map(options => {
   const config = {
     input: options.src,

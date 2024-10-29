@@ -230,14 +230,14 @@ class StageTestbed extends Testbed {
 
     worldNode.attr('spy', true);
 
-    worldNode.on(Stage.POINTER_START, (point: Vec2Value) => {
-      point = [ point.x, testbed.scaleY * point.y ];
+    worldNode.on(Stage.POINTER_START, (point: { x: number, y: number }) => {
+      const p = Vec2.create(point.x, testbed.scaleY * point.y);
 
       if (targetBody) {
         return;
       }
 
-      const body = findBody(world, point);
+      const body = findBody(world, p);
       if (!body) {
         return;
       }
@@ -246,24 +246,23 @@ class StageTestbed extends Testbed {
         targetBody = body;
 
       } else {
-        mouseJoint = new MouseJoint({maxForce: 1000}, mouseGround, body, [ point[0], point[1] ]);
+        mouseJoint = new MouseJoint({maxForce: 1000}, mouseGround, body, p);
         world.createJoint(mouseJoint);
       }
     });
 
-    worldNode.on(Stage.POINTER_MOVE, (point: Vec2Value) => {
-      point = [ point.x, testbed.scaleY * point.y ];
+    worldNode.on(Stage.POINTER_MOVE, (point: { x: number, y: number }) => {
+      const p = Vec2.create(point.x, testbed.scaleY * point.y);
 
       if (mouseJoint) {
-        mouseJoint.setTarget(point);
+        mouseJoint.setTarget(p);
       }
 
-      mouseMove[0] = point[0];
-      mouseMove[1] = point[1];
+      Vec2.copy(p, mouseMove);
     });
 
-    worldNode.on(Stage.POINTER_END, (point: Vec2Value) => {
-      point = [ point.x, testbed.scaleY * point.y ];
+    worldNode.on(Stage.POINTER_END, (point: { x: number, y: number }) => {
+      const p = Vec2.create(point.x, testbed.scaleY * point.y);
 
       if (mouseJoint) {
         world.destroyJoint(mouseJoint);
@@ -272,17 +271,15 @@ class StageTestbed extends Testbed {
       if (targetBody && this.mouseForce) {
         const target = targetBody.getPosition();
         const force = Vec2.create(
-          (point[0] - target[0]) * this.mouseForce,
-          (point[1] - target[1]) * this.mouseForce
+          (p[0] - target[0]) * this.mouseForce,
+          (p[1] - target[1]) * this.mouseForce
         );
         targetBody.applyForceToCenter(force, true);
         targetBody = null;
       }
     });
 
-    worldNode.on(Stage.POINTER_CANCEL, (point: Vec2Value) => {
-      point = [ point.x, testbed.scaleY * point.y ];
-
+    worldNode.on(Stage.POINTER_CANCEL, (point: { x: number, y: number }) => {
       if (mouseJoint) {
         world.destroyJoint(mouseJoint);
         mouseJoint = null;

@@ -26,7 +26,6 @@ import { EPSILON } from "./Math";
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
-/** @internal */ const _CONSTRUCTOR_FACTORY = typeof CONSTRUCTOR_FACTORY === 'undefined' ? false : CONSTRUCTOR_FACTORY;
 /** @internal */ const math_abs = Math.abs;
 /** @internal */ const math_sqrt = Math.sqrt;
 /** @internal */ const math_max = Math.max;

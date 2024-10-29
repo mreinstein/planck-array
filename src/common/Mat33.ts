@@ -23,8 +23,8 @@
  */
 
 import { Vec2Value } from './Vec2';
-import * as Vec2 from '../common/Vec2';
-import * as Vec3 from '../common/Vec3';
+import * as Vec2 from './Vec2';
+import * as Vec3 from './Vec3';
 import { Vec3Value } from './Vec3';
 
 
