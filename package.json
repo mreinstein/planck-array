@@ -1,6 +1,6 @@
 {
   "name": "@footgun/planck",
-  "version": "0.1.0",
+  "version": "0.2.3",
   "description": "2D JavaScript/TypeScript physics engine for cross-platform HTML5 game development",
   "homepage": "https://github.com/mreinstein/planck-array.js",
   "keywords": [
@@ -30,10 +30,13 @@
     "./dist/planck-with-testbed.*"
   ],
   "module": "dist/planck.mjs",
+
   "main": "dist/planck.js",
+
   "jsdelivr": "dist/planck.min.js",
   "unpkg": "dist/planck.min.js",
   "types": "index.d.ts",
+  "files": [ "dist/*.js", "dist/*.mjs" ],
   "exports": {
     ".": {
       "types": "./dist/planck.d.ts",
