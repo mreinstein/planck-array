@@ -52,9 +52,12 @@ function addNode(parent, localAnchor, depth, offset, a) {
 
   let h = Vec2.create(0.0, a);
 
+  const p = Vec2.add(parent.getPosition(), localAnchor);
+  Vec2.sub(p, h, p);
+
   let node = world.createBody({
     type : 'dynamic',
-    position : Vec2.create(parent.getPosition()).add(localAnchor).sub(h)
+    position : p
   });
 
   node.createFixture(new Box(0.25 * a, a), DENSITY);

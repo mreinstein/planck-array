@@ -29,8 +29,8 @@ for (let i = 0; i < ACTOR_COUNT; ++i) {
 }
 
 let h = worldExtent;
-queryAABB.lowerBound.set(-3.0, -4.0 + h);
-queryAABB.upperBound.set(5.0, 6.0 + h);
+Vec2.set(-3.0, -4.0 + h, queryAABB.lowerBound);
+Vec2.set(5.0, 6.0 + h, queryAABB.upperBound);
 
 rayCastInput.p1 = Vec2.create(-5.0, 5.0 + h);
 rayCastInput.p2 = Vec2.create(7.0, -4.0 + h);
@@ -149,16 +149,19 @@ function moveAABB(aabb) {
   let d = Vec2.create(Math.random(-0.5, 0.5), Math.random(-0.5, 0.5));
   // d.x = 2.0;
   // d.y = 0.0;
-  aabb.lowerBound.add(d);
-  aabb.upperBound.add(d);
+  Vec2.add(aabb.lowerBound, d, aabb.lowerBound);
+  Vec2.add(aabb.upperBound, d, aabb.upperBound);
 
   let c0 = Vec2.mid(aabb.lowerBound, aabb.upperBound);
   let min = Vec2.create(-worldExtent, 0.0);
   let max = Vec2.create(worldExtent, 2.0 * worldExtent);
   let c = Vec2.clamp(c0, min, max);
 
-  aabb.lowerBound.add(c).sub(c0);
-  aabb.upperBound.add(c).sub(c0);
+  Vec2.add(aabb.lowerBound, c, aabb.lowerBound);
+  Vec2.sub(aabb.lowerBound, c0, aabb.lowerBound);
+
+  Vec2.add(aabb.upperBound, c, aabb.upperBound);
+  Vec2.sub(aabb.upperBound, c0, aabb.upperBound);
 }
 
 function createProxy() {

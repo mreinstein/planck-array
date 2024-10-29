@@ -5,8 +5,8 @@ const filesize =  require('rollup-plugin-filesize');
 const typescript =  require('rollup-plugin-ts');
 const { nodeResolve } =  require('@rollup/plugin-node-resolve');
 
-const declarationTransformer =  require('./build-utils/declarationTransformer');
-const licenseBanner =  require('./build-utils/license');
+const declarationTransformer = require('./build-utils/declarationTransformer');
+const licenseBanner          = require('./build-utils/license');
 
 
 module.exports = [

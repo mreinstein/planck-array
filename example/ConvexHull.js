@@ -43,8 +43,7 @@ generate();
 
 function generate() {
 
-  let lowerBound = Vec2.create(-8.0, -8.0);
-  let upperBound = Vec2.create(8.0, 8.0);
+  let max = 8.0;
 
   points.length = 0;
   for (let i = 0; i < COUNT; ++i) {
@@ -53,7 +52,7 @@ function generate() {
 
     // Clamp onto a square to help create collinearities.
     // This will stress the convex hull algorithm.
-    let v = Vec2.clamp(Vec2.create(x, y), lowerBound, upperBound);
+    let v = Vec2.clamp(Vec2.create(x, y), max);
     points.push(v);
   }
 

@@ -53,7 +53,9 @@ function addNode(parent, localAnchor, depth, offset, a) {
 
   let h = Vec2.create(0.0, a);
 
-  let p = Vec2.create(parent.getPosition()).add(localAnchor).sub(h);
+  //let p = Vec2.create(parent.getPosition()).add(localAnchor).sub(h);
+  const p = Vec2.add(parent.getPosition(), localAnchor);
+  Vec2.sub(p, h, p);
 
   let node = world.createDynamicBody(p);
 
