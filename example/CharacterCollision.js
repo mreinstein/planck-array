@@ -27,7 +27,7 @@
 
 const { World, Vec2, Edge, Chain, Box, Polygon, Circle, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.info(`
@@ -39,60 +39,60 @@ testbed.start(world);
 
 // Ground body
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-20.0, 0.0), new Vec2(20.0, 0.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(-20.0, 0.0), Vec2.create(20.0, 0.0)), 0.0);
 
 // Collinear edges with no adjacency information.
 // This shows the problematic case where a box shape can hit
 // an internal vertex.
 let edge = world.createBody();
-edge.createFixture(new Edge(new Vec2(-8.0, 1.0), new Vec2(-6.0, 1.0)), 0.0);
-edge.createFixture(new Edge(new Vec2(-6.0, 1.0), new Vec2(-4.0, 1.0)), 0.0);
-edge.createFixture(new Edge(new Vec2(-4.0, 1.0), new Vec2(-2.0, 1.0)), 0.0);
+edge.createFixture(new Edge(Vec2.create(-8.0, 1.0), Vec2.create(-6.0, 1.0)), 0.0);
+edge.createFixture(new Edge(Vec2.create(-6.0, 1.0), Vec2.create(-4.0, 1.0)), 0.0);
+edge.createFixture(new Edge(Vec2.create(-4.0, 1.0), Vec2.create(-2.0, 1.0)), 0.0);
 
 // Chain shape
-let chain = world.createBody(new Vec2(), 0.25 * Math.PI);
+let chain = world.createBody(Vec2.create(), 0.25 * Math.PI);
 chain.createFixture(new Chain([
-  new Vec2(5.0, 7.0),
-  new Vec2(6.0, 8.0),
-  new Vec2(7.0, 8.0),
-  new Vec2(8.0, 7.0)
+  Vec2.create(5.0, 7.0),
+  Vec2.create(6.0, 8.0),
+  Vec2.create(7.0, 8.0),
+  Vec2.create(8.0, 7.0)
 ]), 0.0);
 
 // Square tiles. This shows that adjacency shapes may
 // have non-smooth collision. There is no solution
 // to this problem.
 let tiles = world.createBody();
-tiles.createFixture(new Box(1.0, 1.0, new Vec2(4.0, 3.0), 0.0), 0.0);
-tiles.createFixture(new Box(1.0, 1.0, new Vec2(6.0, 3.0), 0.0), 0.0);
-tiles.createFixture(new Box(1.0, 1.0, new Vec2(8.0, 3.0), 0.0), 0.0);
+tiles.createFixture(new Box(1.0, 1.0, Vec2.create(4.0, 3.0), 0.0), 0.0);
+tiles.createFixture(new Box(1.0, 1.0, Vec2.create(6.0, 3.0), 0.0), 0.0);
+tiles.createFixture(new Box(1.0, 1.0, Vec2.create(8.0, 3.0), 0.0), 0.0);
 
 // Square made from an edge loop. Collision should be smooth.
 let square = world.createBody();
 square.createFixture(new Chain([
-  new Vec2(-1.0, 3.0),
-  new Vec2(1.0, 3.0),
-  new Vec2(1.0, 5.0),
-  new Vec2(-1.0, 5.0)
+  Vec2.create(-1.0, 3.0),
+  Vec2.create(1.0, 3.0),
+  Vec2.create(1.0, 5.0),
+  Vec2.create(-1.0, 5.0)
 ], true), 0.0);
 
 // Edge loop. Collision should be smooth.
-let loop = world.createBody(new Vec2(-10.0, 4.0));
+let loop = world.createBody(Vec2.create(-10.0, 4.0));
 loop.createFixture(new Chain([
-  new Vec2(0.0, 0.0),
-  new Vec2(6.0, 0.0),
-  new Vec2(6.0, 2.0),
-  new Vec2(4.0, 1.0),
-  new Vec2(2.0, 2.0),
-  new Vec2(0.0, 2.0),
-  new Vec2(-2.0, 2.0),
-  new Vec2(-4.0, 3.0),
-  new Vec2(-6.0, 2.0),
-  new Vec2(-6.0, 0.0)
+  Vec2.create(0.0, 0.0),
+  Vec2.create(6.0, 0.0),
+  Vec2.create(6.0, 2.0),
+  Vec2.create(4.0, 1.0),
+  Vec2.create(2.0, 2.0),
+  Vec2.create(0.0, 2.0),
+  Vec2.create(-2.0, 2.0),
+  Vec2.create(-4.0, 3.0),
+  Vec2.create(-6.0, 2.0),
+  Vec2.create(-6.0, 0.0)
 ], true), 0.0);
 
 // Square character 1
 let char1 = world.createBody({
-  position : new Vec2(-3.0, 8.0),
+  position : Vec2.create(-3.0, 8.0),
   type : 'dynamic',
   fixedRotation : true,
   allowSleep : false
@@ -101,7 +101,7 @@ char1.createFixture(new Box(0.5, 0.5), 20.0);
 
 // Square character 2
 let char2 = world.createBody({
-  position : new Vec2(-5.0, 5.0),
+  position : Vec2.create(-5.0, 5.0),
   type : 'dynamic',
   fixedRotation : true,
   allowSleep : false
@@ -110,7 +110,7 @@ char2.createFixture(new Box(0.25, 0.25), 20.0);
 
 // Hexagon character
 let hex = world.createBody({
-  position : new Vec2(-5.0, 8.0),
+  position : Vec2.create(-5.0, 8.0),
   type : 'dynamic',
   fixedRotation : true,
   allowSleep : false
@@ -120,7 +120,7 @@ let angle = 0.0;
 let delta = Math.PI / 3.0;
 let vertices = [];
 for (let i = 0; i < 6; ++i) {
-  vertices[i] = new Vec2(0.5 * Math.cos(angle), 0.5 * Math.sin(angle));
+  vertices[i] = Vec2.create(0.5 * Math.cos(angle), 0.5 * Math.sin(angle));
   angle += delta;
 }
 
@@ -128,7 +128,7 @@ hex.createFixture(new Polygon(vertices), 20.0);
 
 // Circle character
 let circle = world.createBody({
-  position : new Vec2(3.0, 5.0),
+  position : Vec2.create(3.0, 5.0),
   type : 'dynamic',
   fixedRotation : true,
   allowSleep : false
@@ -137,7 +137,7 @@ circle.createFixture(new Circle(0.5), 20.0);
 
 // Circle character
 let character = world.createBody({
-  position : new Vec2(-7.0, 6.0),
+  position : Vec2.create(-7.0, 6.0),
   type : 'dynamic',
   allowSleep : false
 });

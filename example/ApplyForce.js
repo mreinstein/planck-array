@@ -23,13 +23,14 @@
 
 const { Vec2, Transform, Polygon, Box, FrictionJoint, World, Edge, Testbed } = planck;
 
+
 let world = new World();
 
 const testbed = Testbed.mount();
 testbed.y = -20;
 testbed.start(world);
 
-let ground = world.createBody(new Vec2(0.0, 20.0));
+let ground = world.createBody(Vec2.create(0.0, 20.0));
 
 let wallFD = {
   density: 0.0,
@@ -37,42 +38,42 @@ let wallFD = {
 };
 
 // Left vertical
-ground.createFixture(new Edge(new Vec2(-20.0, -20.0), new Vec2(-20.0, 20.0)), wallFD);
+ground.createFixture(new Edge(Vec2.create(-20.0, -20.0), Vec2.create(-20.0, 20.0)), wallFD);
 
 // Right vertical
-ground.createFixture(new Edge(new Vec2(20.0, -20.0), new Vec2(20.0, 20.0)), wallFD);
+ground.createFixture(new Edge(Vec2.create(20.0, -20.0), Vec2.create(20.0, 20.0)), wallFD);
 
 // Top horizontal
-ground.createFixture(new Edge(new Vec2(-20.0, 20.0), new Vec2(20.0, 20.0)), wallFD);
+ground.createFixture(new Edge(Vec2.create(-20.0, 20.0), Vec2.create(20.0, 20.0)), wallFD);
 
 // Bottom horizontal
-ground.createFixture(new Edge(new Vec2(-20.0, -20.0), new Vec2(20.0, -20.0)), wallFD);
+ground.createFixture(new Edge(Vec2.create(-20.0, -20.0), Vec2.create(20.0, -20.0)), wallFD);
 
 const xf1 = new Transform();
 xf1.q.set(0.3524 * Math.PI);
-xf1.p.set(xf1.q.getXAxis());
+Vec2.copy(xf1.q.getXAxis(), xf1.p)
 
 let poly1 = new Polygon([
-  new Vec2(-1.0, 0.0),
-  new Vec2(1.0, 0.0),
-  new Vec2(0.0, 0.5)
+  Vec2.create(-1.0, 0.0),
+  Vec2.create(1.0, 0.0),
+  Vec2.create(0.0, 0.5)
 ].map(v => Transform.mul(xf1, v)));
 
 const xf2 = new Transform();
 xf2.q.set(-0.3524 * Math.PI);
-xf2.p.set(Vec2.neg(xf2.q.getXAxis()));
+Vec2.copy(Vec2.neg(xf2.q.getXAxis()), xf2.p)
 
 let poly2 = new Polygon([
-  new Vec2(-1.0, 0.0),
-  new Vec2(1.0, 0.0),
-  new Vec2(0.0, 0.5)
+  Vec2.create(-1.0, 0.0),
+  Vec2.create(1.0, 0.0),
+  Vec2.create(0.0, 0.5)
 ].map(v => Transform.mul(xf2, v)));
 
 let jet = world.createBody({
   type : 'dynamic',
   angularDamping : 2.0,
   linearDamping : 0.5,
-  position : new Vec2(0.0, 2.0),
+  position : Vec2.create(0.0, 2.0),
   angle : Math.PI,
   allowSleep : false
 });
@@ -86,7 +87,7 @@ let boxFD = {
 };
 
 for (let i = 0; i < 10; ++i) {
-  let box = world.createDynamicBody(new Vec2(0.0, 5.0 + 1.54 * i));
+  let box = world.createDynamicBody(Vec2.create(0.0, 5.0 + 1.54 * i));
 
   box.createFixture(new Box(0.5, 0.5), boxFD);
 
@@ -113,8 +114,8 @@ testbed.step = function() {
   }
 
   if (testbed.activeKeys.up) {
-    let f = jet.getWorldVector(new Vec2(0.0, -1.0));
-    let p = jet.getWorldPoint(new Vec2(0.0, 2.0));
+    let f = jet.getWorldVector(Vec2.create(0.0, -1.0));
+    let p = jet.getWorldPoint(Vec2.create(0.0, 2.0));
     jet.applyLinearImpulse(f, p, true);
   }
 };

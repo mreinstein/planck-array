@@ -40,17 +40,17 @@ testbed.mouseForce = -20;
 testbed.start(world);
 
 let railH = [
-  new Vec2(POCKET_R, height * .5),
-  new Vec2(POCKET_R, height * .5 + POCKET_R),
-  new Vec2(width * .5 - POCKET_R / SPI4 + POCKET_R, height * .5 + POCKET_R),
-  new Vec2(width * .5 - POCKET_R / SPI4, height * .5)
+  Vec2.create(POCKET_R, height * .5),
+  Vec2.create(POCKET_R, height * .5 + POCKET_R),
+  Vec2.create(width * .5 - POCKET_R / SPI4 + POCKET_R, height * .5 + POCKET_R),
+  Vec2.create(width * .5 - POCKET_R / SPI4, height * .5)
 ];
 
 let railV = [
-  new Vec2(width * .5, -(height * .5 - POCKET_R / SPI4)),
-  new Vec2(width * .5 + POCKET_R, -(height * .5 - POCKET_R / SPI4 + POCKET_R)),
-  new Vec2(width * .5 + POCKET_R, height * .5 - POCKET_R / SPI4 + POCKET_R),
-  new Vec2(width * .5, height * .5 - POCKET_R / SPI4)
+  Vec2.create(width * .5, -(height * .5 - POCKET_R / SPI4)),
+  Vec2.create(width * .5 + POCKET_R, -(height * .5 - POCKET_R / SPI4 + POCKET_R)),
+  Vec2.create(width * .5 + POCKET_R, height * .5 - POCKET_R / SPI4 + POCKET_R),
+  Vec2.create(width * .5, height * .5 - POCKET_R / SPI4)
 ];
 
 let railFixDef = {
@@ -73,7 +73,7 @@ let ballBodyDef = {
 };
 
 function mirror(vertices, x, y) {
-  return vertices.map(v => new Vec2(x * v.x, y * v.y));
+  return vertices.map(v => Vec2.create(x * v.x, y * v.y));
 }
 
 world.createBody().createFixture(new Polygon(railV), railFixDef);
@@ -84,14 +84,14 @@ world.createBody().createFixture(new Polygon(mirror(railH, -1, +1)), railFixDef)
 world.createBody().createFixture(new Polygon(mirror(railH, +1, -1)), railFixDef);
 world.createBody().createFixture(new Polygon(mirror(railH, -1, -1)), railFixDef);
 
-world.createBody().createFixture(new Circle(new Vec2(0, -height * .5 - POCKET_R * 1.5), POCKET_R), pocketFixDef);
-world.createBody().createFixture(new Circle(new Vec2(0, +height * .5 + POCKET_R * 1.5), POCKET_R), pocketFixDef);
+world.createBody().createFixture(new Circle(Vec2.create(0, -height * .5 - POCKET_R * 1.5), POCKET_R), pocketFixDef);
+world.createBody().createFixture(new Circle(Vec2.create(0, +height * .5 + POCKET_R * 1.5), POCKET_R), pocketFixDef);
 
-world.createBody().createFixture(new Circle(new Vec2(+width * .5 + POCKET_R * .7, +height * .5 + POCKET_R * .7), POCKET_R), pocketFixDef);
-world.createBody().createFixture(new Circle(new Vec2(-width * .5 - POCKET_R * .7, +height * .5 + POCKET_R * .7), POCKET_R), pocketFixDef);
+world.createBody().createFixture(new Circle(Vec2.create(+width * .5 + POCKET_R * .7, +height * .5 + POCKET_R * .7), POCKET_R), pocketFixDef);
+world.createBody().createFixture(new Circle(Vec2.create(-width * .5 - POCKET_R * .7, +height * .5 + POCKET_R * .7), POCKET_R), pocketFixDef);
 
-world.createBody().createFixture(new Circle(new Vec2(+width * .5 + POCKET_R * .7, -height * .5 - POCKET_R * .7), POCKET_R), pocketFixDef);
-world.createBody().createFixture(new Circle(new Vec2(-width * .5 - POCKET_R * .7, -height * .5 - POCKET_R * .7), POCKET_R), pocketFixDef);
+world.createBody().createFixture(new Circle(Vec2.create(+width * .5 + POCKET_R * .7, -height * .5 - POCKET_R * .7), POCKET_R), pocketFixDef);
+world.createBody().createFixture(new Circle(Vec2.create(-width * .5 - POCKET_R * .7, -height * .5 - POCKET_R * .7), POCKET_R), pocketFixDef);
 
 let balls = rack(BALL_R, width / 4, 0);
 

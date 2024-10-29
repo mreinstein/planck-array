@@ -25,49 +25,49 @@
 
 const { World, Vec2, RevoluteJoint, PrismaticJoint, Edge, Box, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
 testbed.info('Z: Toggle friction, X: Toggle motor');
 
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(-40.0, 0.0), Vec2.create(40.0, 0.0)), 0.0);
 
 // Define crank.
-let crank = world.createDynamicBody(new Vec2(0.0, 7.0));
+let crank = world.createDynamicBody(Vec2.create(0.0, 7.0));
 crank.createFixture(new Box(0.5, 2.0), 2.0);
 
 let joint1 = world.createJoint(new RevoluteJoint({
   motorSpeed: Math.PI,
   maxMotorTorque: 10000.0,
   enableMotor: true
-}, ground, crank, new Vec2(0.0, 5.0)));
+}, ground, crank, Vec2.create(0.0, 5.0)));
 
 
 // Define follower.
-let follower = world.createDynamicBody(new Vec2(0.0, 13.0));
+let follower = world.createDynamicBody(Vec2.create(0.0, 13.0));
 follower.createFixture(new Box(0.5, 4.0), 2.0);
 
-world.createJoint(new RevoluteJoint({enableMotor: false}, crank, follower, new Vec2(0.0, 9.0)));
+world.createJoint(new RevoluteJoint({enableMotor: false}, crank, follower, Vec2.create(0.0, 9.0)));
 
 // Define piston
 let piston = world.createBody({
   type: 'dynamic',
   fixedRotation: true,
-  position: new Vec2(0.0, 17.0)
+  position: Vec2.create(0.0, 17.0)
 });
 piston.createFixture(new Box(1.5, 1.5), 2.0);
 
-world.createJoint(new RevoluteJoint({}, follower, piston, new Vec2(0.0, 17.0)));
+world.createJoint(new RevoluteJoint({}, follower, piston, Vec2.create(0.0, 17.0)));
 
 let joint2 = world.createJoint(new PrismaticJoint({
   maxMotorForce: 1000.0,
   enableMotor: true
-}, ground, piston, new Vec2(0.0, 17.0), new Vec2(0.0, 1.0)));
+}, ground, piston, Vec2.create(0.0, 17.0), Vec2.create(0.0, 1.0)));
 
 // Create a payload
-let payload = world.createDynamicBody(new Vec2(0.0, 23.0));
+let payload = world.createDynamicBody(Vec2.create(0.0, 23.0));
 payload.createFixture(new Box(1.5, 1.5), 2.0);
 
 testbed.keydown = function(code, char) {

@@ -105,7 +105,7 @@ export function assert (o: any): void {
  *
  * @returns Vec2
  */
-export function setZero(out: Vec2Value): Vec2Value {
+export function setZero (out: Vec2Value): Vec2Value {
   out.x = 0.0;
   out.y = 0.0;
   return out;
@@ -248,6 +248,25 @@ export function dot (v: Vec2Value, w: Vec2Value): number {
   _ASSERT && assert(v);
   _ASSERT && assert(w);
   return v.x * w.x + v.y * w.y;
+}
+
+/** Cross product between two vectors */
+export function cross (v: any, w: any): any {
+    if (typeof w === 'number') {
+      _ASSERT && Vec2.assert(v);
+      _ASSERT && console.assert(Number.isFinite(w));
+      return create(w * v.y, -w * v.x);
+
+    } else if (typeof v === 'number') {
+      _ASSERT && console.assert(Number.isFinite(v));
+      _ASSERT && Vec2.assert(w);
+      return create(-v * w.y, v * w.x);
+
+    } else {
+      _ASSERT && Vec2.assert(v);
+      _ASSERT && Vec2.assert(w);
+      return v.x * w.y - v.y * w.x;
+    }
 }
 
 /** Cross product on two vectors */

@@ -23,17 +23,17 @@
 
 const { World, Vec2, Transform, Manifold, CollidePolygons, Box, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.info('Use arrow keys to move and Z or X to rotate.');
 testbed.start(world);
 
 let polygonA = new Box(2, 4);
-let transformA = new Transform(new Vec2(0.0, 0.0), 0.0);
+let transformA = new Transform(Vec2.create(0.0, 0.0), 0.0);
 
 let polygonB = new Box(5, 5);
-let positionB = new Vec2(5, 4);
+let positionB = Vec2.create(5, 4);
 let angleB = 1.9160721;
 let transformB = new Transform(positionB, angleB);
 

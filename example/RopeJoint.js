@@ -40,7 +40,7 @@ testbed.start(world);
 
 let ground = world.createBody();
 
-ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(-40.0, 0.0), Vec2.create(40.0, 0.0)), 0.0);
 
 let segmentDef = {
   density: 20.0,
@@ -61,13 +61,13 @@ for (let i = 0; i < N; ++i) {
   let shape = new Box(0.5, 0.125);
   let bd = {
     type: 'dynamic',
-    position: new Vec2(0.5 + 1.0 * i, y),
+    position: Vec2.create(0.5 + 1.0 * i, y),
   };
   if (i === N - 1) {
     shape = new Box(1.5, 1.5);
     segmentDef.density = 100.0;
     segmentDef.filterCategoryBits = 0x0002;
-    bd.position = new Vec2(1.0 * i, y);
+    bd.position = Vec2.create(1.0 * i, y);
     bd.angularDamping = 0.4;
   }
 
@@ -75,7 +75,7 @@ for (let i = 0; i < N; ++i) {
 
   body.createFixture(shape, segmentDef);
 
-  let anchor = new Vec2(i, y);
+  let anchor = Vec2.create(i, y);
   world.createJoint(new RevoluteJoint(segmentJointDef, prevBody, body, anchor));
 
   prevBody = body;
@@ -83,8 +83,8 @@ for (let i = 0; i < N; ++i) {
 
 let ropeJointDef = {
   maxLength: N - 1.0 + 0.01,
-  localAnchorA: new Vec2(0.0, y),
-  localAnchorB: new Vec2(0, 0),
+  localAnchorA: Vec2.create(0.0, y),
+  localAnchorB: Vec2.create(0, 0),
 };
 let rope = world.createJoint(new RopeJoint(ropeJointDef, ground, prevBody));
 

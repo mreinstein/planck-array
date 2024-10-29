@@ -419,7 +419,7 @@ export class WeldJoint extends Joint {
 
       const Cdot1 = Vec2.zero();
       Vec2.addCombine(Cdot1, 1, vB, 1, Vec2.crossNumVec2(wB, this.m_rB), Cdot1);
-      Vec2.addCombine(Cdot1, 1, vA, 1, Vec2.crossNumVec2(wA, this.m_rA), Cdot1);
+      Vec2.subCombine(Cdot1, 1, vA, 1, Vec2.crossNumVec2(wA, this.m_rA), Cdot1);
 
       const impulse1 = Vec2.neg(Mat33.mulVec2(this.m_mass, Cdot1));
       this.m_impulse.x += impulse1.x;

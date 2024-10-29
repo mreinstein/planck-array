@@ -23,24 +23,24 @@
 
 const { Vec2, World, Edge, Box, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
 
 // Ground
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-20.0, 0.0), new Vec2(20.0, 0.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(-20.0, 0.0), Vec2.create(20.0, 0.0)), 0.0);
 
 // Platform
 let platform = world
-  .createBody(new Vec2(-5.0, 5.0))
+  .createBody(Vec2.create(-5.0, 5.0))
   .createFixture(new Box(10.0, 0.5), {friction : 0.8});
 
 // Boxes
 for (let i = 0; i < 5; ++i) {
   world
-    .createDynamicBody(new Vec2(-10.0 + 2.0 * i, 7.0))
+    .createDynamicBody(Vec2.create(-10.0 + 2.0 * i, 7.0))
     .createFixture(new Box(0.5, 0.5), 20.0);
 }
 

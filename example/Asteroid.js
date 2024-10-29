@@ -94,14 +94,14 @@ function setupShip() {
     type : 'dynamic',
     angularDamping : 2.0,
     linearDamping : 0.5,
-    position : new Vec2(),
+    position : Vec2.create(),
   });
 
   shipBody.createFixture(new Polygon([
-    new Vec2(-0.15, -0.15),
-    new Vec2(0, -0.1),
-    new Vec2(0.15, -0.15),
-    new Vec2(0, 0.2)
+    Vec2.create(-0.15, -0.15),
+    Vec2.create(0, -0.1),
+    Vec2.create(0.15, -0.15),
+    Vec2.create(0, 0.2)
   ]), {
     density : 1000,
     filterCategoryBits : SHIP,
@@ -126,8 +126,8 @@ testbed.step = function(dt) {
 
     // Thrust: add some force in the ship direction
     if (testbed.activeKeys.up) {
-      const f = shipBody.getWorldVector(new Vec2(0.0, 1.0));
-      const p = shipBody.getWorldPoint(new Vec2(0.0, 2.0));
+      const f = shipBody.getWorldVector(Vec2.create(0.0, 1.0));
+      const p = shipBody.getWorldPoint(Vec2.create(0.0, 2.0));
       shipBody.applyLinearImpulse(f, p, true);
     }
 
@@ -140,8 +140,8 @@ testbed.step = function(dt) {
       // Create a bullet body
       const bulletBody = world.createDynamicBody({
         // mass : 0.05,
-        position: shipBody.getWorldPoint(new Vec2(0, SHIP_SIZE)),
-        linearVelocity: shipBody.getWorldVector(new Vec2(0, magnitude)),
+        position: shipBody.getWorldPoint(Vec2.create(0, SHIP_SIZE)),
+        linearVelocity: shipBody.getWorldVector(Vec2.create(0, magnitude)),
         bullet: true
       });
       bulletBody.createFixture(new Circle(0.05), {
@@ -217,8 +217,8 @@ function asteroidLevelRadius(level) {
 function makeAsteroidBody(x, y, vx, vy, va, level) {
   let asteroidBody = world.createKinematicBody({
     // mass : 10,
-    position : new Vec2(x, y),
-    linearVelocity : new Vec2(vx, vy),
+    position : Vec2.create(x, y),
+    linearVelocity : Vec2.create(vx, vy),
     angularVelocity : va
   });
   asteroidBodies.push(asteroidBody);
@@ -230,7 +230,7 @@ function makeAsteroidBody(x, y, vx, vy, va, level) {
     let a = i * 2 * Math.PI / n;
     const x = radius * (Math.sin(a) + rand(0.3));
     const y = radius * (Math.cos(a) + rand(0.3));
-    path.push(new Vec2(x, y));
+    path.push(Vec2.create(x, y));
   }
 
   asteroidBody.createFixture(new Polygon(path), {
@@ -294,7 +294,7 @@ function splitAsteroid(parent) {
       let angle = Math.PI / 2 * i + angleDisturb;
 
       let r = asteroidLevelRadius(0) - asteroidLevelRadius(parent.level);
-      let sp = parent.getWorldPoint(new Vec2(r * Math.cos(angle), r * Math.sin(angle)));
+      let sp = parent.getWorldPoint(Vec2.create(r * Math.cos(angle), r * Math.sin(angle)));
 
       let vx = rand(asteroidSpeed);
       let vy = rand(asteroidSpeed);

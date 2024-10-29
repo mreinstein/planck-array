@@ -28,7 +28,7 @@ const { World, Vec2, Edge, Box, Circle, Polygon, RevoluteJoint, WheelJoint, Test
 const testbed = Testbed.mount();
 
 let world = new World({
-  gravity : new Vec2(0, -10)
+  gravity : Vec2.create(0, -10)
 });
 
 testbed.speed = 1.3;
@@ -48,7 +48,7 @@ let groundFD = {
   friction : 0.6
 };
 
-ground.createFixture(new Edge(new Vec2(-20.0, 0.0), new Vec2(20.0, 0.0)), groundFD);
+ground.createFixture(new Edge(Vec2.create(-20.0, 0.0), Vec2.create(20.0, 0.0)), groundFD);
 
 let hs = [ 0.25, 1.0, 4.0, 0.0, 0.0, -1.0, -2.0, -2.0, -1.25, 0.0 ];
 
@@ -56,34 +56,34 @@ let x = 20.0, y1 = 0.0, dx = 5.0;
 
 for (let i = 0; i < 10; ++i) {
   let y2 = hs[i];
-  ground.createFixture(new Edge(new Vec2(x, y1), new Vec2(x + dx, y2)), groundFD);
+  ground.createFixture(new Edge(Vec2.create(x, y1), Vec2.create(x + dx, y2)), groundFD);
   y1 = y2;
   x += dx;
 }
 
 for (let i = 0; i < 10; ++i) {
   let y2 = hs[i];
-  ground.createFixture(new Edge(new Vec2(x, y1), new Vec2(x + dx, y2)), groundFD);
+  ground.createFixture(new Edge(Vec2.create(x, y1), Vec2.create(x + dx, y2)), groundFD);
   y1 = y2;
   x += dx;
 }
 
-ground.createFixture(new Edge(new Vec2(x, 0.0), new Vec2(x + 40.0, 0.0)), groundFD);
+ground.createFixture(new Edge(Vec2.create(x, 0.0), Vec2.create(x + 40.0, 0.0)), groundFD);
 
 x += 80.0;
-ground.createFixture(new Edge(new Vec2(x, 0.0), new Vec2(x + 40.0, 0.0)), groundFD);
+ground.createFixture(new Edge(Vec2.create(x, 0.0), Vec2.create(x + 40.0, 0.0)), groundFD);
 
 x += 40.0;
-ground.createFixture(new Edge(new Vec2(x, 0.0), new Vec2(x + 10.0, 5.0)), groundFD);
+ground.createFixture(new Edge(Vec2.create(x, 0.0), Vec2.create(x + 10.0, 5.0)), groundFD);
 
 x += 20.0;
-ground.createFixture(new Edge(new Vec2(x, 0.0), new Vec2(x + 40.0, 0.0)), groundFD);
+ground.createFixture(new Edge(Vec2.create(x, 0.0), Vec2.create(x + 40.0, 0.0)), groundFD);
 
 x += 40.0;
-ground.createFixture(new Edge(new Vec2(x, 0.0), new Vec2(x, 20.0)), groundFD);
+ground.createFixture(new Edge(Vec2.create(x, 0.0), Vec2.create(x, 20.0)), groundFD);
 
 // Teeter
-let teeter = world.createDynamicBody(new Vec2(140.0, 1.0));
+let teeter = world.createDynamicBody(Vec2.create(140.0, 1.0));
 teeter.createFixture(new Box(10.0, 0.25), 1.0);
 world.createJoint(new RevoluteJoint({
   lowerAngle : -8.0 * Math.PI / 180.0,
@@ -102,43 +102,43 @@ let bridgeFD = {
 let prevBody = ground;
 let i;
 for (i = 0; i < 20; ++i) {
-  let bridgeBlock = world.createDynamicBody(new Vec2(161.0 + 2.0 * i, -0.125));
+  let bridgeBlock = world.createDynamicBody(Vec2.create(161.0 + 2.0 * i, -0.125));
   bridgeBlock.createFixture(new Box(1.0, 0.125), bridgeFD);
 
-  world.createJoint(new RevoluteJoint({}, prevBody, bridgeBlock, new Vec2(160.0 + 2.0 * i, -0.125)));
+  world.createJoint(new RevoluteJoint({}, prevBody, bridgeBlock, Vec2.create(160.0 + 2.0 * i, -0.125)));
 
   prevBody = bridgeBlock;
 }
 
-world.createJoint(new RevoluteJoint({}, prevBody, ground, new Vec2(160.0 + 2.0 * i, -0.125)));
+world.createJoint(new RevoluteJoint({}, prevBody, ground, Vec2.create(160.0 + 2.0 * i, -0.125)));
 
 // Boxes
 let box = new Box(0.5, 0.5);
 
-world.createDynamicBody(new Vec2(230.0, 0.5))
+world.createDynamicBody(Vec2.create(230.0, 0.5))
   .createFixture(box, 0.5);
 
-world.createDynamicBody(new Vec2(230.0, 1.5))
+world.createDynamicBody(Vec2.create(230.0, 1.5))
   .createFixture(box, 0.5);
 
-world.createDynamicBody(new Vec2(230.0, 2.5))
+world.createDynamicBody(Vec2.create(230.0, 2.5))
   .createFixture(box, 0.5);
 
-world.createDynamicBody(new Vec2(230.0, 3.5))
+world.createDynamicBody(Vec2.create(230.0, 3.5))
   .createFixture(box, 0.5);
 
-world.createDynamicBody(new Vec2(230.0, 4.5))
+world.createDynamicBody(Vec2.create(230.0, 4.5))
   .createFixture(box, 0.5);
 
 // Car
-let car = world.createDynamicBody(new Vec2(0.0, 1.0));
+let car = world.createDynamicBody(Vec2.create(0.0, 1.0));
 car.createFixture(new Polygon([
-  new Vec2(-1.5, -0.5),
-  new Vec2(1.5, -0.5),
-  new Vec2(1.5, 0.0),
-  new Vec2(0.0, 0.9),
-  new Vec2(-1.15, 0.9),
-  new Vec2(-1.5, 0.2)
+  Vec2.create(-1.5, -0.5),
+  Vec2.create(1.5, -0.5),
+  Vec2.create(1.5, 0.0),
+  Vec2.create(0.0, 0.9),
+  Vec2.create(-1.15, 0.9),
+  Vec2.create(-1.5, 0.2)
 ]), 1.0);
 
 let wheelFD = {
@@ -146,10 +146,10 @@ let wheelFD = {
   friction : 0.9
 };
 
-let wheelBack = world.createDynamicBody(new Vec2(-1.0, 0.35));
+let wheelBack = world.createDynamicBody(Vec2.create(-1.0, 0.35));
 wheelBack.createFixture(new Circle(0.4), wheelFD);
 
-let wheelFront = world.createDynamicBody(new Vec2(1.0, 0.4));
+let wheelFront = world.createDynamicBody(Vec2.create(1.0, 0.4));
 wheelFront.createFixture(new Circle(0.4), wheelFD);
 
 let springBack = world.createJoint(new WheelJoint({
@@ -158,7 +158,7 @@ let springBack = world.createJoint(new WheelJoint({
   enableMotor : true,
   frequencyHz : HZ,
   dampingRatio : ZETA
-}, car, wheelBack, wheelBack.getPosition(), new Vec2(0.0, 1.0)));
+}, car, wheelBack, wheelBack.getPosition(), Vec2.create(0.0, 1.0)));
 
 let springFront = world.createJoint(new WheelJoint({
   motorSpeed : 0.0,
@@ -166,7 +166,7 @@ let springFront = world.createJoint(new WheelJoint({
   enableMotor : false,
   frequencyHz : HZ,
   dampingRatio : ZETA
-}, car, wheelFront, wheelFront.getPosition(), new Vec2(0.0, 1.0)));
+}, car, wheelFront, wheelFront.getPosition(), Vec2.create(0.0, 1.0)));
 
 testbed.keydown = function() {
   if (testbed.activeKeys.down) {

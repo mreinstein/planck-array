@@ -23,7 +23,7 @@
 
 const { Vec2, World, Edge, Box, Circle, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
@@ -38,16 +38,16 @@ let state = UNKNOWN;
 
 // Ground
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-20.0, 0.0), new Vec2(20.0, 0.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(-20.0, 0.0), Vec2.create(20.0, 0.0)), 0.0);
 
 // Platform
-let platform = world.createBody(new Vec2(0.0, 10.0));
+let platform = world.createBody(Vec2.create(0.0, 10.0));
 let platformFix = platform.createFixture(new Box(3.0, 0.5), 0.0);
 
 // Actor
-let character = world.createDynamicBody(new Vec2(0.0, 12.0));
+let character = world.createDynamicBody(Vec2.create(0.0, 12.0));
 let characterFix = character.createFixture(new Circle(radius), 20.0);
-character.setLinearVelocity(new Vec2(0.0, -50.0));
+character.setLinearVelocity(Vec2.create(0.0, -50.0));
 
 world.on('pre-solve', function(contact, oldManifold) {
   let fixA = contact.getFixtureA();

@@ -259,30 +259,30 @@ function Physics() {
   let smallBrickShape = new Box(0.9 / 2, 0.9 / 2);
 
   let fullPaddleShape = new Polygon([
-    new Vec2(1.7, -0.2),
-    new Vec2(1.8, -0.1),
-    new Vec2(1.8, 0.1),
-    new Vec2(1.7, 0.2),
-    new Vec2(1.2, 0.4),
-    new Vec2(0.4, 0.6),
-    new Vec2(-0.4, 0.6),
-    new Vec2(-1.2, 0.4),
-    new Vec2(-1.7, 0.2),
-    new Vec2(-1.8, 0.1),
-    new Vec2(-1.8, -0.1),
-    new Vec2(-1.7, -0.2)
+    Vec2.create(1.7, -0.2),
+    Vec2.create(1.8, -0.1),
+    Vec2.create(1.8, 0.1),
+    Vec2.create(1.7, 0.2),
+    Vec2.create(1.2, 0.4),
+    Vec2.create(0.4, 0.6),
+    Vec2.create(-0.4, 0.6),
+    Vec2.create(-1.2, 0.4),
+    Vec2.create(-1.7, 0.2),
+    Vec2.create(-1.8, 0.1),
+    Vec2.create(-1.8, -0.1),
+    Vec2.create(-1.7, -0.2)
   ]);
   fullPaddleShape.paddleWidth = 3.6;
 
   let miniPaddleShape = new Polygon([
-    new Vec2(1.2, -0.1),
-    new Vec2(1.2, 0.1),
-    new Vec2(0.9, 0.4),
-    new Vec2(0.2, 0.6),
-    new Vec2(-0.2, 0.6),
-    new Vec2(-0.9, 0.4),
-    new Vec2(-1.2, 0.1),
-    new Vec2(-1.2, -0.1)
+    Vec2.create(1.2, -0.1),
+    Vec2.create(1.2, 0.1),
+    Vec2.create(0.9, 0.4),
+    Vec2.create(0.2, 0.6),
+    Vec2.create(-0.2, 0.6),
+    Vec2.create(-0.9, 0.4),
+    Vec2.create(-1.2, 0.1),
+    Vec2.create(-1.2, -0.1)
   ]);
   miniPaddleShape.paddleWidth = 2.4;
 
@@ -318,23 +318,23 @@ function Physics() {
 
   function createWorld() {
 
-    world.createBody(new Vec2(+9, -0.5))
-      .createFixture(new Edge(new Vec2(0, -12.5), new Vec2(0, +11.5)), wallFix);
+    world.createBody(Vec2.create(+9, -0.5))
+      .createFixture(new Edge(Vec2.create(0, -12.5), Vec2.create(0, +11.5)), wallFix);
 
-    world.createBody(new Vec2(-9, -0.5))
-      .createFixture(new Edge(new Vec2(0, -12.5), new Vec2(0, +11.5)), wallFix);
+    world.createBody(Vec2.create(-9, -0.5))
+      .createFixture(new Edge(Vec2.create(0, -12.5), Vec2.create(0, +11.5)), wallFix);
 
-    world.createBody(new Vec2(0, +12))
-      .createFixture(new Edge(new Vec2(-8, 0), new Vec2(+8, 0)), wallFix);
+    world.createBody(Vec2.create(0, +12))
+      .createFixture(new Edge(Vec2.create(-8, 0), Vec2.create(+8, 0)), wallFix);
 
-    world.createBody(new Vec2(9, 12))
-      .createFixture(new Edge(new Vec2(-1, 0), new Vec2(0, -1)), wallFix);
+    world.createBody(Vec2.create(9, 12))
+      .createFixture(new Edge(Vec2.create(-1, 0), Vec2.create(0, -1)), wallFix);
 
-    world.createBody(new Vec2(-9, 12))
-      .createFixture(new Edge(new Vec2(1, 0), new Vec2(0, -1)), wallFix);
+    world.createBody(Vec2.create(-9, 12))
+      .createFixture(new Edge(Vec2.create(1, 0), Vec2.create(0, -1)), wallFix);
 
-    bottomWall = world.createBody(new Vec2(0, -13));
-    bottomWall.createFixture(new Edge(new Vec2(-9, 0), new Vec2(+9, 0)), wallFix);
+    bottomWall = world.createBody(Vec2.create(0, -13));
+    bottomWall.createFixture(new Edge(Vec2.create(-9, 0), Vec2.create(+9, 0)), wallFix);
     bottomWall.isBottom = true;
   }
 
@@ -347,7 +347,7 @@ function Physics() {
     }
 
     paddle = world.createKinematicBody({
-      position: new Vec2(0, -10.5)
+      position: Vec2.create(0, -10.5)
     });
     paddle.paddleWidth = shape.paddleWidth;
     paddle.createFixture(shape, paddleFix);
@@ -408,12 +408,12 @@ function Physics() {
   };
 
   this.updateBrick = function(brick) {
-    brick.body.setPosition(new Vec2((brick.i - 3) * 2, 9 - brick.j * 2));
+    brick.body.setPosition(Vec2.create((brick.i - 3) * 2, 9 - brick.j * 2));
   };
 
   this.addBrick = function(brick) {
     let shape = brick.type == 'small' ? smallBrickShape : normalBrickShape;
-    let pos = new Vec2((brick.i - 3) * 2, 9 - brick.j * 2);
+    let pos = Vec2.create((brick.i - 3) * 2, 9 - brick.j * 2);
     let body = brick.body = createBrick(shape, pos);
     body.setUserData(brick);
   };
@@ -421,8 +421,8 @@ function Physics() {
   this.addDrop = function(drop) {
     let body = drop.body = createDrop(drop.type);
     body.setUserData(drop);
-    body.setPosition(new Vec2((drop.i - 3) * 2, 9 - drop.j * 2));
-    body.setLinearVelocity(new Vec2(0, drop.speed));
+    body.setPosition(Vec2.create((drop.i - 3) * 2, 9 - drop.j * 2));
+    body.setLinearVelocity(Vec2.create(0, drop.speed));
   };
 
   this.addBall = function(ball) {
@@ -434,7 +434,7 @@ function Physics() {
       body.setPosition(oldball.getPosition());
       body.setLinearVelocity(Vec2.neg(oldball.getLinearVelocity()));
     } else {
-      body.setPosition(new Vec2(0, -5));
+      body.setPosition(Vec2.create(0, -5));
     }
   };
 
@@ -448,7 +448,8 @@ function Physics() {
 
   this.movePaddle = function(dir) {
     let p = paddle.getPosition();
-    p = new Vec2(dir, 0).add(p);
+    //p = Vec2.create(dir, 0).add(p);
+    p = Vec2.add(p, Vec2.create(dir, 0), p) 
     p.x = Math.min(9 - paddle.paddleWidth / 2, Math.max(-(9 - paddle.paddleWidth / 2), p.x));
     paddle.setPosition(p);
   };
@@ -464,7 +465,7 @@ function Physics() {
     let ball = balls[0];
     let a = Math.PI * Math.random() * 0.4 - 0.2;
     let speed = ball.getUserData().speed;
-    ball.setLinearVelocity(new Vec2(speed * Math.sin(a), speed * Math.cos(a)));
+    ball.setLinearVelocity(Vec2.create(speed * Math.sin(a), speed * Math.cos(a)));
   };
 
   this.initGame = function() {

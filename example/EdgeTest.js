@@ -23,20 +23,20 @@
 
 const { Vec2, World, Circle, Box, Edge, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
 
 let ground = world.createBody();
 
-let v1 = new Vec2(-10.0, 0.0);
-let v2 = new Vec2(-7.0, -2.0);
-let v3 = new Vec2(-4.0, 0.0);
-let v4 = new Vec2(0.0, 0.0);
-let v5 = new Vec2(4.0, 0.0);
-let v6 = new Vec2(7.0, 2.0);
-let v7 = new Vec2(10.0, 0.0);
+let v1 = Vec2.create(-10.0, 0.0);
+let v2 = Vec2.create(-7.0, -2.0);
+let v3 = Vec2.create(-4.0, 0.0);
+let v4 = Vec2.create(0.0, 0.0);
+let v5 = Vec2.create(4.0, 0.0);
+let v6 = Vec2.create(7.0, 2.0);
+let v7 = Vec2.create(10.0, 0.0);
 
 let shape1 = new Edge(v1, v2);
 shape1.setNextVertex(v3);
@@ -68,12 +68,12 @@ ground.createFixture(shape6, 0.0);
 
 world.createBody({
   type : 'dynamic',
-  position : new Vec2(-0.5, 0.6),
+  position : Vec2.create(-0.5, 0.6),
   allowSleep : false
 }).createFixture(new Circle(0.5), 1.0);
 
 world.createBody({
   type : 'dynamic',
-  position : new Vec2(1.0, 0.6),
+  position : Vec2.create(1.0, 0.6),
   allowSleep : false
 }).createFixture(new Box(0.5, 0.5), 1.0);

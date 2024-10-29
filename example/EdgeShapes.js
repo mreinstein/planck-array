@@ -23,7 +23,7 @@
 
 const { Vec2, World, Edge, Polygon, Box, Circle, Math, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
@@ -44,16 +44,16 @@ let shapes = [];
     let x2 = x1 + 0.5;
     let y2 = 2.0 * Math.cos(x2 / 10.0 * Math.PI);
 
-    ground.createFixture(new Edge(new Vec2(x1, y1), new Vec2(x2, y2)), 0.0);
+    ground.createFixture(new Edge(Vec2.create(x1, y1), Vec2.create(x2, y2)), 0.0);
 
     x1 = x2;
     y1 = y2;
   }
 }
 
-shapes[0] = new Polygon([new Vec2(-0.5, 0.0), new Vec2(0.5, 0.0), new Vec2(0.0, 1.5)]);
+shapes[0] = new Polygon([Vec2.create(-0.5, 0.0), Vec2.create(0.5, 0.0), Vec2.create(0.0, 1.5)]);
 
-shapes[1] = new Polygon([new Vec2(-0.1, 0.0), new Vec2(0.1, 0.0), new Vec2(0.0, 1.5)]);
+shapes[1] = new Polygon([Vec2.create(-0.1, 0.0), Vec2.create(0.1, 0.0), Vec2.create(0.0, 1.5)]);
 
 {
   let w = 1.0;
@@ -61,14 +61,14 @@ shapes[1] = new Polygon([new Vec2(-0.1, 0.0), new Vec2(0.1, 0.0), new Vec2(0.0, 
   let s = Math.sqrt(2.0) * b;
 
   let vertices = [];
-  vertices[0] = new Vec2(0.5 * s, 0.0);
-  vertices[1] = new Vec2(0.5 * w, b);
-  vertices[2] = new Vec2(0.5 * w, b + s);
-  vertices[3] = new Vec2(0.5 * s, w);
-  vertices[4] = new Vec2(-0.5 * s, w);
-  vertices[5] = new Vec2(-0.5 * w, b + s);
-  vertices[6] = new Vec2(-0.5 * w, b);
-  vertices[7] = new Vec2(-0.5 * s, 0.0);
+  vertices[0] = Vec2.create(0.5 * s, 0.0);
+  vertices[1] = Vec2.create(0.5 * w, b);
+  vertices[2] = Vec2.create(0.5 * w, b + s);
+  vertices[3] = Vec2.create(0.5 * s, w);
+  vertices[4] = Vec2.create(-0.5 * s, w);
+  vertices[5] = Vec2.create(-0.5 * w, b + s);
+  vertices[6] = Vec2.create(-0.5 * w, b);
+  vertices[7] = Vec2.create(-0.5 * s, 0.0);
 
   shapes[2] = new Polygon(vertices);
 }
@@ -85,7 +85,7 @@ function createItem(index) {
   }
 
   let bd = {
-    position: new Vec2(
+    position: Vec2.create(
       Math.random(-10.0, 10.0),
       Math.random(10.0, 20.0)
     ),
@@ -162,8 +162,8 @@ testbed.step = function() {
   let advanceRay = !pause; // settings.pause == 0 || settings.singleStep;
 
   let L = 25.0;
-  let point1 = new Vec2(0.0, 10.0);
-  let d = new Vec2(L * Math.cos(angle), -L * Math.abs(Math.sin(angle)));
+  let point1 = Vec2.create(0.0, 10.0);
+  let d = Vec2.create(L * Math.cos(angle), -L * Math.abs(Math.sin(angle)));
   let point2 = Vec2.add(point1, d);
 
   rayCastReset();

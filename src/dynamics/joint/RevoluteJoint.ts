@@ -661,7 +661,7 @@ export class RevoluteJoint extends Joint {
       // Solve point-to-point constraint
       const Cdot = Vec2.zero();
       Vec2.addCombine(Cdot, 1, vB, 1, Vec2.crossNumVec2(wB, this.m_rB), Cdot);
-      Vec2.addCombine(Cdot, 1, vA, 1, Vec2.crossNumVec2(wA, this.m_rA), Cdot);
+      Vec2.subCombine(Cdot, 1, vA, 1, Vec2.crossNumVec2(wA, this.m_rA), Cdot);
 
       const impulse = this.m_mass.solve22(Vec2.neg(Cdot));
 

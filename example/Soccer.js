@@ -19,8 +19,8 @@ let world = new World();
 testbed.start(world);
 
 let goal = [
-  new Vec2(0, -height * 0.2),
-  new Vec2(0, +height * 0.2)
+  Vec2.create(0, -height * 0.2),
+  Vec2.create(0, +height * 0.2)
 ];
 
 let wallFixDef = {
@@ -60,8 +60,8 @@ let playerBodyDef = {
 
 world.createBody().createFixture(new Chain(walls(), true), wallFixDef);
 
-world.createBody(new Vec2(-width * 0.5 - BALL_R, 0)).createFixture(new Chain(goal), goalFixDef);
-world.createBody(new Vec2(+width * 0.5 + BALL_R, 0)).createFixture(new Chain(goal), goalFixDef);
+world.createBody(Vec2.create(-width * 0.5 - BALL_R, 0)).createFixture(new Chain(goal), goalFixDef);
+world.createBody(Vec2.create(+width * 0.5 + BALL_R, 0)).createFixture(new Chain(goal), goalFixDef);
 
 let ball = world.createDynamicBody(ballBodyDef);
 ball.createFixture(new Circle(BALL_R), ballFixDef);
@@ -74,7 +74,7 @@ team().forEach(function(p) {
   player.style = {fill : '#0077ff', stroke: 'black'};
 });
 
-team().map(v => new Vec2(-v.x, v.y)).forEach(function(p) {
+team().map(v => Vec2.create(-v.x, v.y)).forEach(function(p) {
   let player = world.createDynamicBody(playerBodyDef);
   player.setPosition(p);
   player.setAngle(Math.PI);
@@ -93,8 +93,8 @@ world.on('post-solve', function(contact) {
   // do not change world immediately
   setTimeout(function() {
     if (ball && goal) {
-      ball.setPosition(new Vec2(0, 0));
-      ball.setLinearVelocity(new Vec2(0, 0));
+      ball.setPosition(Vec2.create(0, 0));
+      ball.setLinearVelocity(Vec2.create(0, 0));
       // world.destroyBody(ball);
     }
   }, 1);
@@ -102,32 +102,32 @@ world.on('post-solve', function(contact) {
 
 function team() {
   let positions = [];
-  positions.push(new Vec2(-width * .45, 0));
-  positions.push(new Vec2(-width * .3, -height * 0.2));
-  positions.push(new Vec2(-width * .3, +height * 0.2));
-  positions.push(new Vec2(-width * .1, -height * 0.1));
-  positions.push(new Vec2(-width * .1, +height * 0.1));
+  positions.push(Vec2.create(-width * .45, 0));
+  positions.push(Vec2.create(-width * .3, -height * 0.2));
+  positions.push(Vec2.create(-width * .3, +height * 0.2));
+  positions.push(Vec2.create(-width * .1, -height * 0.1));
+  positions.push(Vec2.create(-width * .1, +height * 0.1));
   return positions;
 }
 
 function walls() {
   let chain = [
-    new Vec2(-width * .5 +0.2, -height * .5),
-    new Vec2(-width * .5, -height * .5 +0.2),
-    new Vec2(-width * .5, -height * .2),
-    new Vec2(-width * .6, -height * .2),
-    new Vec2(-width * .6, +height * .2),
-    new Vec2(-width * .5, +height * .2),
-    new Vec2(-width * .5, +height * .5 -.2),
-    new Vec2(-width * .5 +.2, +height * .5),
-    new Vec2(+width * .5 -.2, +height * .5),
-    new Vec2(+width * .5, +height * .5 -.2),
-    new Vec2(+width * .5, +height * .2),
-    new Vec2(+width * .6, +height * .2),
-    new Vec2(+width * .6, -height * .2),
-    new Vec2(+width * .5, -height * .2),
-    new Vec2(+width * .5, -height * .5 +.2),
-    new Vec2(+width * .5 -.2, -height * .5)
+    Vec2.create(-width * .5 +0.2, -height * .5),
+    Vec2.create(-width * .5, -height * .5 +0.2),
+    Vec2.create(-width * .5, -height * .2),
+    Vec2.create(-width * .6, -height * .2),
+    Vec2.create(-width * .6, +height * .2),
+    Vec2.create(-width * .5, +height * .2),
+    Vec2.create(-width * .5, +height * .5 -.2),
+    Vec2.create(-width * .5 +.2, +height * .5),
+    Vec2.create(+width * .5 -.2, +height * .5),
+    Vec2.create(+width * .5, +height * .5 -.2),
+    Vec2.create(+width * .5, +height * .2),
+    Vec2.create(+width * .6, +height * .2),
+    Vec2.create(+width * .6, -height * .2),
+    Vec2.create(+width * .5, -height * .2),
+    Vec2.create(+width * .5, -height * .5 +.2),
+    Vec2.create(+width * .5 -.2, -height * .5)
   ];
   return chain;
 }

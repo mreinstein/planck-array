@@ -23,7 +23,7 @@
 
 const { Vec2, Math, World, stats, Circle, Edge, Box, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
@@ -31,34 +31,34 @@ testbed.start(world);
 let bullet;
 let angularVelocity;
 
-let ground = world.createBody(new Vec2(0.0, 0.0));
+let ground = world.createBody(Vec2.create(0.0, 0.0));
 
-ground.createFixture(new Edge(new Vec2(-10.0, 0.0), new Vec2(10.0, 0.0)), 0.0);
-ground.createFixture(new Box(0.2, 1.0, new Vec2(0.5, 1.0), 0.0), 0.0);
+ground.createFixture(new Edge(Vec2.create(-10.0, 0.0), Vec2.create(10.0, 0.0)), 0.0);
+ground.createFixture(new Box(0.2, 1.0, Vec2.create(0.5, 1.0), 0.0), 0.0);
 
 if (true) {
   // angle = 0.1;
-  bullet = world.createDynamicBody(new Vec2(0.0, 20.0));
+  bullet = world.createDynamicBody(Vec2.create(0.0, 20.0));
   bullet.createFixture(new Box(2.0, 0.1), 1.0);
 
   angularVelocity = Math.random(-50.0, 50.0);
   // angularVelocity = 46.661274;
-  bullet.setLinearVelocity(new Vec2(0.0, -100.0));
+  bullet.setLinearVelocity(Vec2.create(0.0, -100.0));
   bullet.setAngularVelocity(angularVelocity);
 
 } else {
   let shape = new Circle(0.5);
 
   world
-    .createDynamicBody(new Vec2(0.0, 2.0))
+    .createDynamicBody(Vec2.create(0.0, 2.0))
     .createFixture(shape, 1.0);
 
   let body = world.createDynamicBody({
     bullet: true,
-    position: new Vec2(0.0, 2.0),
+    position: Vec2.create(0.0, 2.0),
   });
   body.createFixture(shape, 1.0);
-  body.setLinearVelocity(new Vec2(0.0, -100.0));
+  body.setLinearVelocity(Vec2.create(0.0, -100.0));
 }
 
 function launch() {
@@ -73,9 +73,9 @@ function launch() {
   stats.toiTime = 0.0;
   stats.toiMaxTime = 0.0;
 
-  bullet.setTransform(new Vec2(0.0, 20.0), 0.0);
+  bullet.setTransform(Vec2.create(0.0, 20.0), 0.0);
   angularVelocity = Math.random(-50.0, 50.0);
-  bullet.setLinearVelocity(new Vec2(0.0, -100.0));
+  bullet.setLinearVelocity(Vec2.create(0.0, -100.0));
   bullet.setAngularVelocity(angularVelocity);
 }
 

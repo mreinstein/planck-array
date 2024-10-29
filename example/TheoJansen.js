@@ -26,7 +26,7 @@
 
 const { World, Vec2, Edge, Circle, Box, Polygon, RevoluteJoint, DistanceJoint, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
@@ -34,18 +34,18 @@ testbed.start(world);
 let motorSpeed = 2.0;
 let motorOn = true;
 
-let offset = new Vec2(0.0, 8.0);
-let pivot = new Vec2(0.0, 0.8);
+let offset = Vec2.create(0.0, 8.0);
+let pivot = Vec2.create(0.0, 0.8);
 
 // Ground
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-50.0, 0.0), new Vec2(50.0, 0.0)), 0.0);
-ground.createFixture(new Edge(new Vec2(-50.0, 0.0), new Vec2(-50.0, 10.0)), 0.0);
-ground.createFixture(new Edge(new Vec2(50.0, 0.0), new Vec2(50.0, 10.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(-50.0, 0.0), Vec2.create(50.0, 0.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(-50.0, 0.0), Vec2.create(-50.0, 10.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(50.0, 0.0), Vec2.create(50.0, 10.0)), 0.0);
 
 // Balls
 for (let i = 0; i < 40; ++i) {
-  world.createDynamicBody(new Vec2(-40.0 + 2.0 * i, 0.5)).createFixture(new Circle(0.25), 1.0);
+  world.createDynamicBody(Vec2.create(-40.0 + 2.0 * i, 0.5)).createFixture(new Circle(0.25), 1.0);
 }
 
 // Chassis
@@ -68,7 +68,7 @@ let motorjoint = world.createJoint(new RevoluteJoint({
   enableMotor: motorOn
 }, wheel, chassis, Vec2.add(pivot, offset)));
 
-let wheelAnchor = new Vec2(0.0, -0.8).add(pivot);
+let wheelAnchor = Vec2.create(0.0, -0.8).add(pivot);
 
 createLeg(-1.0, wheelAnchor);
 createLeg(1.0, wheelAnchor);
@@ -83,21 +83,21 @@ createLeg(1.0, wheelAnchor);
 
 function createLeg(s, wheelAnchor) {
 
-  let p1 = new Vec2(5.4 * s, -6.1);
-  let p2 = new Vec2(7.2 * s, -1.2);
-  let p3 = new Vec2(4.3 * s, -1.9);
-  let p4 = new Vec2(3.1 * s, 0.8);
-  let p5 = new Vec2(6.0 * s, 1.5);
-  let p6 = new Vec2(2.5 * s, 3.7);
+  let p1 = Vec2.create(5.4 * s, -6.1);
+  let p2 = Vec2.create(7.2 * s, -1.2);
+  let p3 = Vec2.create(4.3 * s, -1.9);
+  let p4 = Vec2.create(3.1 * s, 0.8);
+  let p5 = Vec2.create(6.0 * s, 1.5);
+  let p6 = Vec2.create(2.5 * s, 3.7);
 
   let poly1, poly2;
   if (s > 0.0) {
     poly1 = new Polygon([p1, p2, p3]);
-    poly2 = new Polygon([new Vec2(), Vec2.sub(p5, p4), Vec2.sub(p6, p4)]);
+    poly2 = new Polygon([Vec2.create(), Vec2.sub(p5, p4), Vec2.sub(p6, p4)]);
 
   } else {
     poly1 = new Polygon([p1, p3, p2]);
-    poly2 = new Polygon([new Vec2(), Vec2.sub(p6, p4), Vec2.sub(p5, p4)]);
+    poly2 = new Polygon([Vec2.create(), Vec2.sub(p6, p4), Vec2.sub(p5, p4)]);
   }
 
   let body1 = world.createDynamicBody({

@@ -25,29 +25,29 @@
 
 const { Vec2, World, Box, RevoluteJoint, PrismaticJoint, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.y = -15;
 testbed.start(world);
 
-let ground = world.createBody(new Vec2(0.0, 17.0));
+let ground = world.createBody(Vec2.create(0.0, 17.0));
 
 // Define crank.
-let crank = world.createDynamicBody(new Vec2(-8.0, 20.0));
+let crank = world.createDynamicBody(Vec2.create(-8.0, 20.0));
 crank.createFixture(new Box(4.0, 1.0), 2.0);
-world.createJoint(new RevoluteJoint({}, ground, crank, new Vec2(-12.0, 20.0)));
+world.createJoint(new RevoluteJoint({}, ground, crank, Vec2.create(-12.0, 20.0)));
 
 // Define connecting rod
-let rod = world.createDynamicBody(new Vec2(4.0, 20.0));
+let rod = world.createDynamicBody(Vec2.create(4.0, 20.0));
 rod.createFixture(new Box(8.0, 1.0), 2.0);
-world.createJoint(new RevoluteJoint({}, crank, rod, new Vec2(-4.0, 20.0)));
+world.createJoint(new RevoluteJoint({}, crank, rod, Vec2.create(-4.0, 20.0)));
 
 // Define piston
 let piston = world.createDynamicBody({
   fixedRotation : true,
-  position : new Vec2(12.0, 20.0)
+  position : Vec2.create(12.0, 20.0)
 });
 piston.createFixture(new Box(3.0, 3.0), 2.0);
-world.createJoint(new RevoluteJoint({}, rod, piston, new Vec2(12.0, 20.0)));
-world.createJoint(new PrismaticJoint({}, ground, piston, new Vec2(12.0, 17.0), new Vec2(1.0, 0.0)));
+world.createJoint(new RevoluteJoint({}, rod, piston, Vec2.create(12.0, 20.0)));
+world.createJoint(new PrismaticJoint({}, ground, piston, Vec2.create(12.0, 17.0), Vec2.create(1.0, 0.0)));

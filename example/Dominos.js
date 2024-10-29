@@ -23,7 +23,7 @@
 
 const { Vec2, World, Edge, Box, RevoluteJoint, DistanceJoint, Circle, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.width = 50;
@@ -31,17 +31,17 @@ testbed.height = 50;
 testbed.start(world);
 
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-40, 0), new Vec2(40, 0)), 0);
+ground.createFixture(new Edge(Vec2.create(-40, 0), Vec2.create(40, 0)), 0);
 
 world
-  .createBody(new Vec2(-1.5, 10))
+  .createBody(Vec2.create(-1.5, 10))
   .createFixture(new Box(6, 0.25), 0);
 
 let columnShape = new Box(0.1, 1);
 
 for (let i = 0; i < 10; ++i) {
   world
-    .createDynamicBody(new Vec2(-6 + 1 * i, 11.25))
+    .createDynamicBody(Vec2.create(-6 + 1 * i, 11.25))
     .createFixture(columnShape, {
       density: 20,
       friction: 0.1,
@@ -49,27 +49,27 @@ for (let i = 0; i < 10; ++i) {
 }
 
 world
-  .createBody(new Vec2(1, 6))
-  .createFixture(new Box(7, 0.25, new Vec2(), 0.3), 0);
+  .createBody(Vec2.create(1, 6))
+  .createFixture(new Box(7, 0.25, Vec2.create(), 0.3), 0);
 
-let b2 = world.createBody(new Vec2(-7, 4));
+let b2 = world.createBody(Vec2.create(-7, 4));
 b2.createFixture(new Box(0.25, 1.5), 0);
 
-let b3 = world.createDynamicBody(new Vec2(-0.9, 1), -0.15);
+let b3 = world.createDynamicBody(Vec2.create(-0.9, 1), -0.15);
 b3.createFixture(new Box(6, 0.125), 10);
 
 let jd = {
   collideConnected: true,
 };
 
-world.createJoint(new RevoluteJoint(jd, ground, b3, new Vec2(-2, 1)));
+world.createJoint(new RevoluteJoint(jd, ground, b3, Vec2.create(-2, 1)));
 
-let b4 = world.createDynamicBody(new Vec2(-10, 15));
+let b4 = world.createDynamicBody(Vec2.create(-10, 15));
 b4.createFixture(new Box(0.25, 0.25), 10);
 
-world.createJoint(new RevoluteJoint(jd, b2, b4, new Vec2(-7, 15)));
+world.createJoint(new RevoluteJoint(jd, b2, b4, Vec2.create(-7, 15)));
 
-let b5 = world.createDynamicBody(new Vec2(6.5, 3));
+let b5 = world.createDynamicBody(Vec2.create(6.5, 3));
 
 {
   let fd = {
@@ -77,33 +77,33 @@ let b5 = world.createDynamicBody(new Vec2(6.5, 3));
     friction: 0.1,
   };
 
-  b5.createFixture(new Box(1, 0.1, new Vec2(0, -0.9), 0), fd);
-  b5.createFixture(new Box(0.1, 1, new Vec2(-0.9, 0), 0), fd);
-  b5.createFixture(new Box(0.1, 1, new Vec2(0.9, 0), 0), fd);
+  b5.createFixture(new Box(1, 0.1, Vec2.create(0, -0.9), 0), fd);
+  b5.createFixture(new Box(0.1, 1, Vec2.create(-0.9, 0), 0), fd);
+  b5.createFixture(new Box(0.1, 1, Vec2.create(0.9, 0), 0), fd);
 }
 
-world.createJoint(new RevoluteJoint(jd, ground, b5, new Vec2(6, 2)));
+world.createJoint(new RevoluteJoint(jd, ground, b5, Vec2.create(6, 2)));
 
-let b6 = world.createDynamicBody(new Vec2(6.5, 4.1));
+let b6 = world.createDynamicBody(Vec2.create(6.5, 4.1));
 b6.createFixture(new Box(1, 0.1), 30);
 
-world.createJoint(new RevoluteJoint(jd, b5, b6, new Vec2(7.5, 4)));
+world.createJoint(new RevoluteJoint(jd, b5, b6, Vec2.create(7.5, 4)));
 
-let b7 = world.createDynamicBody(new Vec2(7.4, 1));
+let b7 = world.createDynamicBody(Vec2.create(7.4, 1));
 b7.createFixture(new Box(0.1, 1), 10);
 
 world.createJoint(new DistanceJoint({
   bodyA: b3,
-  localAnchorA: new Vec2(6, 0),
+  localAnchorA: Vec2.create(6, 0),
   bodyB: b7,
-  localAnchorB: new Vec2(0, -1)
+  localAnchorB: Vec2.create(0, -1)
 }));
 
 {
   let radius = 0.2;
   let circleShape = new Circle(radius);
   for (let i = 0; i < 4; ++i) {
-    let body = world.createDynamicBody(new Vec2(5.9 + 2 * radius * i, 2.4));
+    let body = world.createDynamicBody(Vec2.create(5.9 + 2 * radius * i, 2.4));
     body.createFixture(circleShape, 10);
   }
 }

@@ -24,7 +24,7 @@
 const { World, Vec2, Edge, Circle, Box, Testbed } = planck;
 
 let world = new World({
-  gravity: new Vec2(0, -10),
+  gravity: Vec2.create(0, -10),
   blockSolve: true,
 });
 
@@ -40,8 +40,8 @@ let bodies = [];
 let indices = [];
 
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)));
-ground.createFixture(new Edge(new Vec2(20.0, 0.0), new Vec2(20.0, 20.0)));
+ground.createFixture(new Edge(Vec2.create(-40.0, 0.0), Vec2.create(40.0, 0.0)));
+ground.createFixture(new Edge(Vec2.create(20.0, 0.0), Vec2.create(20.0, 20.0)));
 
 let xs = [ 0.0, -10.0, -5.0, 5.0, 10.0 ];
 
@@ -57,7 +57,7 @@ for (let j = 0; j < columnCount; ++j) {
 
     let body = world.createDynamicBody();
     body.setUserData(indices[n]);
-    body.setPosition(new Vec2(xs[j] + x, 0.55 + 1.1 * i));
+    body.setPosition(Vec2.create(xs[j] + x, 0.55 + 1.1 * i));
     body.createFixture(shape, {
       density : 1.0,
       friction : 0.3
@@ -78,7 +78,7 @@ testbed.keydown = function(code, char) {
     bullet = world.createBody({
       type: 'dynamic',
       bullet: true,
-      position: new Vec2(-31.0, 5.0),
+      position: Vec2.create(-31.0, 5.0),
     });
 
     bullet.createFixture({
@@ -87,7 +87,7 @@ testbed.keydown = function(code, char) {
       restitution: 0.05,
     });
 
-    bullet.setLinearVelocity(new Vec2(400.0, 0.0));
+    bullet.setLinearVelocity(Vec2.create(400.0, 0.0));
     break;
 
   case 'Z':
@@ -109,7 +109,7 @@ testbed.step = function() {
     bullet = world.createBody({
       type: 'dynamic',
       bullet: true,
-      position: new Vec2(-31.0, 5.0),
+      position: Vec2.create(-31.0, 5.0),
     });
     bullet.createFixture({
       shape: new Circle(0.25),
@@ -117,6 +117,6 @@ testbed.step = function() {
       restitution: 0.05,
     });
 
-    bullet.setLinearVelocity(new Vec2(400.0, Math.random() * 100 - 50));
+    bullet.setLinearVelocity(Vec2.create(400.0, Math.random() * 100 - 50));
   }
 };

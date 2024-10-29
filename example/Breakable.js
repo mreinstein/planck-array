@@ -25,7 +25,7 @@
 
 const { World, Vec2, Edge, Box, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
@@ -37,15 +37,15 @@ let broke = false;
 
 // Ground body
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(-40.0, 0.0), Vec2.create(40.0, 0.0)), 0.0);
 
 // Breakable dynamic body
-let body1 = world.createDynamicBody(new Vec2(0.0, 40.0), 0.25 * Math.PI);
+let body1 = world.createDynamicBody(Vec2.create(0.0, 40.0), 0.25 * Math.PI);
 
-let shape1 = new Box(0.5, 0.5, new Vec2(-0.5, 0.0), 0.0);
+let shape1 = new Box(0.5, 0.5, Vec2.create(-0.5, 0.0), 0.0);
 let piece1 = body1.createFixture(shape1, 1.0);
 
-let shape2 = new Box(0.5, 0.5, new Vec2(0.5, 0.0), 0.0);
+let shape2 = new Box(0.5, 0.5, Vec2.create(0.5, 0.0), 0.0);
 let piece2 = body1.createFixture(shape2, 1.0);
 
 world.on('post-solve', function (contact, impulse) {

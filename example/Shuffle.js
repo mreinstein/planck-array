@@ -18,10 +18,10 @@ testbed.mouseForce = -100;
 testbed.start(world);
 
 let walls = [
-  new Vec2(-width * .5, -height * .5),
-  new Vec2(-width * .5, +height * .5),
-  new Vec2(+width * .5, +height * .5),
-  new Vec2(+width * .5, -height * .5)
+  Vec2.create(-width * .5, -height * .5),
+  Vec2.create(-width * .5, +height * .5),
+  Vec2.create(+width * .5, +height * .5),
+  Vec2.create(+width * .5, -height * .5)
 ];
 
 let wallFixDef = {
@@ -41,7 +41,7 @@ let ballBodyDef = {
 
 world.createBody().createFixture(new Chain(walls, true), wallFixDef);
 
-row(1, 8, BALL_R, BALL_D).map(v => Vec2.add(v, new Vec2(height * 0.4, 0))).forEach(function(p) {
+row(1, 8, BALL_R, BALL_D).map(v => Vec2.add(v, Vec2.create(height * 0.4, 0))).forEach(function(p) {
   let ball = world.createDynamicBody(ballBodyDef);
   ball.setPosition(p);
   ball.setAngle(Math.PI);
@@ -49,7 +49,7 @@ row(1, 8, BALL_R, BALL_D).map(v => Vec2.add(v, new Vec2(height * 0.4, 0))).forEa
   ball.style = {fill : '#ff411a', stroke: 'black'};
 });
 
-row(1, 8, BALL_R, BALL_D).map(v => Vec2.add(v, new Vec2(-height * 0.4, 0))).forEach(function(p) {
+row(1, 8, BALL_R, BALL_D).map(v => Vec2.add(v, Vec2.create(-height * 0.4, 0))).forEach(function(p) {
   let ball = world.createDynamicBody(ballBodyDef);
   ball.setPosition(p);
   ball.createFixture(new Circle(BALL_R), ballFixDef);
@@ -76,7 +76,7 @@ function row(n, m, r, l) {
   let balls = [];
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < m; j++) {
-      balls.push(new Vec2(
+      balls.push(Vec2.create(
         i * l - (n - 1) * .5 * l + Math.random() * r * 0.02,
         j * l - (m - 1) * .5 * l + Math.random() * r * 0.02)
       );

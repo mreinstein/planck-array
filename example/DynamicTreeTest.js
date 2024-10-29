@@ -32,10 +32,10 @@ let h = worldExtent;
 queryAABB.lowerBound.set(-3.0, -4.0 + h);
 queryAABB.upperBound.set(5.0, 6.0 + h);
 
-rayCastInput.p1 = new Vec2(-5.0, 5.0 + h);
-rayCastInput.p2 = new Vec2(7.0, -4.0 + h);
-// rayCastInput.p1 = new Vec2(0.0, 2.0 + h);
-// rayCastInput.p2 = new Vec2(0.0, -2.0 + h);
+rayCastInput.p1 = Vec2.create(-5.0, 5.0 + h);
+rayCastInput.p2 = Vec2.create(7.0, -4.0 + h);
+// rayCastInput.p1 = Vec2.create(0.0, 2.0 + h);
+// rayCastInput.p2 = Vec2.create(0.0, -2.0 + h);
 rayCastInput.maxFraction = 1.0;
 
 testbed.step = function() {
@@ -137,7 +137,7 @@ function Actor() {
 }
 
 function getRandomAABB(aabb) {
-  let w = new Vec2(2.0 * proxyExtent, 2.0 * proxyExtent);
+  let w = Vec2.create(2.0 * proxyExtent, 2.0 * proxyExtent);
   // aabb.lowerBound.x = -proxyExtent;
   // aabb.lowerBound.y = -proxyExtent + worldExtent;
   aabb.lowerBound.x = Math.random(-worldExtent, worldExtent);
@@ -146,15 +146,15 @@ function getRandomAABB(aabb) {
 }
 
 function moveAABB(aabb) {
-  let d = new Vec2(Math.random(-0.5, 0.5), Math.random(-0.5, 0.5));
+  let d = Vec2.create(Math.random(-0.5, 0.5), Math.random(-0.5, 0.5));
   // d.x = 2.0;
   // d.y = 0.0;
   aabb.lowerBound.add(d);
   aabb.upperBound.add(d);
 
   let c0 = Vec2.mid(aabb.lowerBound, aabb.upperBound);
-  let min = new Vec2(-worldExtent, 0.0);
-  let max = new Vec2(worldExtent, 2.0 * worldExtent);
+  let min = Vec2.create(-worldExtent, 0.0);
+  let max = Vec2.create(worldExtent, 2.0 * worldExtent);
   let c = Vec2.clamp(c0, min, max);
 
   aabb.lowerBound.add(c).sub(c0);

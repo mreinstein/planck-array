@@ -26,7 +26,7 @@
 
 const { World, Vec2, Circle, Box, Chain, RevoluteJoint, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
@@ -34,19 +34,19 @@ testbed.start(world);
 // Ground body
 let ground = world.createBody();
 ground.createFixture(new Chain([
-  new Vec2(0.0, -2.0),
-  new Vec2(8.0, 6.0),
-  new Vec2(8.0, 20.0),
-  new Vec2(-8.0, 20.0),
-  new Vec2(-8.0, 6.0)
+  Vec2.create(0.0, -2.0),
+  Vec2.create(8.0, 6.0),
+  Vec2.create(8.0, 20.0),
+  Vec2.create(-8.0, 20.0),
+  Vec2.create(-8.0, 6.0)
 ], true), 0.0);
 
 // Flippers
-let pLeft = new Vec2(-2.0, 0.0);
-let pRight = new Vec2(2.0, 0.0);
+let pLeft = Vec2.create(-2.0, 0.0);
+let pRight = Vec2.create(2.0, 0.0);
 
-let leftFlipper = world.createDynamicBody(new Vec2(-2.0, 0.0));
-let rightFlipper = world.createDynamicBody(new Vec2(2.0, 0.0));
+let leftFlipper = world.createDynamicBody(Vec2.create(-2.0, 0.0));
+let rightFlipper = world.createDynamicBody(Vec2.create(2.0, 0.0));
 
 leftFlipper.createFixture(new Box(1.75, 0.1), 1.0);
 rightFlipper.createFixture(new Box(1.75, 0.1), 1.0);
@@ -74,7 +74,7 @@ world.createJoint(rightJoint);
 
 // Circle character
 let ball = world.createBody({
-  position : new Vec2(1.0, 15.0),
+  position : Vec2.create(1.0, 15.0),
   type : 'dynamic',
   bullet : true
 });

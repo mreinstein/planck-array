@@ -32,11 +32,11 @@ let world = new World();
 const testbed = Testbed.mount();
 testbed.start(world);    
 
-let transformA = new Transform(new Vec2(0.0, -0.2));
+let transformA = new Transform(Vec2.create(0.0, -0.2));
 
 let polygonA = new Box(10.0, 0.2);
 
-let positionB = new Vec2(12.017401, 0.13678508);
+let positionB = Vec2.create(12.017401, 0.13678508);
 let angleB = -0.0109265;
 let transformB = new Transform(positionB, angleB);
 

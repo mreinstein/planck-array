@@ -28,7 +28,7 @@
 
 const { World, Vec2, Edge, Box, WeldJoint, Polygon, Circle, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
@@ -36,14 +36,14 @@ testbed.start(world);
 let COUNT = 8;
 
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(-40.0, 0.0), Vec2.create(40.0, 0.0)), 0.0);
 {
   let prevBody = ground;
   for (let i = 0; i < COUNT; ++i) {
-    const body = world.createDynamicBody(new Vec2(-14.5 + 1.0 * i, 5.0));
+    const body = world.createDynamicBody(Vec2.create(-14.5 + 1.0 * i, 5.0));
     body.createFixture(new Box(0.5, 0.125), 20.0);
 
-    const anchor = new Vec2(-15.0 + 1.0 * i, 5.0);
+    const anchor = Vec2.create(-15.0 + 1.0 * i, 5.0);
     world.createJoint(new WeldJoint({}, prevBody, body, anchor));
 
     prevBody = body;
@@ -52,10 +52,10 @@ ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)), 0.0);
 {
   let prevBody = ground;
   for (let i = 0; i < 3; ++i) {
-    let body = world.createDynamicBody(new Vec2(-14.0 + 2.0 * i, 15.0));
+    let body = world.createDynamicBody(Vec2.create(-14.0 + 2.0 * i, 15.0));
     body.createFixture(new Box(1.0, 0.125), 20.0);
 
-    let anchor = new Vec2(-15.0 + 2.0 * i, 15.0);
+    let anchor = Vec2.create(-15.0 + 2.0 * i, 15.0);
     world.createJoint(new WeldJoint({
       frequencyHz: 5.0,
       dampingRatio: 0.7,
@@ -67,11 +67,11 @@ ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)), 0.0);
 {
   let prevBody = ground;
   for (let i = 0; i < COUNT; ++i) {
-    let body = world.createDynamicBody(new Vec2(-4.5 + 1.0 * i, 5.0));
+    let body = world.createDynamicBody(Vec2.create(-4.5 + 1.0 * i, 5.0));
     body.createFixture(new Box(0.5, 0.125), 20.0);
 
     if (i > 0) {
-      let anchor = new Vec2(-5.0 + 1.0 * i, 5.0);
+      let anchor = Vec2.create(-5.0 + 1.0 * i, 5.0);
       world.createJoint(new WeldJoint({}, prevBody, body, anchor));
     }
 
@@ -81,11 +81,11 @@ ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)), 0.0);
 {
   let prevBody = ground;
   for (let i = 0; i < COUNT; ++i) {
-    let body = world.createDynamicBody(new Vec2(5.5 + 1.0 * i, 10.0));
+    let body = world.createDynamicBody(Vec2.create(5.5 + 1.0 * i, 10.0));
     body.createFixture(new Box(0.5, 0.125), 20.0);
 
     if (i > 0) {
-      let anchor = new Vec2(5.0 + 1.0 * i, 10.0);
+      let anchor = Vec2.create(5.0 + 1.0 * i, 10.0);
       world.createJoint(new WeldJoint({
         frequencyHz: 8.0,
         dampingRatio: 0.7,
@@ -98,16 +98,16 @@ ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)), 0.0);
 {
   for (let i = 0; i < 2; ++i) {
     let vertices = [];
-    vertices[0] = new Vec2(-0.5, 0.0);
-    vertices[1] = new Vec2(0.5, 0.0);
-    vertices[2] = new Vec2(0.0, 1.5);
+    vertices[0] = Vec2.create(-0.5, 0.0);
+    vertices[1] = Vec2.create(0.5, 0.0);
+    vertices[2] = Vec2.create(0.0, 1.5);
 
-    let body = world.createDynamicBody(new Vec2(-8.0 + 8.0 * i, 12.0));
+    let body = world.createDynamicBody(Vec2.create(-8.0 + 8.0 * i, 12.0));
     body.createFixture(new Polygon(vertices), 1.0);
   }
 
   for (let i = 0; i < 2; ++i) {
-    let body = world.createDynamicBody(new Vec2(-6.0 + 6.0 * i, 10.0));
+    let body = world.createDynamicBody(Vec2.create(-6.0 + 6.0 * i, 10.0));
     body.createFixture(new Circle(0.5), 1.0);
   }
 }

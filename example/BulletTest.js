@@ -23,16 +23,16 @@
 
 const { World, Vec2, Edge, Box, stats, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
   
 const testbed = Testbed.mount();
 testbed.start(world);
 
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-10.0, 0.0), new Vec2(10.0, 0.0)), 0.0);
-ground.createFixture(new Box(0.2, 1.0, new Vec2(0.5, 1.0), 0.0), 0.0);
+ground.createFixture(new Edge(Vec2.create(-10.0, 0.0), Vec2.create(10.0, 0.0)), 0.0);
+ground.createFixture(new Box(0.2, 1.0, Vec2.create(0.5, 1.0), 0.0), 0.0);
 
-let body = world.createDynamicBody(new Vec2(0.0, 4.0));
+let body = world.createDynamicBody(Vec2.create(0.0, 4.0));
 body.createFixture(new Box(2.0, 0.1), 1.0);
 
 // x = Math.random(-1.0, 1.0);
@@ -40,21 +40,21 @@ let x = 0.20352793;
 
 let bullet = world.createBody({
   type: 'dynamic',
-  position: new Vec2(x, 10.0),
+  position: Vec2.create(x, 10.0),
   bullet: true,
 });
 bullet.createFixture(new Box(0.25, 0.25), 100.0);
 
-bullet.setLinearVelocity(new Vec2(0.0, -50.0));
+bullet.setLinearVelocity(Vec2.create(0.0, -50.0));
 
 function Launch() {
-  body.setTransform(new Vec2(0.0, 4.0), 0.0);
-  body.setLinearVelocity(new Vec2());
+  body.setTransform(Vec2.create(0.0, 4.0), 0.0);
+  body.setLinearVelocity(Vec2.create());
   body.setAngularVelocity(0.0);
 
   x = Math.random() * 2 - 1;
-  bullet.setTransform(new Vec2(x, 10.0), 0.0);
-  bullet.setLinearVelocity(new Vec2(0.0, -50.0));
+  bullet.setTransform(Vec2.create(x, 10.0), 0.0);
+  bullet.setLinearVelocity(Vec2.create(0.0, -50.0));
   bullet.setAngularVelocity(0.0);
 
   stats.gjkCalls = 0;

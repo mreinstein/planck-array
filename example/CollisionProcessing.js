@@ -25,39 +25,39 @@ const { World, Vec2, Edge, Polygon, Box, Circle, Math, Testbed } = planck;
 
 // This test shows collision processing and tests
 // deferred body destruction.
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
 
 // Ground body
-world.createBody().createFixture(new Edge(new Vec2(-50.0, 0.0), new Vec2(50.0, 0.0)));
+world.createBody().createFixture(new Edge(Vec2.create(-50.0, 0.0), Vec2.create(50.0, 0.0)));
 
 let xLo = -5.0, xHi = 5.0;
 let yLo = 2.0, yHi = 35.0;
 
 // Small triangle
-let body1 = world.createDynamicBody(new Vec2(Math.random(xLo, xHi), Math.random(yLo, yHi)));
-body1.createFixture(new Polygon([new Vec2(-1.0, 0.0), new Vec2(1.0, 0.0), new Vec2(0.0, 2.0)]), 1.0);
+let body1 = world.createDynamicBody(Vec2.create(Math.random(xLo, xHi), Math.random(yLo, yHi)));
+body1.createFixture(new Polygon([Vec2.create(-1.0, 0.0), Vec2.create(1.0, 0.0), Vec2.create(0.0, 2.0)]), 1.0);
 
 // Large triangle (recycle definitions)
-let body2 = world.createDynamicBody(new Vec2(Math.random(xLo, xHi), Math.random(yLo, yHi)));
-body2.createFixture(new Polygon([new Vec2(-1.0, 0.0), new Vec2(1.0, 0.0), new Vec2(0.0, 2.0)]), 1.0);
+let body2 = world.createDynamicBody(Vec2.create(Math.random(xLo, xHi), Math.random(yLo, yHi)));
+body2.createFixture(new Polygon([Vec2.create(-1.0, 0.0), Vec2.create(1.0, 0.0), Vec2.create(0.0, 2.0)]), 1.0);
 
 // Small box
-let body3 = world.createDynamicBody(new Vec2(Math.random(xLo, xHi), Math.random(yLo, yHi)));
+let body3 = world.createDynamicBody(Vec2.create(Math.random(xLo, xHi), Math.random(yLo, yHi)));
 body3.createFixture(new Box(1.0, 0.5), 1.0);
 
 // Large box (recycle definitions)
-let body4 = world.createDynamicBody(new Vec2(Math.random(xLo, xHi), Math.random(yLo, yHi)));
+let body4 = world.createDynamicBody(Vec2.create(Math.random(xLo, xHi), Math.random(yLo, yHi)));
 body4.createFixture(new Box(2.0, 1.0), 1.0);
 
 // Small circle
-let body5 = world.createDynamicBody(new Vec2(Math.random(xLo, xHi), Math.random(yLo, yHi)));
+let body5 = world.createDynamicBody(Vec2.create(Math.random(xLo, xHi), Math.random(yLo, yHi)));
 body5.createFixture(new Circle(1.0), 1.0);
 
 // Large circle
-let body6 = world.createDynamicBody(new Vec2(Math.random(xLo, xHi), Math.random(yLo, yHi)));
+let body6 = world.createDynamicBody(Vec2.create(Math.random(xLo, xHi), Math.random(yLo, yHi)));
 body6.createFixture(new Circle(2.0), 1.0);
 
 let points = [];

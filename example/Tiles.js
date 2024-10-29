@@ -26,7 +26,7 @@
 
 const { World, Vec2, Box, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
@@ -37,12 +37,12 @@ let fixtureCount = 0;
 
 {
   let a = 0.5;
-  let ground = world.createBody(new Vec2(0, -a));
+  let ground = world.createBody(Vec2.create(0, -a));
 
   if (true) {
     let N = 200;
     let M = 10;
-    let position = new Vec2();
+    let position = Vec2.create();
     position.y = 0.0;
     for (let j = 0; j < M; ++j) {
       position.x = -N * a;
@@ -57,7 +57,7 @@ let fixtureCount = 0;
   } else {
     let N = 200;
     let M = 10;
-    let position = new Vec2();
+    let position = Vec2.create();
     position.x = -N * a;
     for (let i = 0; i < N; ++i) {
       position.y = 0.0;
@@ -73,10 +73,10 @@ let fixtureCount = 0;
   let a = 0.5;
   let shape = new Box(a, a);
 
-  let x = new Vec2(-7.0, 0.75);
-  let y = new Vec2();
-  let deltaX = new Vec2(0.5625, 1.25);
-  let deltaY = new Vec2(1.125, 0.0);
+  let x = Vec2.create(-7.0, 0.75);
+  let y = Vec2.create();
+  let deltaX = Vec2.create(0.5625, 1.25);
+  let deltaY = Vec2.create(1.125, 0.0);
 
   for (let i = 0; i < COUNT; ++i) {
     y.set(x);

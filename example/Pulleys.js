@@ -23,7 +23,7 @@
 
 const { Vec2, World, Circle, Box, PulleyJoint, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 
 const testbed = Testbed.mount();
 testbed.start(world);
@@ -35,24 +35,24 @@ let b = 2.0;
 
 let ground = world.createBody();
 
-// ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)), 0.0);
+// ground.createFixture(new Edge(Vec2.create(-40.0, 0.0), Vec2.create(40.0, 0.0)), 0.0);
 
-ground.createFixture(new Circle(new Vec2(-10.0, y + b + L), 2.0), 0.0);
-ground.createFixture(new Circle(new Vec2(10.0, y + b + L), 2.0), 0.0);
+ground.createFixture(new Circle(Vec2.create(-10.0, y + b + L), 2.0), 0.0);
+ground.createFixture(new Circle(Vec2.create(10.0, y + b + L), 2.0), 0.0);
 
 let shape = new Box(a, b);
 
 // bd.fixedRotation = true;
-let box1 = world.createDynamicBody(new Vec2(-10.0, y));
+let box1 = world.createDynamicBody(Vec2.create(-10.0, y));
 box1.createFixture(shape, 5.0);
 
-let box2 = world.createDynamicBody(new Vec2(10.0, y));
+let box2 = world.createDynamicBody(Vec2.create(10.0, y));
 box2.createFixture(shape, 5.0);
 
-let anchor1 = new Vec2(-10.0, y + b);
-let anchor2 = new Vec2(10.0, y + b);
-let groundAnchor1 = new Vec2(-10.0, y + b + L);
-let groundAnchor2 = new Vec2(10.0, y + b + L);
+let anchor1 = Vec2.create(-10.0, y + b);
+let anchor2 = Vec2.create(10.0, y + b);
+let groundAnchor1 = Vec2.create(-10.0, y + b + L);
+let groundAnchor2 = Vec2.create(10.0, y + b + L);
 
 let joint1 = world.createJoint(new PulleyJoint({}, box1, box2, groundAnchor1, groundAnchor2, anchor1, anchor2, 1.5));
 

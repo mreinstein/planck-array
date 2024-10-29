@@ -23,7 +23,7 @@
 
 const { Vec2, Transform, AABB, Circle, Polygon, Edge, Box, World, Distance, Testbed } = planck;
 
-let world = new World(new Vec2(0, -10));
+let world = new World(Vec2.create(0, -10));
 const testbed = Testbed.mount();
 testbed.start(world);
 
@@ -34,18 +34,18 @@ let bodies = [];
 let shapes = [];
 
 let ground = world.createBody();
-ground.createFixture(new Edge(new Vec2(-40.0, 0.0), new Vec2(40.0, 0.0)), 0.0);
+ground.createFixture(new Edge(Vec2.create(-40.0, 0.0), Vec2.create(40.0, 0.0)), 0.0);
 
 shapes[0] = new Polygon([
-  new Vec2(-0.5, 0.0),
-  new Vec2(0.5, 0.0),
-  new Vec2(0.0, 1.5)
+  Vec2.create(-0.5, 0.0),
+  Vec2.create(0.5, 0.0),
+  Vec2.create(0.0, 1.5)
 ]);
 
 shapes[1] = new Polygon([
-  new Vec2(-0.1, 0.0),
-  new Vec2(0.1, 0.0),
-  new Vec2(0.0, 1.5)
+  Vec2.create(-0.1, 0.0),
+  Vec2.create(0.1, 0.0),
+  Vec2.create(0.0, 1.5)
 ]);
 
 {
@@ -54,14 +54,14 @@ shapes[1] = new Polygon([
   let s = Math.sqrt(2.0) * b;
 
   shapes[2] = new Polygon([
-    new Vec2(0.5 * s, 0.0),
-    new Vec2(0.5 * w, b),
-    new Vec2(0.5 * w, b + s),
-    new Vec2(0.5 * s, w),
-    new Vec2(-0.5 * s, w),
-    new Vec2(-0.5 * w, b + s),
-    new Vec2(-0.5 * w, b),
-    new Vec2(-0.5 * s, 0.0),
+    Vec2.create(0.5 * s, 0.0),
+    Vec2.create(0.5 * w, b),
+    Vec2.create(0.5 * w, b + s),
+    Vec2.create(0.5 * s, w),
+    Vec2.create(-0.5 * s, w),
+    Vec2.create(-0.5 * w, b + s),
+    Vec2.create(-0.5 * w, b),
+    Vec2.create(-0.5 * s, 0.0),
   ]);
 }
 
@@ -76,7 +76,7 @@ function createBody(index) {
 
   let bd = {
     type: 'dynamic',
-    position: new Vec2(Math.random() * 0.4 - 2.0, 10.0),
+    position: Vec2.create(Math.random() * 0.4 - 2.0, 10.0),
     angle: Math.random() * 2 * Math.PI - Math.PI,
   };
 
@@ -182,7 +182,7 @@ function drawFixture(fixture) {
 let AABBQueryListener = (function() {
   let def = {};
 
-  def.circle = new Circle(new Vec2(0.0, 1.1), 2.0);
+  def.circle = new Circle(Vec2.create(0.0, 1.1), 2.0);
   def.transform = new Transform();
   let count = 0;
 

@@ -56,9 +56,9 @@ if (true) {
   countB = 4;
   radiusB = Settings.polygonRadius;
 
-  transformA = new Transform(new Vec2(4, 0.25));
-  transformB = new Transform(new Vec2(-4, 0));
-  translationB = new Vec2(8.0, 0.0);
+  transformA = new Transform(Vec2.create(4, 0.25));
+  transformB = new Transform(Vec2.create(-4, 0));
+  translationB = Vec2.create(8.0, 0.0);
 } else if (true) {
   vAs[0].set(0.0, 0.0);
   countA = 1;
@@ -68,9 +68,9 @@ if (true) {
   countB = 1;
   radiusB = 0.5;
 
-  transformA = new Transform(new Vec2(0, 0.25));
-  transformB = new Transform(new Vec2(-4, 0));
-  translationB = new Vec2(8.0, 0.0);
+  transformA = new Transform(Vec2.create(0, 0.25));
+  transformB = new Transform(Vec2.create(-4, 0));
+  translationB = Vec2.create(8.0, 0.0);
 } else {
   vAs[0].set(0.0, 0.0);
   vAs[1].set(2.0, 0.0);
@@ -82,10 +82,10 @@ if (true) {
   radiusB = 0.25;
 
   // Initial overlap
-  transformA = new Transform(new Vec2(0, 0));
-  transformB = new Transform(new Vec2(-0.244360745, 0.05999358));
+  transformA = new Transform(Vec2.create(0, 0));
+  transformB = new Transform(Vec2.create(-0.244360745, 0.05999358));
   transformB.q.setIdentity();
-  translationB = new Vec2(0.0, 0.0399999991);
+  translationB = Vec2.create(0.0, 0.0399999991);
 }
 
 testbed.step = function() {
