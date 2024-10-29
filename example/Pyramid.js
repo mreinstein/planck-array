@@ -42,14 +42,16 @@ let deltaX = Vec2.create(0.5625, 1.25);
 let deltaY = Vec2.create(1.125, 0.0);
 
 for (let i = 0; i < COUNT; ++i) {
-  y.set(x);
+  
+  Vec2.copy(x, y);
+  
   for (let j = i; j < COUNT; ++j) {
 
     world.createDynamicBody(y).createFixture(box, 5.0);
 
-    y.add(deltaY);
+    Vec2.add(y, deltaY, y);
   }
-  x.add(deltaX);
+  Vec2.add(x, deltaX, x);
 }
 
 testbed.step = function() {

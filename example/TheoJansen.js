@@ -68,7 +68,7 @@ let motorjoint = world.createJoint(new RevoluteJoint({
   enableMotor: motorOn
 }, wheel, chassis, Vec2.add(pivot, offset)));
 
-let wheelAnchor = Vec2.create(0.0, -0.8).add(pivot);
+let wheelAnchor = Vec2.add(Vec2.create(0.0, -0.8), pivot);
 
 createLeg(-1.0, wheelAnchor);
 createLeg(1.0, wheelAnchor);

@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-const { World, Transform, Box, TimeOfImpact, Sweep, TOIInput, TOIOutput, stats, Testbed } = planck;
+const { World, Transform, Box, TimeOfImpact, Sweep, TOIInput, TOIOutput, stats, Testbed, Vec2 } = planck;
 
 let world = new World();
 
@@ -34,19 +34,19 @@ testbed.start(world);
 
 let shapeA = new Box(25.0, 5.0);
 let sweepA = new Sweep();
-sweepA.c0.set(0, 0);
+Vec2.set(0, 0, sweepA.c0);
 sweepA.a0 = 0.1;
-sweepA.c.set(sweepA.c0);
+Vec2.copy(sweepA.c0, sweepA.c);
 sweepA.a = sweepA.a0;
-sweepA.localCenter.setZero();
+Vec2.setZero(sweepA.localCenter);
 
 let shapeB = new Box(2.5, 2.5);
 let sweepB = new Sweep();
-sweepB.c0.set(20, 20);
+Vec2.set(20, 20, sweepB.c0);
 sweepB.a0 = 0.1; // - 162.0 * Math.PI;
-sweepB.c.set(-20, -20);
+Vec2.set(-20, -20, sweepB.c);
 sweepB.a = 3.1; // - 162.0 * Math.PI;
-sweepB.localCenter.setZero();
+Vec2.setZero(sweepB.localCenter);
 
 // sweepB.a0 -= 300.0 * Math.PI;
 // sweepB.a -= 300.0 * Math.PI;

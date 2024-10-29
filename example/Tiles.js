@@ -79,7 +79,7 @@ let fixtureCount = 0;
   let deltaY = Vec2.create(1.125, 0.0);
 
   for (let i = 0; i < COUNT; ++i) {
-    y.set(x);
+    Vec2.copy(x, y);
 
     for (let j = i; j < COUNT; ++j) {
 
@@ -88,10 +88,10 @@ let fixtureCount = 0;
       let body = world.createDynamicBody(y);
       body.createFixture(shape, 5.0);
       ++fixtureCount;
-      y.add(deltaY);
+      Vec2.add(y, deltaY, y);
     }
 
-    x.add(deltaX);
+    Vec2.add(x, deltaX, x);
   }
 }
 let createTime = Date.now();

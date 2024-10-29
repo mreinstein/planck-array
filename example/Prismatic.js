@@ -45,7 +45,8 @@ body.createFixture(new Box(2.0, 0.5), 5.0);
 
 // Bouncy limit
 let axis = Vec2.create(2.0, 1.0);
-axis.normalize();
+Vec2.normalize(axis, axis);
+
 let joint = new PrismaticJoint({
   motorSpeed : MOTOR_SPEED,
   maxMotorForce : 10000.0,

@@ -119,12 +119,12 @@ testbed.step = function() {
     let position = body.getPosition();
 
     let d = Vec2.sub(center, position);
-    if (d.lengthSquared() < 1e-18) {
+    if (Vec2.lengthSquared(d) < 1e-18) {
       continue;
     }
 
-    d.normalize();
-    let F = Vec2.mul(d, 100.0);
+    Vec2.normalize(d, d);
+    let F = Vec2.scale(d, 100.0);
     body.applyForce(F, position, false);
   }
 };

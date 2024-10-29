@@ -43,16 +43,16 @@ let transformB;
 let translationB;
 
 if (true) {
-  vAs[0].set(-0.5, 1.0);
-  vAs[1].set(0.5, 1.0);
-  vAs[2].set(0.0, 0.0);
+  Vec2.set(-0.5, 1.0, vAs[0]);
+  Vec2.set(0.5, 1.0, vAs[1]);
+  Vec2.set(0.0, 0.0, vAs[2]);
   countA = 3;
   radiusA = Settings.polygonRadius;
 
-  vBs[0].set(-0.5, -0.5);
-  vBs[1].set(0.5, -0.5);
-  vBs[2].set(0.5, 0.5);
-  vBs[3].set(-0.5, 0.5);
+  Vec2.set(-0.5, -0.5, vBs[0]);
+  Vec2.set(0.5, -0.5, vBs[1]);
+  Vec2.set(0.5, 0.5, vBs[2]);
+  Vec2.set(-0.5, 0.5, vBs[3]);
   countB = 4;
   radiusB = Settings.polygonRadius;
 
@@ -60,11 +60,11 @@ if (true) {
   transformB = new Transform(Vec2.create(-4, 0));
   translationB = Vec2.create(8.0, 0.0);
 } else if (true) {
-  vAs[0].set(0.0, 0.0);
+  Vec2.set(0.0, 0.0, vAs[0]);
   countA = 1;
   radiusA = 0.5;
 
-  vBs[0].set(0.0, 0.0);
+  Vec2.set(0.0, 0.0, vBs[0]);
   countB = 1;
   radiusB = 0.5;
 
@@ -72,12 +72,12 @@ if (true) {
   transformB = new Transform(Vec2.create(-4, 0));
   translationB = Vec2.create(8.0, 0.0);
 } else {
-  vAs[0].set(0.0, 0.0);
-  vAs[1].set(2.0, 0.0);
+  Vec2.set(0.0, 0.0, vAs[0]);
+  Vec2.set(2.0, 0.0, vAs[1]);
   countA = 2;
   radiusA = Settings.polygonRadius;
 
-  vBs[0].set(0.0, 0.0);
+  Vec2.set(0.0, 0.0, vBs[0]);
   countB = 1;
   radiusB = 0.25;
 
@@ -96,7 +96,7 @@ testbed.step = function() {
   input.proxyB.setVertices(vBs, countB, radiusB);
   input.transformA.set(transformA);
   input.transformB.set(transformB);
-  input.translationB.set(translationB);
+  Vec2.copy(translationB, input.translationB);
 
   const output = new ShapeCastOutput();
 
