@@ -20,9 +20,9 @@ console.log(p)    // { x: 50, y: 50, ...pile o' functions }
 
 I use array notation in my projects, so I want to declare vectors like this:
 ```javascript
-import { Vec2 } from 'wgpu-matrix'
+import { vec2 } from 'wgpu-matrix'
 
-const p = Vec2.create(50, 50)  // generates pure data
+const p = vec2.fromValues(50, 50)  // generates pure data
 console.log(p)   // [ 50, 50 ]    A nice simple array.  You know, like, data.  :)
 ```
 
