@@ -122,6 +122,7 @@ export class World {
   /** @internal */ m_blockSolve: boolean;
   /** @internal */ m_velocityIterations: number;
   /** @internal */ m_positionIterations: number;
+  /** @internal */ m_step_callback: ((world: World) => unknown)[];
   /** @internal */ m_t: number;
 
   // TODO
@@ -176,6 +177,8 @@ export class World {
     this.m_positionIterations = def.positionIterations;
 
     this.m_t = 0;
+
+    this.m_step_callback = [];
   }
 
   /** @internal */
@@ -496,13 +499,15 @@ export class World {
     }
     this.m_bodyList = body;
     ++this.m_bodyCount;
+
+    this.publish('add-body', body);
   }
 
   /**
    * Create a rigid body given a definition. No reference to the definition is
    * retained.
    *
-   * Warning: This function is locked during callbacks.
+   * Warning: This function is locked when a world simulation step is in progress. Use queueUpdate to schedule a function to be called after the step.
    */
   createBody(def?: BodyDef): Body;
   createBody(position: Vec2Value, angle?: number): Body;
@@ -562,7 +567,7 @@ export class World {
    *
    * Warning: This automatically deletes all associated shapes and joints.
    *
-   * Warning: This function is locked during callbacks.
+   * Warning: This function is locked when a world simulation step is in progress. Use queueUpdate to schedule a function to be called after the step.
    */
   destroyBody(b: Body): boolean {
     _ASSERT && console.assert(this.m_bodyCount > 0);
@@ -639,7 +644,9 @@ export class World {
    * Create a joint to constrain bodies together. No reference to the definition
    * is retained. This may cause the connected bodies to cease colliding.
    *
-   * Warning: This function is locked during callbacks.
+   * Note: creating a joint doesn't wake the bodies.
+   *
+   * Warning: This function is locked when a world simulation step is in progress. Use queueUpdate to schedule a function to be called after the step.
    */
   createJoint<T extends Joint>(joint: T): T | null {
     _ASSERT && console.assert(!!joint.m_bodyA);
@@ -686,14 +693,13 @@ export class World {
       }
     }
 
-    // Note: creating a joint doesn't wake the bodies.
-
+    this.publish('add-joint', joint);
     return joint;
   }
 
   /**
    * Destroy a joint. This may cause the connected bodies to begin colliding.
-   * Warning: This function is locked during callbacks.
+   * Warning: This function is locked when a world simulation step is in progress. Use queueUpdate to schedule a function to be called after the step.
    */
   destroyJoint(joint: Joint): void {
     _ASSERT && console.assert(this.isLocked() == false);
@@ -846,7 +852,23 @@ export class World {
 
     this.m_locked = false;
 
+    let callback: (world: World) => unknown;
+    while (callback = this.m_step_callback.shift()) {
+      callback(this);
+    }
+
     this.publish('post-step', timeStep);
+  }
+
+  /**
+   * Queue a function to be called after ongoing simulation step. If no simulation is in progress call it immediately.
+   */
+  queueUpdate(callback: (world: World) => unknown): void {
+    if (!this.isLocked()) {
+      callback(this);
+    } else {
+      this.m_step_callback.push(callback);
+    }
   }
 
   /**
@@ -1059,6 +1081,12 @@ export class World {
   on(name: 'remove-joint', listener: (joint: Joint) => void): World;
   /** Listener is called whenever a fixture is removed implicitly or explicitly. */
   on(name: 'remove-fixture', listener: (fixture: Fixture) => void): World;
+  /** Listener is called when a body is added. */
+  on(name: 'add-body', listener: (body: Body) => void): World;
+  /** Listener is called when a joint is added. */
+  on(name: 'add-joint', listener: (joint: Joint) => void): World;
+  /** Listener is called when a fixture is added. */
+  on(name: 'add-fixture', listener: (fixture: Fixture) => void): World;
   /**
    * Register an event listener.
    */
@@ -1084,6 +1112,9 @@ export class World {
   off(name: 'remove-body', listener: (body: Body) => void): World;
   off(name: 'remove-joint', listener: (joint: Joint) => void): World;
   off(name: 'remove-fixture', listener: (fixture: Fixture) => void): World;
+  off(name: 'add-body', listener: (body: Body) => void): World;
+  off(name: 'add-joint', listener: (joint: Joint) => void): World;
+  off(name: 'add-fixture', listener: (fixture: Fixture) => void): World;
   /**
    * Remove an event listener.
    */

@@ -189,6 +189,7 @@ export class ChainShape extends Shape {
       _ASSERT && console.assert(Vec2.distanceSquared(v1, v2) > Settings.linearSlopSquared);
     }
 
+    this.m_vertices = [];
     this.m_count = vertices.length;
     for (let i = 0; i < vertices.length; ++i) {
       this.m_vertices[i] = Vec2.clone(vertices[i]);
@@ -204,7 +205,7 @@ export class ChainShape extends Shape {
   /** @hidden */
   _reset(): void {
     if (this.m_isLoop) {
-      this._createLoop(this.m_vertices);
+      this._createLoop(this.m_vertices.slice(0, this.m_vertices.length - 1));
     } else {
       this._createChain(this.m_vertices);
     }
@@ -371,4 +372,4 @@ export class ChainShape extends Shape {
   }
 }
 
-export const Chain = ChainShape;
+export { ChainShape as Chain };

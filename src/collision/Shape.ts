@@ -27,7 +27,6 @@ import { RayCastOutput, RayCastInput, AABBValue } from './AABB';
 import { DistanceProxy } from './Distance';
 import type { Transform, TransformValue }  from '../common/Transform';
 import type { Vec2Value }  from '../common/Vec2';
-import { Style } from '../util/Testbed';
 
 // todo make shape an interface
 
@@ -46,8 +45,6 @@ export abstract class Shape {
    */
   m_radius: number;
 
-  /** Styling for dev-tools. */
-  style: Style = {};
 
   /** @hidden @experimental Similar to userData, but used by dev-tools or runtime environment. */
   appData: Record<string, any> = {};

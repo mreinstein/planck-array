@@ -582,4 +582,4 @@ export class PolygonShape extends Shape {
   return Vec2.scale(c, 1.0 / area, c);
 }
 
-export const Polygon = PolygonShape;
+export { PolygonShape as Polygon };

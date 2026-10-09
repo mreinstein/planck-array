@@ -111,7 +111,7 @@ export class MouseJoint extends Joint {
   /** @internal */ m_C: Vec2Value;
 
   constructor(def: MouseJointDef);
-  constructor(def: MouseJointOpt, bodyA: Body, bodyB: Body, target: Vec2Value);
+  constructor(def: MouseJointOpt, bodyA: Body, bodyB: Body, target?: Vec2Value);
   constructor(def: MouseJointDef, bodyA?: Body, bodyB?: Body, target?: Vec2Value) {
     def = options(def, DEFAULTS);
     super(def, bodyA, bodyB);

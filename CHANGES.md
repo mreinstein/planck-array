@@ -1,11 +1,27 @@
+## 0.3.0
+Ported from upstream planck.js 1.0.7 – 1.5.0 (bug fixes and features only, no object-oriented Vec2/serializer/testbed changes):
+* Fix `AABB.rayCast` (was indexing array vectors with `'x'`/`'y'`, always returned false; upstream also fixed an axis bug here)
+* Fix `matrix.addVec2` using `v[0]` for the y component
+* Fix `ChainShape._reset` on loops duplicating the closing vertex
+* Add `world.queueUpdate(callback)` to defer mutations until after the current step
+* Publish `add-body`, `add-fixture`, `add-joint` world events
+* Add `body.setTransform(xf)` overload
+* Export shape aliases (`Box`, `Circle`, ...) as classes so they can be used as types
+* Make joint constructor anchor params and `referenceAngle` optional in types
+* `internal.Settings` now exposes public `Settings`
+* Remove `style` dev-tool field and Testbed import from `Body`, `Fixture`, `Joint`, `Shape` (testbed reads styling dynamically; engine no longer depends on testbed)
+
+
 ## 1.0.0-alpha
 * Migrated the code to typescript
+
 
 ## 0.2
 * TypeScript definitions added
 * wSet/wAdd/wSub(a, v, b, w) replaced with combine/setCombine/addCombine/subCombine(a, v, b, w)
 * wSet/wAdd/wSub(a, v) replaced with mul/setMul/addMul/subMul(a, v)
 * Joints constructors cleanup
+
 
 ## 0.1
 * source code directory layout changed, classes moved around!

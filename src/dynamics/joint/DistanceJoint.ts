@@ -121,7 +121,7 @@ export class DistanceJoint extends Joint {
    * @param anchorA Anchor A in global coordination.
    * @param anchorB Anchor B in global coordination.
    */
-  constructor(def: DistanceJointOpt, bodyA: Body, bodyB: Body, anchorA: Vec2Value, anchorB: Vec2Value);
+  constructor(def: DistanceJointOpt, bodyA: Body, bodyB: Body, anchorA?: Vec2Value, anchorB?: Vec2Value);
   constructor(def: DistanceJointDef, bodyA?: Body, bodyB?: Body, anchorA?: Vec2Value, anchorB?: Vec2Value) {
     // order of constructor arguments is changed in v0.2
     if (bodyB && anchorA && ('m_type' in anchorA) && ('x' in bodyB) && ('y' in bodyB)) {
