@@ -1,3 +1,7 @@
+## 0.3.1
+* re-add dist to module so esm.sh builds still work
+
+
 ## 0.3.0
 Ported from upstream planck.js 1.0.7 – 1.5.0 (bug fixes and features only, no object-oriented Vec2/serializer/testbed changes):
 * Fix `AABB.rayCast` (was indexing array vectors with `'x'`/`'y'`, always returned false; upstream also fixed an axis bug here)
