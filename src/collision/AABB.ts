@@ -207,16 +207,16 @@ export class AABB {
 
     const normal = Vec2.zero();
 
-    for (let f: 'x' | 'y' = 'x'; f !== null; f = (f === 'x' ? 'y' : null)) {
+    {
       if (absD[0] < EPSILON) {
         // Parallel.
-        if (p[f] < this.lowerBound[f] || this.upperBound[f] < p[f]) {
+        if (p[0] < this.lowerBound[0] || this.upperBound[0] < p[0]) {
           return false;
         }
       } else {
-        const inv_d = 1.0 / d[f];
-        let t1 = (this.lowerBound[f] - p[f]) * inv_d;
-        let t2 = (this.upperBound[f] - p[f]) * inv_d;
+        const inv_d = 1.0 / d[0];
+        let t1 = (this.lowerBound[0] - p[0]) * inv_d;
+        let t2 = (this.upperBound[0] - p[0]) * inv_d;
 
         // Sign of the normal vector.
         let s = -1.0;
@@ -231,7 +231,44 @@ export class AABB {
         // Push the min up
         if (t1 > tmin) {
           Vec2.setZero(normal);
-          normal[f] = s;
+          normal[0] = s;
+          tmin = t1;
+        }
+
+        // Pull the max down
+        tmax = math_min(tmax, t2);
+
+        if (tmin > tmax) {
+          return false;
+        }
+      }
+    }
+
+    {
+      if (absD[1] < EPSILON) {
+        // Parallel.
+        if (p[1] < this.lowerBound[1] || this.upperBound[1] < p[1]) {
+          return false;
+        }
+      } else {
+        const inv_d = 1.0 / d[1];
+        let t1 = (this.lowerBound[1] - p[1]) * inv_d;
+        let t2 = (this.upperBound[1] - p[1]) * inv_d;
+
+        // Sign of the normal vector.
+        let s = -1.0;
+
+        if (t1 > t2) {
+          const temp = t1;
+          t1 = t2;
+          t2 = temp;
+          s = 1.0;
+        }
+
+        // Push the min up
+        if (t1 > tmin) {
+          Vec2.setZero(normal);
+          normal[1] = s;
           tmin = t1;
         }
 

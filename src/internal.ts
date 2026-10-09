@@ -1,5 +1,5 @@
 import { CollidePolygons } from './collision/shape/CollidePolygon';
-import { SettingsInternal as Settings } from './Settings';
+import { Settings } from './Settings';
 import { Sweep } from './common/Sweep';
 import { DynamicTree } from './collision/DynamicTree';
 import { Manifold } from './collision/Manifold';

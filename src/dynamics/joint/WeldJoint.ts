@@ -116,7 +116,7 @@ export class WeldJoint extends Joint {
   /** @internal */ m_mass: Mat33;
 
   constructor(def: WeldJointDef);
-  constructor(def: WeldJointOpt, bodyA: Body, bodyB: Body, anchor: Vec2Value);
+  constructor(def: WeldJointOpt, bodyA: Body, bodyB: Body, anchor?: Vec2Value);
   constructor(def: WeldJointDef, bodyA?: Body, bodyB?: Body, anchor?: Vec2Value) {
 
     def = options(def, DEFAULTS);

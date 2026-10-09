@@ -213,4 +213,4 @@ export class CircleShape extends Shape {
   }
 }
 
-export const Circle = CircleShape;
+export { CircleShape as Circle };

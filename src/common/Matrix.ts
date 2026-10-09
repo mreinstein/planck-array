@@ -79,7 +79,7 @@ export function plusVec2(out: Vec2Value, w: Vec2Value): Vec2Value {
 
 export function addVec2(out: Vec2Value, v: Vec2Value, w: Vec2Value): Vec2Value {
   out[0] = v[0] + w[0];
-  out[1] = v[0] + w[1];
+  out[1] = v[1] + w[1];
   return out;
 }
 

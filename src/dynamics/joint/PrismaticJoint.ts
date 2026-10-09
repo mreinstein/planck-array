@@ -110,7 +110,7 @@ export interface PrismaticJointDef extends JointDef, PrismaticJointOpt {
    * referenceAngle The constrained angle between the bodies:
    * bodyB_angle - bodyA_angle.
    */
-  referenceAngle: number;
+  referenceAngle?: number;
 
   /** @internal */ anchorA?: Vec2Value;
   /** @internal */ anchorB?: Vec2Value;
@@ -166,7 +166,7 @@ export class PrismaticJoint extends Joint {
   /** @internal */ m_K: Mat33;
 
   constructor(def: PrismaticJointDef);
-  constructor(def: PrismaticJointOpt, bodyA: Body, bodyB: Body, anchor: Vec2Value, axis: Vec2Value);
+  constructor(def: PrismaticJointOpt, bodyA: Body, bodyB: Body, anchor?: Vec2Value, axis?: Vec2Value);
   constructor(def: PrismaticJointDef, bodyA?: Body, bodyB?: Body, anchor?: Vec2Value, axis?: Vec2Value) {
     def = options(def, DEFAULTS);
     super(def, bodyA, bodyB);

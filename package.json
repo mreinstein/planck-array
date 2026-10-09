@@ -1,6 +1,6 @@
 {
   "name": "@footgun/planck",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "2D JavaScript/TypeScript physics engine for cross-platform HTML5 game development",
   "homepage": "https://github.com/mreinstein/planck-array.js",
   "keywords": [

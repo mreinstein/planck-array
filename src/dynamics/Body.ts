@@ -28,7 +28,7 @@ import { Vec2Value } from '../common/Vec2';
 import * as Vec2 from '../common/Vec2';
 import { Rot } from '../common/Rot';
 import { Sweep } from '../common/Sweep';
-import { Transform } from '../common/Transform';
+import { Transform, TransformValue } from '../common/Transform';
 import { Velocity } from './Velocity';
 import { Position } from './Position';
 import { Fixture, FixtureDef, FixtureOpt } from './Fixture';
@@ -36,7 +36,6 @@ import { Shape } from '../collision/Shape';
 import { JointEdge } from "./Joint";
 import { World } from "./World";
 import { ContactEdge } from "./Contact";
-import { Style } from '../util/Testbed';
 
 
 /** @internal */ const _ASSERT = typeof ASSERT === 'undefined' ? false : ASSERT;
@@ -219,8 +218,6 @@ export class Body {
   /** @internal */ m_next: Body | null;
   /** @internal */ m_destroyed: boolean;
 
-  /** Styling for dev-tools. */
-  style: Style = {};
 
   /** @hidden @experimental Similar to userData, but used by dev-tools or runtime environment. */
   appData: Record<string, any> = {};
@@ -581,13 +578,26 @@ export class Body {
    * @param position The world position of the body's local origin.
    * @param angle The world rotation in radians.
    */
-  setTransform(position: Vec2Value, angle: number): void {
+  setTransform(position: Vec2Value, angle: number): void;
+  /**
+   * Set the position of the body's origin and rotation. Manipulating a body's
+   * transform may cause non-physical behavior. Note: contacts are updated on the
+   * next call to World.step.
+   *
+   * Warning: This function is locked when a world simulation step is in progress. Use queueUpdate to schedule a function to be called after the step.
+   */
+  setTransform(xf: TransformValue): void;
+  setTransform(a: Vec2Value | TransformValue, b?: number): void {
     _ASSERT && console.assert(this.isWorldLocked() == false);
     if (this.isWorldLocked() == true) {
       return;
     }
 
-    this.m_xf.setNum(position, angle);
+    if (typeof b === 'number') {
+      this.m_xf.setNum(a as Vec2Value, b);
+    } else {
+      this.m_xf.setTransform(a as TransformValue);
+    }
     this.m_sweep.setTransform(this.m_xf);
 
     const broadPhase = this.m_world.m_broadPhase;
@@ -1066,7 +1076,7 @@ export class Body {
    *
    * Contacts are not created until the next time step.
    *
-   * Warning: This function is locked during callbacks.
+   * Warning: This function is locked when a world simulation step is in progress. Use queueUpdate to schedule a function to be called after the step.
    */
   createFixture(def: FixtureDef): Fixture;
   createFixture(shape: Shape, opt?: FixtureOpt): Fixture;
@@ -1081,6 +1091,7 @@ export class Body {
 
     const fixture = new Fixture(this, shape, fixdef);
     this._addFixture(fixture);
+    this.m_world.publish('add-fixture', fixture);
     return fixture;
   }
 
@@ -1091,7 +1102,7 @@ export class Body {
    * All fixtures attached to a body are implicitly destroyed when the body is
    * destroyed.
    *
-   * Warning: This function is locked during callbacks.
+   * Warning: This function is locked when a world simulation step is in progress. Use queueUpdate to schedule a function to be called after the step.
    *
    * @param fixture The fixture to be removed.
    */
